@@ -1,0 +1,30 @@
+# Makefile - builds CS6015 Project
+#
+# To build a target, enter:
+# make build
+#
+# Targets:
+# build - See if these .o files exist, if not, do following documents(caps.o, clothing.o, etc.).
+# Caps.o... - Execute the commands
+# clean - clean all the file as commands told.
+#
+#Build all this if .o file are exists. Otherwise, do the following commands.
+build: Caps.o Clothing.o main.o Pants.o
+	c++ Caps.o Clothing.o main.o Pants.o -o build
+	./build
+Caps.o: Caps.cpp Caps.h
+	c++ -c Caps.cpp
+
+Clothing.o: Clothing.cpp Clothing.h
+	c++ -c Clothing.cpp
+
+Pants.o: Pants.cpp Pants.h
+	c++ -c Pants.cpp
+
+main.o: main.cpp
+	c++ -c main.cpp
+
+.PHONY: clean
+clean:
+	rm -f *.o *.out build
+	

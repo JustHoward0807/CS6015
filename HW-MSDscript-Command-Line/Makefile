@@ -1,0 +1,12 @@
+CXX = c++
+HEADERS = cmdline.h
+CXXFLAGS = --std=c++14
+CXXSOURCE = main.cpp cmdline.cpp
+
+msdscript: $(HEADERS) $(CXXSOURCE)
+	$(CXX) $(CXXFLAGS) -c $(CXXSOURCE)
+	$(CXX) $(CXXFLAGS) $(CXXSOURCE) -o msdscript
+
+.PHONY: clean
+clean:
+	rm -f *.o *.out msdscript
