@@ -22,10 +22,11 @@ void use_arguments(int argc, char **argv) {
         } else if (s == "--test" && !hasSeen) {
             if (Catch::Session().run(1, argv) != 0) {
                 std::cout << "Found catch isn't 0" << std::endl;
-                std::cout << "Test passed\n";
-                hasSeen = true;
+
                 exit(1);
             }
+            std::cout << "Test passed\n";
+            hasSeen = true;
 
         } else if (s == "--test" && hasSeen) {
             std::cout << "U have seen test before, exit proceed\n";
