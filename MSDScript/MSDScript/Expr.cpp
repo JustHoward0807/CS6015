@@ -82,23 +82,25 @@ bool Num::hasVariable() {
 }
 
 bool Multi::hasVariable() {
-    Variable *v = dynamic_cast<Variable *>(this->lhs);
-    Variable *v2 = dynamic_cast<Variable *>(this->rhs);
-    if (v != NULL || v2 != NULL) {
-        return true;
-    } else {
-        return false;
-    }
+    return this->lhs->hasVariable() || this->rhs->hasVariable();
+//    Variable *v = dynamic_cast<Variable *>(this->lhs);
+//    Variable *v2 = dynamic_cast<Variable *>(this->rhs);
+//    if (v != NULL || v2 != NULL) {
+//        return true;
+//    } else {
+//        return false;
+//    }
 }
 
 bool Add::hasVariable() {
-    Variable *v = dynamic_cast<Variable *>(this->lhs);
-    Variable *v2 = dynamic_cast<Variable *>(this->rhs);
-    if (v != NULL || v2 != NULL) {
-        return true;
-    } else {
-        return false;
-    }
+    return this->lhs->hasVariable() || this->rhs->hasVariable();
+//    Variable *v = dynamic_cast<Variable *>(this->lhs);
+//    Variable *v2 = dynamic_cast<Variable *>(this->rhs);
+//    if (v != NULL || v2 != NULL) {
+//        return true;
+//    } else {
+//        return false;
+//    }
 }
 
 //(new Add(new Variable("x"), new Num(7)))
@@ -248,7 +250,7 @@ TEST_CASE("Test for expression") {
     }
 
     SECTION("Interpret check") {
-        //        CHECK_THROWS_WITH( (new Variable("x"))->interp(), "no value for variable" );
+//        CHECK_THROWS_WITH( (new Variable("x"))->interp(), "no value for variable" );
 
         //3 * 2
         CHECK((new Multi(new Num(3), new Num(2)))->interp() == 6);
@@ -290,6 +292,7 @@ TEST_CASE("Test for expression") {
         CHECK((new Multi(new Variable("x"), new Num(2)))->hasVariable() == true);
         CHECK((new Variable("q"))->hasVariable() == true);
         CHECK((new Num(6))->hasVariable() == false);
+        CHECK((new Add(new Variable("d"), new Num(4)))->hasVariable() == true);
     }
 
     SECTION("Subst check") {
