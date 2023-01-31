@@ -5,11 +5,8 @@
 //  Created by Howard Tung on 1/12/23.
 //
 #define CATCH_CONFIG_RUNNER
-#include <stdio.h>
 #include <iostream>
-#include <string>
 #include "catch.h"
-#include "Expr.hpp"
 
 void use_arguments(int argc, char **argv) {
     bool hasSeen = false;
