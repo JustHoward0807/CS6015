@@ -1,4 +1,6 @@
 *.o
 msdscript
 url.txt
-.zip
+*.zip
+/.idea
+.DS_Store
