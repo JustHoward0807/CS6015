@@ -10,6 +10,9 @@ msdscript: $(HEADERS) $(CXXSOURCE)
 .PHONY: clean
 clean:
 	rm -f *.o *.out msdscript
+.PHONY: doc
+doc: 
+	cd documentation && doxygen
 
 #CXX = c++
 #CXXFLAGS = --std=c++14
@@ -28,3 +31,5 @@ clean:
 #.PHONY: clean
 #clean:
 #	rm -f *.o *.out msdscript
+#
+	

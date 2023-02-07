@@ -1,0 +1,140 @@
+\begin{theindex}
+
+  \item {/Users/howard/Documents/Github/CS6015/Expr.cpp}, 
+		\hyperpage{23}
+  \item {/Users/howard/Documents/Github/CS6015/Expr.hpp}, 
+		\hyperpage{24}
+  \item {/Users/howard/Documents/Github/CS6015/cmdline.cpp}, 
+		\hyperpage{21}
+  \item {/Users/howard/Documents/Github/CS6015/cmdline.h}, 
+		\hyperpage{22}
+  \item {/Users/howard/Documents/Github/CS6015/main.cpp}, 
+		\hyperpage{25}
+
+  \indexspace
+
+  \item {Add}, \hyperpage{9}
+    \subitem {Add}, \hyperpage{10}
+    \subitem {equals}, \hyperpage{10}
+    \subitem {hasVariable}, \hyperpage{10}
+    \subitem {interp}, \hyperpage{10}
+    \subitem {lhs}, \hyperpage{11}
+    \subitem {rhs}, \hyperpage{11}
+    \subitem {subst}, \hyperpage{11}
+
+  \indexspace
+
+  \item {CATCH\_CONFIG\_RUNNER}
+    \subitem {cmdline.cpp}, \hyperpage{21}
+  \item {cmdline.cpp}
+    \subitem {CATCH\_CONFIG\_RUNNER}, \hyperpage{21}
+    \subitem {use\_arguments}, \hyperpage{22}
+  \item {cmdline.h}
+    \subitem {use\_arguments}, \hyperpage{22}
+
+  \indexspace
+
+  \item {equals}
+    \subitem {Add}, \hyperpage{10}
+    \subitem {Expr}, \hyperpage{12}
+    \subitem {Multi}, \hyperpage{14}
+    \subitem {Num}, \hyperpage{16}
+    \subitem {Variable}, \hyperpage{19}
+  \item {Expr}, \hyperpage{12}
+    \subitem {equals}, \hyperpage{12}
+    \subitem {hasVariable}, \hyperpage{12}
+    \subitem {interp}, \hyperpage{12}
+    \subitem {subst}, \hyperpage{12}
+  \item {Expr.cpp}
+    \subitem {TEST\_CASE}, \hyperpage{23}
+
+  \indexspace
+
+  \item {hasVariable}
+    \subitem {Add}, \hyperpage{10}
+    \subitem {Expr}, \hyperpage{12}
+    \subitem {Multi}, \hyperpage{14}
+    \subitem {Num}, \hyperpage{17}
+    \subitem {Variable}, \hyperpage{19}
+
+  \indexspace
+
+  \item {interp}
+    \subitem {Add}, \hyperpage{10}
+    \subitem {Expr}, \hyperpage{12}
+    \subitem {Multi}, \hyperpage{14}
+    \subitem {Num}, \hyperpage{17}
+    \subitem {Variable}, \hyperpage{19}
+
+  \indexspace
+
+  \item {lhs}
+    \subitem {Add}, \hyperpage{11}
+    \subitem {Multi}, \hyperpage{15}
+
+  \indexspace
+
+  \item {main}
+    \subitem {main.cpp}, \hyperpage{25}
+  \item {main.cpp}
+    \subitem {main}, \hyperpage{25}
+  \item {Multi}, \hyperpage{13}
+    \subitem {equals}, \hyperpage{14}
+    \subitem {hasVariable}, \hyperpage{14}
+    \subitem {interp}, \hyperpage{14}
+    \subitem {lhs}, \hyperpage{15}
+    \subitem {Multi}, \hyperpage{14}
+    \subitem {rhs}, \hyperpage{15}
+    \subitem {subst}, \hyperpage{15}
+
+  \indexspace
+
+  \item {Num}, \hyperpage{16}
+    \subitem {equals}, \hyperpage{16}
+    \subitem {hasVariable}, \hyperpage{17}
+    \subitem {interp}, \hyperpage{17}
+    \subitem {Num}, \hyperpage{16}
+    \subitem {subst}, \hyperpage{17}
+    \subitem {val}, \hyperpage{18}
+
+  \indexspace
+
+  \item {rhs}
+    \subitem {Add}, \hyperpage{11}
+    \subitem {Multi}, \hyperpage{15}
+
+  \indexspace
+
+  \item {string}
+    \subitem {Variable}, \hyperpage{20}
+  \item {subst}
+    \subitem {Add}, \hyperpage{11}
+    \subitem {Expr}, \hyperpage{12}
+    \subitem {Multi}, \hyperpage{15}
+    \subitem {Num}, \hyperpage{17}
+    \subitem {Variable}, \hyperpage{20}
+
+  \indexspace
+
+  \item {TEST\_CASE}
+    \subitem {Expr.cpp}, \hyperpage{23}
+
+  \indexspace
+
+  \item {use\_arguments}
+    \subitem {cmdline.cpp}, \hyperpage{22}
+    \subitem {cmdline.h}, \hyperpage{22}
+
+  \indexspace
+
+  \item {val}
+    \subitem {Num}, \hyperpage{18}
+  \item {Variable}, \hyperpage{18}
+    \subitem {equals}, \hyperpage{19}
+    \subitem {hasVariable}, \hyperpage{19}
+    \subitem {interp}, \hyperpage{19}
+    \subitem {string}, \hyperpage{20}
+    \subitem {subst}, \hyperpage{20}
+    \subitem {Variable}, \hyperpage{19}
+
+\end{theindex}

@@ -1,0 +1,77 @@
+\hypertarget{_expr_8hpp_source}{}\doxysection{/\+Users/howard/\+Documents/\+Github/\+CS6015/\+Expr.hpp}
+\mbox{\hyperlink{_expr_8hpp}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//}}
+\DoxyCodeLine{00002\ \textcolor{comment}{//\ \ Expr.hpp}}
+\DoxyCodeLine{00003\ \textcolor{comment}{//\ \ MSDScript}}
+\DoxyCodeLine{00004\ \textcolor{comment}{//}}
+\DoxyCodeLine{00005\ \textcolor{comment}{//\ \ Created\ by\ Howard\ Tung\ on\ 1/12/23.}}
+\DoxyCodeLine{00006\ \textcolor{comment}{//}}
+\DoxyCodeLine{00007\ }
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ <stdio.h>}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ <stdexcept>}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ <string>}}
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#include\ <iostream>}}
+\DoxyCodeLine{00017\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00018\ }
+\DoxyCodeLine{00019\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_expr}{Expr}}\ \{}
+\DoxyCodeLine{00020\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00021\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{class_expr_ab5d65cde79dd78c2e06b2d5a0f19c602}{equals}}(\mbox{\hyperlink{class_expr}{Expr}}\ *expr)\ =\ 0;}
+\DoxyCodeLine{00022\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{class_expr_aeba8585d8225419d49166371306542c1}{interp}}()\ =\ 0;}
+\DoxyCodeLine{00023\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{class_expr_a65e1380b5c7453b09cd1958c4b8feea9}{hasVariable}}()\ =\ 0;}
+\DoxyCodeLine{00024\ \ \ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{class_expr}{Expr}}*\ \mbox{\hyperlink{class_expr_a70934630e6142f285c46846b54335598}{subst}}(std::string\ s,\ \mbox{\hyperlink{class_expr}{Expr}}*\ expr)\ =\ 0;}
+\DoxyCodeLine{00025\ \textcolor{comment}{//\ \ \ \ virtual\ void\ print(std::ostream\ \&ostream)\ =\ 0;}}
+\DoxyCodeLine{00026\ \};}
+\DoxyCodeLine{00027\ }
+\DoxyCodeLine{00028\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_num}{Num}}:\ \textcolor{keyword}{public}\ \mbox{\hyperlink{class_expr}{Expr}}\{}
+\DoxyCodeLine{00029\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00030\ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{class_num_ab0654582066deb3adbbd64cf7190a7b7}{val}};}
+\DoxyCodeLine{00031\ \ \ \ \ \mbox{\hyperlink{class_num}{Num}}(\textcolor{keywordtype}{int}\ \mbox{\hyperlink{class_num_ab0654582066deb3adbbd64cf7190a7b7}{val}});}
+\DoxyCodeLine{00032\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{class_num_a1e7182f0957d6258185b0dc0e884107f}{equals}}(\mbox{\hyperlink{class_expr}{Expr}}\ *expr);}
+\DoxyCodeLine{00033\ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{class_num_a24f8a1c7ccad82bf7ed1080b59cda6dd}{interp}}();}
+\DoxyCodeLine{00034\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{class_num_ab4fa1e3885ad915406717698c015cc4c}{hasVariable}}();}
+\DoxyCodeLine{00035\ \ \ \ \ \mbox{\hyperlink{class_expr}{Expr}}*\ \mbox{\hyperlink{class_num_abaab506f6fb0998edab4187316d1575b}{subst}}(std::string\ s,\ \mbox{\hyperlink{class_expr}{Expr}}*\ expr);}
+\DoxyCodeLine{00036\ \textcolor{comment}{//\ \ \ \ void\ print(std::ostream\ \&ostream);}}
+\DoxyCodeLine{00037\ \};}
+\DoxyCodeLine{00038\ }
+\DoxyCodeLine{00039\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_add}{Add}}\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{class_expr}{Expr}}\ \{}
+\DoxyCodeLine{00040\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00041\ \ \ \ \ \mbox{\hyperlink{class_expr}{Expr}}\ *\mbox{\hyperlink{class_add_a15ee8d84bb8a04af294732ebe1a8a6c3}{lhs}};\ }
+\DoxyCodeLine{00042\ \ \ \ \ \mbox{\hyperlink{class_expr}{Expr}}\ *\mbox{\hyperlink{class_add_a887a4ac2c5459bddba95f4c376b66405}{rhs}};\ }
+\DoxyCodeLine{00043\ \ \ \ \ }
+\DoxyCodeLine{00044\ \ \ \ \ \mbox{\hyperlink{class_add}{Add}}(\mbox{\hyperlink{class_expr}{Expr}}\ *\mbox{\hyperlink{class_add_a15ee8d84bb8a04af294732ebe1a8a6c3}{lhs}},\mbox{\hyperlink{class_expr}{Expr}}\ *\mbox{\hyperlink{class_add_a887a4ac2c5459bddba95f4c376b66405}{rhs}});}
+\DoxyCodeLine{00045\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{class_add_ad15535c6c32c41ebb52be1f2b73e9bb3}{equals}}(\mbox{\hyperlink{class_expr}{Expr}}\ *expr);}
+\DoxyCodeLine{00046\ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{class_add_a63c445ae0ea8ecc0d0765378e630a06f}{interp}}();}
+\DoxyCodeLine{00047\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{class_add_ac5d09db570bfe637ae9fb12f8f415671}{hasVariable}}();}
+\DoxyCodeLine{00048\ \ \ \ \ \mbox{\hyperlink{class_expr}{Expr}}*\ \mbox{\hyperlink{class_add_a8c943d56d4e0c7391d1983a193ff2ab2}{subst}}(std::string\ s,\ \mbox{\hyperlink{class_expr}{Expr}}*\ expr);}
+\DoxyCodeLine{00049\ \textcolor{comment}{//\ \ \ \ void\ print(std::ostream\ \&ostream);}}
+\DoxyCodeLine{00050\ \};}
+\DoxyCodeLine{00051\ }
+\DoxyCodeLine{00052\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_multi}{Multi}}\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{class_expr}{Expr}}\ \{}
+\DoxyCodeLine{00053\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00054\ \ \ \ \ \mbox{\hyperlink{class_expr}{Expr}}\ *\mbox{\hyperlink{class_multi_a4b1c758ef9059ce1dcea5d08b7682e88}{lhs}};\ }
+\DoxyCodeLine{00055\ \ \ \ \ \mbox{\hyperlink{class_expr}{Expr}}\ *\mbox{\hyperlink{class_multi_afaf6f8b66e8129ffc26d4045138140c5}{rhs}};\ }
+\DoxyCodeLine{00056\ \ \ \ \ }
+\DoxyCodeLine{00057\ \ \ \ \ \mbox{\hyperlink{class_multi}{Multi}}(\mbox{\hyperlink{class_expr}{Expr}}\ *\mbox{\hyperlink{class_multi_a4b1c758ef9059ce1dcea5d08b7682e88}{lhs}},\ \mbox{\hyperlink{class_expr}{Expr}}\ *\mbox{\hyperlink{class_multi_afaf6f8b66e8129ffc26d4045138140c5}{rhs}});}
+\DoxyCodeLine{00058\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{class_multi_a90e5dddb055f380e9d581af187bd401d}{equals}}(\mbox{\hyperlink{class_expr}{Expr}}\ *expr);}
+\DoxyCodeLine{00059\ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{class_multi_a2e61fc865e724051783afb3ca279fb19}{interp}}();}
+\DoxyCodeLine{00060\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{class_multi_a709f60ed1a82ed68dbdf828959010fac}{hasVariable}}();}
+\DoxyCodeLine{00061\ \ \ \ \ \mbox{\hyperlink{class_expr}{Expr}}*\ \mbox{\hyperlink{class_multi_a0dd5ce85c8fcd188022e56230bf0654b}{subst}}(std::string\ s,\ \mbox{\hyperlink{class_expr}{Expr}}*\ expr);}
+\DoxyCodeLine{00062\ \textcolor{comment}{//\ \ \ \ void\ print(std::ostream\ \&ostream);}}
+\DoxyCodeLine{00063\ \ \ \ \ }
+\DoxyCodeLine{00064\ \};}
+\DoxyCodeLine{00065\ }
+\DoxyCodeLine{00066\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_variable}{Variable}}\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{class_expr}{Expr}}\ \{}
+\DoxyCodeLine{00067\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00068\ \ \ \ \ std::string\ \mbox{\hyperlink{class_variable_a9ecfcbab31c0ed8f011457933cdfdc5b}{string}};}
+\DoxyCodeLine{00069\ \ \ \ \ }
+\DoxyCodeLine{00070\ \ \ \ \ \mbox{\hyperlink{class_variable}{Variable}}(std::string\ \textcolor{keywordtype}{string});}
+\DoxyCodeLine{00071\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{class_variable_ad6cd02d0005c031e0e8a500287515aa8}{equals}}(\mbox{\hyperlink{class_expr}{Expr}}\ *expr);}
+\DoxyCodeLine{00072\ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{class_variable_a9e1e857cc95cdb123d447d6a2092bc0a}{interp}}();}
+\DoxyCodeLine{00073\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{class_variable_a55b2c1bbdf7d2da21f52019cdaaf68c0}{hasVariable}}();}
+\DoxyCodeLine{00074\ \ \ \ \ \mbox{\hyperlink{class_expr}{Expr}}*\ \mbox{\hyperlink{class_variable_a3eb2bce465044d9a9c1d15200fbdbb2e}{subst}}(std::string\ s,\ \mbox{\hyperlink{class_expr}{Expr}}*\ expr);}
+\DoxyCodeLine{00075\ \textcolor{comment}{//\ \ \ \ void\ print(std::ostream\ \&ostream);}}
+\DoxyCodeLine{00076\ \ \ \ \ }
+\DoxyCodeLine{00077\ \};}
+
+\end{DoxyCode}

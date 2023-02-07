@@ -4,9 +4,24 @@
 //
 //  Created by Howard Tung on 1/12/23.
 //
+
+/**
+* \file cmdline.cpp
+* \brief Getting the input argument and deal with it
+* \author Howard Tung
+*/
+
 #define CATCH_CONFIG_RUNNER
+
 #include <iostream>
 #include "catch.h"
+
+/**
+* \brief Check input arguments if its --test or --help then doing different stuff accordingly
+* \param argc - how many arguments
+* \param argv - array of the argument
+* \return void - no return value
+*/
 
 void use_arguments(int argc, char **argv) {
     bool hasSeen = false;
@@ -14,22 +29,20 @@ void use_arguments(int argc, char **argv) {
     for (int i = 1; i < argc; i++) {
         std::string s = argv[i];
         if (s == "--help") {
-            std::cout << "This is a --help\n";
+            std::cout << "--test for testing cases\n";
             exit(0);
         } else if (s == "--test" && !hasSeen) {
             if (Catch::Session().run(1, argv) != 0) {
                 std::cout << "Found catch isn't 0" << std::endl;
-
                 exit(1);
             }
-            std::cout << "Test passed\n";
             hasSeen = true;
 
         } else if (s == "--test" && hasSeen) {
             std::cout << "U have seen test before, exit proceed\n";
             exit(1);
         } else {
-            std::cerr << "Error\n";
+            std::cerr << "Error, Unknown argument.\nTry --help to see more info.\n";
             exit(1);
         }
     }

@@ -5,9 +5,25 @@
 //  Created by Howard Tung on 1/12/23.
 //
 
+/**
+* \file Expr.cpp
+* \brief contains expression class function implementation
+* \author Howard Tung
+*/
 
 #include "Expr.hpp"
 #include "catch.h"
+
+/*
+ 88888888                      d8b       888          d8b                      888       d8b
+   888                        Y8P       888          Y8P                      888       Y8P
+   888                                  888                                   888
+   888         88888b.        888       888888       888        8888b.        888       888       88888888        .d88b.
+   888         888 "88b       888       888          888           "88b       888       888          d88P        d8P  Y8b
+   888         888  888       888       888          888       .d888888       888       888         d88P         88888888
+   888         888  888       888       Y88b.        888       888  888       888       888        d88P          Y8b.
+ 88888888      888  888        888       "Y888        888       "Y888888       888       888       88888888        "Y8888
+*/
 
 Num::Num(int val) {
     this->val = val;
@@ -17,6 +33,36 @@ Variable::Variable(std::string string) {
     this->string = string;
 }
 
+Add::Add(Expr *lhs, Expr *rhs) {
+    this->lhs = lhs;
+    this->rhs = rhs;
+}
+
+
+Multi::Multi(Expr *lhs, Expr *rhs) {
+    this->lhs = lhs;
+    this->rhs = rhs;
+}
+
+/*
+8888888888                            888
+888                                   888
+888                                   888
+8888888     .d88888 888  888  8888b.  888 .d8888b
+888        d88" 888 888  888     "88b 888 88K
+888        888  888 888  888 .d888888 888 "Y8888b.
+888        Y88b 888 Y88b 888 888  888 888      X88
+8888888888  "Y88888  "Y88888 "Y888888 888  88888P'
+                888
+                888
+                888
+*/
+
+/**
+* \brief Check if this class string is equals to Expr class provided in parentheses
+* \param *expr - Provide expression
+* \return true if both equals string, false otherwise.
+*/
 bool Variable::equals(Expr *expr) {
     Variable *v = dynamic_cast<Variable *>(expr);
     if (v == NULL) {
@@ -25,6 +71,12 @@ bool Variable::equals(Expr *expr) {
         return this->string == v->string;
     }
 }
+
+/**
+* \brief Check if this class val is equals to Expr class provided in parentheses
+* \param *expr - Provide expression
+* \return true if both equals val, false otherwise.
+*/
 
 bool Num::equals(Expr *expr) {
     Num *n = dynamic_cast<Num *>(expr);
@@ -35,168 +87,11 @@ bool Num::equals(Expr *expr) {
     }
 }
 
-int Variable::interp() {
-    //Variable cannot be interp, ex: cannot add or multiply
-    throw std::runtime_error("message");
-}
-
-//(2 + (3 * 4))
-int Add::interp() {
-//    Num *nlhs = dynamic_cast<Num *>(this->lhs);
-//    Num *nrhs = dynamic_cast<Num *>(this->rhs);
-//    if (nlhs == NULL && nrhs == NULL) {
-        return this->rhs->interp() + this->lhs->interp();
-//    } else if (nlhs == NULL) {
-//        return this->lhs->interp() + nrhs->val;
-//    } else if (nrhs == NULL) {
-//        return this->rhs->interp() + nlhs->val;
-//    }
-
-//    return nlhs->val + nrhs->val;
-}
-
-int Multi::interp() {
-//    Num *nlhs = dynamic_cast<Num *>(this->lhs);
-//    Num *nrhs = dynamic_cast<Num *>(this->rhs);
-//    if (nlhs == NULL && nrhs == NULL) {
-        return this->rhs->interp() * this->lhs->interp();
-//    } else if (nlhs == NULL) {
-//        return this->lhs->interp() * nrhs->val;
-//    } else if (nrhs == NULL) {
-//        return this->rhs->interp() * nlhs->val;
-//    }
-//
-//    return nlhs->val * nrhs->val;
-}
-
-int Num::interp() {
-    return this->val;
-}
-
-bool Variable::hasVariable() {
-    return true;
-}
-
-bool Num::hasVariable() {
-    return false;
-}
-
-bool Multi::hasVariable() {
-    return this->lhs->hasVariable() || this->rhs->hasVariable();
-//    Variable *v = dynamic_cast<Variable *>(this->lhs);
-//    Variable *v2 = dynamic_cast<Variable *>(this->rhs);
-//    if (v != NULL || v2 != NULL) {
-//        return true;
-//    } else {
-//        return false;
-//    }
-}
-
-bool Add::hasVariable() {
-    return this->lhs->hasVariable() || this->rhs->hasVariable();
-//    Variable *v = dynamic_cast<Variable *>(this->lhs);
-//    Variable *v2 = dynamic_cast<Variable *>(this->rhs);
-//    if (v != NULL || v2 != NULL) {
-//        return true;
-//    } else {
-//        return false;
-//    }
-}
-
-//(new Add(new Variable("x"), new Num(7)))
-//                       ->subst("x", new Variable("y"))
-//                       ->equals(new Add(new Variable("y"), new Num(7)))
-
-//(new Add(new Num(7), new Variable("x")))
-//                       ->subst("x", new Variable("y"))
-//                       ->equals(new Add(new Num(7), new Variable("y")))
-
-//(new Add(new Variable("x"), new Variable("x")))
-//                       ->subst("x", new Variable("y"))
-//                       ->equals(new Add(new Variable("y"), new Variable("y")))
-
-//CHECK( (new VarExpr("x"))
-//               ->subst("x", new AddExpr(new VarExpr("y"),new NumExpr(7)))
-//               ->equals(new AddExpr(new VarExpr("y"),new NumExpr(7))) );
-
-
-Expr *Variable::subst(std::string s, Expr *expr) {
-    if (this->string == s) {
-        return expr;
-    }
-    return new Variable(this->string);
-}
-
-//Subst can one line
-
-//(new Add((new Multi(new Num(10), new Variable("x"))), new Num (7))) -> subst("x", new Variable("y"))
-//                       -> equals((new Add((new Multi(new Num(10), new Variable("y"))), new Num (7))))
-Expr *Multi::subst(std::string s, Expr *expr) {
-    return new Multi(this->lhs->subst(s, expr), this->rhs->subst(s,expr));
-//    Variable *nlhs = dynamic_cast<Variable *>(this->lhs);
-//    Variable *nrhs = dynamic_cast<Variable *>(this->rhs);
-//    if (nlhs != NULL && nrhs != NULL) {
-//        if (nlhs->string == s && nrhs->string == s) {
-//
-//            nlhs = dynamic_cast<Variable *> (expr);
-//            nrhs = dynamic_cast<Variable *> (expr);
-//            return new Multi(nlhs, nrhs);
-//        }
-
-//    } else if (nlhs != NULL) {
-//        if (nlhs->string == s) {
-
-//            nlhs = dynamic_cast<Variable *> (expr);
-//            return new Multi(nlhs, this->rhs);
-//        }
-//    } else if (nrhs != NULL) {
-//        if (nrhs->string == s) {
-//            nrhs = dynamic_cast<Variable *> (expr);
-//            return new Multi(this->lhs, nrhs);
-//        }
-//    }
-//    return new Multi(this->lhs, this->rhs);
-}
-
-Expr *Add::subst(std::string s, Expr *expr) {
-    return new Add(this->lhs->subst(s, expr), this->rhs->subst(s,expr));
-//    Variable *nlhs = dynamic_cast<Variable *>(this->lhs);
-//    Variable *nrhs = dynamic_cast<Variable *>(this->rhs);
-//    if (nlhs != NULL && nrhs != NULL) {
-//        if (nlhs->string == s && nrhs->string == s) {
-//
-//            nlhs = dynamic_cast<Variable *> (expr);
-//            nrhs = dynamic_cast<Variable *> (expr);
-//            return new Add(nlhs, nrhs);
-//        }
-//
-//    } else if (nlhs != NULL) {
-//        if (nlhs->string == s) {
-//
-//            nlhs = dynamic_cast<Variable *> (expr);
-//            return new Add(nlhs, this->rhs);
-//        }
-//    } else if (nrhs != NULL) {
-//        if (nrhs->string == s) {
-//            nrhs = dynamic_cast<Variable *> (expr);
-//            return new Add(this->lhs, nrhs);
-//        }
-//    }
-//    return new Add(this->lhs, this->rhs);
-
-
-}
-
-Expr *Num::subst(std::string s, Expr *expr) {
-    return new Num(this->val);
-}
-
-
-Add::Add(Expr *lhs, Expr *rhs) {
-    this->lhs = lhs;
-    this->rhs = rhs;
-}
-
+/**
+* \brief Check if this class lhs is equals to Expr class rhs provided in parentheses
+* \param *expr - Provide expression
+* \return true if both equals val, false otherwise.
+*/
 
 bool Add::equals(Expr *expr) {
     Add *n = dynamic_cast<Add *>(expr);
@@ -207,11 +102,11 @@ bool Add::equals(Expr *expr) {
     }
 }
 
-Multi::Multi(Expr *lhs, Expr *rhs) {
-    this->lhs = lhs;
-    this->rhs = rhs;
-}
-
+/**
+* \brief Check if this class lhs is equals to Expr class rhs provided in parentheses
+* \param *expr - Provide expression
+* \return true if both equals val, false otherwise.
+*/
 
 bool Multi::equals(Expr *expr) {
     Multi *n = dynamic_cast<Multi *>(expr);
@@ -222,6 +117,189 @@ bool Multi::equals(Expr *expr) {
         return this->lhs->equals(n->lhs) && this->rhs->equals(n->rhs);
     }
 }
+
+/*
+888                        888     888                  d8b          888      888
+888                        888     888                  Y8P          888      888
+888                        888     888                               888      888
+88888b.   8888b.  .d8888b  Y88b   d88P  8888b.  888d888 888  8888b.  88888b.  888  .d88b.
+888 "88b     "88b 88K       Y88b d88P      "88b 888P"   888     "88b 888 "88b 888 d8P  Y8b
+888  888 .d888888 "Y8888b.   Y88o88P   .d888888 888     888 .d888888 888  888 888 88888888
+888  888 888  888      X88    Y888P    888  888 888     888 888  888 888 d88P 888 Y8b.
+888  888 "Y888888  88888P'     Y8P     "Y888888 888     888 "Y888888 88888P"  888  "Y8888
+*/
+
+/**
+* \brief Bc Variable has variable so always return true
+* \return always true bc it is an Variable class.
+*/
+bool Variable::hasVariable() {
+    return true;
+}
+
+/**
+* \brief Num has no variable so always return false
+* \return always false bc it is an Num class.
+*/
+
+bool Num::hasVariable() {
+    return false;
+}
+
+/**
+* \brief Check both lhs and rhs Expression class to see if they have variable.
+* \return true or false based on if it has variables
+*/
+bool Multi::hasVariable() {
+    return this->lhs->hasVariable() || this->rhs->hasVariable();
+}
+
+/**
+* \brief Check both lhs and rhs Expression class to see if they have variable.
+* \return true or false based on if it has variables
+*/
+
+bool Add::hasVariable() {
+    return this->lhs->hasVariable() || this->rhs->hasVariable();
+}
+
+/*
+8888888          888
+  888            888
+  888            888
+  888   88888b.  888888  .d88b.  888d888 88888b.
+  888   888 "88b 888    d8P  Y8b 888P"   888 "88b
+  888   888  888 888    88888888 888     888  888
+  888   888  888 Y88b.  Y8b.     888     888 d88P
+8888888 888  888  "Y888  "Y8888  888     88888P"
+                                         888
+                                         888
+                                         888
+*/
+
+/**
+* \brief Interp cannot be interp so give an error msg.
+* \return Bc interp will return an interger
+*/
+int Variable::interp() {
+    //Variable cannot be interp, ex: cannot add or multiply
+    throw std::runtime_error("message");
+}
+
+/**
+* \brief Add both side
+* \return return the integer added value
+*/
+int Add::interp() {
+    //(2 + (3 * 4))
+    return this->rhs->interp() + this->lhs->interp();
+}
+/**
+* \brief Multiply both side
+* \return return the integer multiply value
+*/
+int Multi::interp() {
+    return this->rhs->interp() * this->lhs->interp();
+}
+
+/**
+* \brief return its value
+* \return return its value
+*/
+int Num::interp() {
+    return this->val;
+}
+
+/*
+ .d8888b.           888               888
+d88P  Y88b          888               888
+Y88b.               888               888
+ "Y888b.   888  888 88888b.  .d8888b  888888 888d888
+    "Y88b. 888  888 888 "88b 88K      888    888P"
+      "888 888  888 888  888 "Y8888b. 888    888
+Y88b  d88P Y88b 888 888 d88P      X88 Y88b.  888
+ "Y8888P"   "Y88888 88888P"   88888P'  "Y888 888
+*/
+
+/**
+* \brief Replace the variable with the expression that provided
+* \return return the expression
+*/
+Expr *Variable::subst(std::string s, Expr *expr) {
+    if (this->string == s) {
+        return expr;
+    }
+    return new Variable(this->string);
+}
+
+/**
+* \brief Replace the lhs variable or rhs that has the string provided in parentheses and replace with the expression that provided
+* \return return the expression
+*/
+Expr *Multi::subst(std::string s, Expr *expr) {
+    //(new Add((new Multi(new Num(10), new Variable("x"))), new Num (7))) -> subst("x", new Variable("y"))
+// -> equals((new Add((new Multi(new Num(10), new Variable("y"))), new Num (7))))
+    return new Multi(this->lhs->subst(s, expr), this->rhs->subst(s, expr));
+}
+
+/**
+* \brief Replace the lhs variable or rhs that has the string provided in parentheses and replace with the expression that provided
+* \return return the expression
+*/
+Expr *Add::subst(std::string s, Expr *expr) {
+    return new Add(this->lhs->subst(s, expr), this->rhs->subst(s, expr));
+}
+
+/**
+* \brief Directly return the Num expression bc Num class have only val Integer member, so can't be replaced.
+* \return return the expression
+*/
+Expr *Num::subst(std::string s, Expr *expr) {
+    return new Num(this->val);
+}
+
+/*
+8888888b.          d8b          888
+888   Y88b         Y8P          888
+888    888                      888
+888   d88P 888d888 888 88888b.  888888
+8888888P"  888P"   888 888 "88b 888
+888        888     888 888  888 888
+888        888     888 888  888 Y88b.
+888        888     888 888  888  "Y888
+*/
+
+
+//void Num::print(std::ostream &ostream) {
+//}
+//
+//void Add::print(std::ostream &ostream) {
+//}
+//
+//void Multi::print(std::ostream &ostream) {}
+//
+//void Variable::print(std::ostream &ostream) {}
+
+
+
+
+
+
+
+
+/*
+88888888888                   888    d8b
+    888                       888    Y8P
+    888                       888
+    888      .d88b.  .d8888b  888888 888 88888b.   .d88b.
+    888     d8P  Y8b 88K      888    888 888 "88b d88P"88b
+    888     88888888 "Y8888b. 888    888 888  888 888  888
+    888     Y8b.          X88 Y88b.  888 888  888 Y88b 888
+    888      "Y8888   88888P'  "Y888 888 888  888  "Y88888
+                                                       888
+                                                  Y8b d88P
+                                                   "Y88P"
+*/
 
 TEST_CASE("Test for expression") {
     Add *add = new Add(new Num(2), new Num(3));
@@ -323,13 +401,19 @@ TEST_CASE("Test for expression") {
         CHECK((new Num(2))
                       ->subst("x", new Num(3))
                       ->equals(new Num(3)) == false);
-//        CHECK((new Num(2) ->subst("x", new Num(2)) ->equals(new Num(2))) == false);
 
-        CHECK( (new Variable("x"))
-                       ->subst("x", new Add(new Variable("y"),new Num(7)))
-                       ->equals(new Add(new Variable("y"),new Num(7))) );
+        CHECK((new Variable("x"))
+                      ->subst("x", new Add(new Variable("y"), new Num(7)))
+                      ->equals(new Add(new Variable("y"), new Num(7))));
 
-        CHECK( (new Add((new Multi(new Num(10), new Variable("x"))), new Num (7))) -> subst("x", new Variable("y"))
-                       -> equals((new Add((new Multi(new Num(10), new Variable("y"))), new Num (7)))) );
+        CHECK((new Add((new Multi(new Num(10), new Variable("x"))), new Num(7)))->subst("x", new Variable("y"))
+                      ->equals((new Add((new Multi(new Num(10), new Variable("y"))), new Num(7)))));
+    }
+
+    SECTION("Check Print") {
+//        std::ostream& ostream = std::cout;
+//        Num* n = new Num(5);
+//        Add* a = new Add(n,n);
+//        a -> print(ostream);
     }
 }

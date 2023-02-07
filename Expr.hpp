@@ -5,6 +5,11 @@
 //  Created by Howard Tung on 1/12/23.
 //
 
+/**
+* \file Expr.hpp
+* \brief contains expression class definition
+* \author Howard Tung
+*/
 #include <stdio.h>
 #include <stdexcept>
 #include <string>
@@ -17,6 +22,7 @@ public:
     virtual int interp() = 0;
     virtual bool hasVariable() = 0;
     virtual Expr* subst(std::string s, Expr* expr) = 0;
+//    virtual void print(std::ostream &ostream) = 0;
 };
 
 class Num: public Expr{
@@ -27,30 +33,33 @@ public:
     int interp();
     bool hasVariable();
     Expr* subst(std::string s, Expr* expr);
+//    void print(std::ostream &ostream);
 };
 
 class Add : public Expr {
 public:
-    Expr *lhs;
-    Expr *rhs;
+    Expr *lhs; //!< lhs of Expression
+    Expr *rhs; //!< rhs of Expression
     
     Add(Expr *lhs,Expr *rhs);
     bool equals(Expr *expr);
     int interp();
     bool hasVariable();
     Expr* subst(std::string s, Expr* expr);
+//    void print(std::ostream &ostream);
 };
 
 class Multi : public Expr {
 public:
-    Expr *lhs;
-    Expr *rhs;
+    Expr *lhs; //!< lhs of Expression
+    Expr *rhs; //!< rhs of Expression
     
     Multi(Expr *lhs, Expr *rhs);
     bool equals(Expr *expr);
     int interp();
     bool hasVariable();
     Expr* subst(std::string s, Expr* expr);
+//    void print(std::ostream &ostream);
     
 };
 
@@ -63,5 +72,6 @@ public:
     int interp();
     bool hasVariable();
     Expr* subst(std::string s, Expr* expr);
+//    void print(std::ostream &ostream);
     
 };

@@ -1,0 +1,140 @@
+\hypertarget{class_variable}{}\doxysection{Variable Class Reference}
+\label{class_variable}\index{Variable@{Variable}}
+
+
+{\ttfamily \#include $<$Expr.\+hpp$>$}
+
+Inheritance diagram for Variable\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_variable}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_variable_ad7bb547660684c7cdd4dfaae2e1b5186}{Variable}} (std\+::string \mbox{\hyperlink{class_variable_a9ecfcbab31c0ed8f011457933cdfdc5b}{string}})
+\item 
+bool \mbox{\hyperlink{class_variable_ad6cd02d0005c031e0e8a500287515aa8}{equals}} (\mbox{\hyperlink{class_expr}{Expr}} $\ast$expr)
+\begin{DoxyCompactList}\small\item\em Check if this class string is equals to \mbox{\hyperlink{class_expr}{Expr}} class provided in parentheses. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{class_variable_a9e1e857cc95cdb123d447d6a2092bc0a}{interp}} ()
+\begin{DoxyCompactList}\small\item\em Interp cannot be interp so give an error msg. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{class_variable_a55b2c1bbdf7d2da21f52019cdaaf68c0}{has\+Variable}} ()
+\begin{DoxyCompactList}\small\item\em Bc \mbox{\hyperlink{class_variable}{Variable}} has variable so always return true. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{class_expr}{Expr}} $\ast$ \mbox{\hyperlink{class_variable_a3eb2bce465044d9a9c1d15200fbdbb2e}{subst}} (std\+::string s, \mbox{\hyperlink{class_expr}{Expr}} $\ast$expr)
+\begin{DoxyCompactList}\small\item\em Replace the variable with the expression that provided. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactItemize}
+\item 
+virtual bool \mbox{\hyperlink{class_expr_ab5d65cde79dd78c2e06b2d5a0f19c602}{equals}} (\mbox{\hyperlink{class_expr}{Expr}} $\ast$expr)=0
+\item 
+virtual int \mbox{\hyperlink{class_expr_aeba8585d8225419d49166371306542c1}{interp}} ()=0
+\item 
+virtual bool \mbox{\hyperlink{class_expr_a65e1380b5c7453b09cd1958c4b8feea9}{has\+Variable}} ()=0
+\item 
+virtual \mbox{\hyperlink{class_expr}{Expr}} $\ast$ \mbox{\hyperlink{class_expr_a70934630e6142f285c46846b54335598}{subst}} (std\+::string s, \mbox{\hyperlink{class_expr}{Expr}} $\ast$expr)=0
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+std\+::string \mbox{\hyperlink{class_variable_a9ecfcbab31c0ed8f011457933cdfdc5b}{string}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{class_variable_ad7bb547660684c7cdd4dfaae2e1b5186}\label{class_variable_ad7bb547660684c7cdd4dfaae2e1b5186}} 
+\index{Variable@{Variable}!Variable@{Variable}}
+\index{Variable@{Variable}!Variable@{Variable}}
+\doxysubsubsection{\texorpdfstring{Variable()}{Variable()}}
+{\footnotesize\ttfamily Variable\+::\+Variable (\begin{DoxyParamCaption}\item[{std\+::string}]{string }\end{DoxyParamCaption})}
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{class_variable_ad6cd02d0005c031e0e8a500287515aa8}\label{class_variable_ad6cd02d0005c031e0e8a500287515aa8}} 
+\index{Variable@{Variable}!equals@{equals}}
+\index{equals@{equals}!Variable@{Variable}}
+\doxysubsubsection{\texorpdfstring{equals()}{equals()}}
+{\footnotesize\ttfamily bool Variable\+::equals (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{class_expr}{Expr}} $\ast$}]{expr }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Check if this class string is equals to \mbox{\hyperlink{class_expr}{Expr}} class provided in parentheses. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em $\ast$expr} & -\/ Provide expression \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if both equals string, false otherwise. 
+\end{DoxyReturn}
+
+
+Implements \mbox{\hyperlink{class_expr_ab5d65cde79dd78c2e06b2d5a0f19c602}{Expr}}.
+
+\mbox{\Hypertarget{class_variable_a55b2c1bbdf7d2da21f52019cdaaf68c0}\label{class_variable_a55b2c1bbdf7d2da21f52019cdaaf68c0}} 
+\index{Variable@{Variable}!hasVariable@{hasVariable}}
+\index{hasVariable@{hasVariable}!Variable@{Variable}}
+\doxysubsubsection{\texorpdfstring{hasVariable()}{hasVariable()}}
+{\footnotesize\ttfamily bool Variable\+::has\+Variable (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Bc \mbox{\hyperlink{class_variable}{Variable}} has variable so always return true. 
+
+\begin{DoxyReturn}{Returns}
+always true bc it is an \mbox{\hyperlink{class_variable}{Variable}} class. 
+\end{DoxyReturn}
+
+
+Implements \mbox{\hyperlink{class_expr_a65e1380b5c7453b09cd1958c4b8feea9}{Expr}}.
+
+\mbox{\Hypertarget{class_variable_a9e1e857cc95cdb123d447d6a2092bc0a}\label{class_variable_a9e1e857cc95cdb123d447d6a2092bc0a}} 
+\index{Variable@{Variable}!interp@{interp}}
+\index{interp@{interp}!Variable@{Variable}}
+\doxysubsubsection{\texorpdfstring{interp()}{interp()}}
+{\footnotesize\ttfamily int Variable\+::interp (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Interp cannot be interp so give an error msg. 
+
+\begin{DoxyReturn}{Returns}
+Bc interp will return an interger 
+\end{DoxyReturn}
+
+
+Implements \mbox{\hyperlink{class_expr_aeba8585d8225419d49166371306542c1}{Expr}}.
+
+\mbox{\Hypertarget{class_variable_a3eb2bce465044d9a9c1d15200fbdbb2e}\label{class_variable_a3eb2bce465044d9a9c1d15200fbdbb2e}} 
+\index{Variable@{Variable}!subst@{subst}}
+\index{subst@{subst}!Variable@{Variable}}
+\doxysubsubsection{\texorpdfstring{subst()}{subst()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{class_expr}{Expr}} $\ast$ Variable\+::subst (\begin{DoxyParamCaption}\item[{std\+::string}]{s,  }\item[{\mbox{\hyperlink{class_expr}{Expr}} $\ast$}]{expr }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Replace the variable with the expression that provided. 
+
+\begin{DoxyReturn}{Returns}
+return the expression 
+\end{DoxyReturn}
+
+
+Implements \mbox{\hyperlink{class_expr_a70934630e6142f285c46846b54335598}{Expr}}.
+
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{class_variable_a9ecfcbab31c0ed8f011457933cdfdc5b}\label{class_variable_a9ecfcbab31c0ed8f011457933cdfdc5b}} 
+\index{Variable@{Variable}!string@{string}}
+\index{string@{string}!Variable@{Variable}}
+\doxysubsubsection{\texorpdfstring{string}{string}}
+{\footnotesize\ttfamily std\+::string Variable\+::string}
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/howard/\+Documents/\+Github/\+CS6015/\mbox{\hyperlink{_expr_8hpp}{Expr.\+hpp}}\item 
+/\+Users/howard/\+Documents/\+Github/\+CS6015/\mbox{\hyperlink{_expr_8cpp}{Expr.\+cpp}}\end{DoxyCompactItemize}
