@@ -13,6 +13,8 @@
 
 #include "Expr.hpp"
 #include "catch.h"
+//#include "strstream"
+#include "sstream"
 
 /*
  88888888                      d8b       888          d8b                      888       d8b
@@ -194,6 +196,7 @@ int Add::interp() {
     //(2 + (3 * 4))
     return this->rhs->interp() + this->lhs->interp();
 }
+
 /**
 * \brief Multiply both side
 * \return return the integer multiply value
@@ -270,15 +273,124 @@ Expr *Num::subst(std::string s, Expr *expr) {
 */
 
 
-//void Num::print(std::ostream &ostream) {
-//}
-//
-//void Add::print(std::ostream &ostream) {
-//}
-//
-//void Multi::print(std::ostream &ostream) {}
-//
-//void Variable::print(std::ostream &ostream) {}
+void Num::print(std::ostream &ostream) {
+    ostream << std::to_string(val);
+}
+
+void Add::print(std::ostream &ostream) {
+    ostream << "(";
+    this->lhs->print(ostream);
+    ostream << "+";
+    this->rhs->print(ostream);
+    ostream << ")";
+}
+
+void Multi::print(std::ostream &ostream) {
+    ostream << "(";
+    this->lhs->print(ostream);
+    ostream << "*";
+    this->rhs->print(ostream);
+    ostream << ")";
+}
+
+void Variable::print(std::ostream &ostream) {
+    ostream << this->string;
+}
+
+/*
+d888                               888            d8b
+888                               888            Y8P
+888                               888
+888888  .d88b.           .d8888b  888888 888d888 888 88888b.   .d88b.
+888    d88""88b          88K      888    888P"   888 888 "88b d88P"88b
+888    888  888          "Y8888b. 888    888     888 888  888 888  888
+Y88b.  Y88..88P               X88 Y88b.  888     888 888  888 Y88b 888
+ "Y888  "Y88P"  88888888  88888P'  "Y888 888     888 888  888  "Y88888
+                                                                   888
+                                                              Y8b d88P
+                                                               "Y88P"
+*/
+
+std::string Expr::to_string() {
+    std::stringstream st("");
+    this->print(st);
+    return st.str();
+}
+
+std::string Expr::pretty_print_to_string() {
+    std::stringstream st("");
+    this->pretty_print(st);
+    return st.str();
+}
+
+/*
+                          888    888                                       d8b          888
+                          888    888                                       Y8P          888
+                          888    888                                                    888
+88888b.  888d888  .d88b.  888888 888888 888  888          88888b.  888d888 888 88888b.  888888
+888 "88b 888P"   d8P  Y8b 888    888    888  888          888 "88b 888P"   888 888 "88b 888
+888  888 888     88888888 888    888    888  888          888  888 888     888 888  888 888
+888 d88P 888     Y8b.     Y88b.  Y88b.  Y88b 888          888 d88P 888     888 888  888 Y88b.
+88888P"  888      "Y8888   "Y888  "Y888  "Y88888 88888888 88888P"  888     888 888  888  "Y888
+888                                          888          888
+888                                     Y8b d88P          888
+888                                      "Y88P"           888
+*/
+
+void Num::pretty_print(std::ostream &ostream) {
+    pretty_print_at(prec_none, ostream);
+}
+
+void Num::pretty_print_at(precedence_t precedence_t, std::ostream &ostream) {
+    ostream << std::to_string(this->val);
+}
+
+void Variable::pretty_print(std::ostream &ostream) {
+    pretty_print_at(prec_none, ostream);
+}
+
+void Variable::pretty_print_at(precedence_t precedence_t, std::ostream &ostream) {
+    ostream << this->string;
+}
+
+void Add::pretty_print(std::ostream &ostream) {
+    pretty_print_at(prec_none, ostream);
+}
+
+void Add::pretty_print_at(precedence_t precedence_t, std::ostream &ostream) {
+    if (precedence_t > prec_add) {
+        ostream << "(";
+    }
+    this -> lhs -> pretty_print_at(static_cast<::precedence_t>(prec_add + 1), ostream);
+    ostream << " + ";
+    this -> rhs -> pretty_print_at(static_cast<::precedence_t>(prec_add), ostream);
+
+    if (precedence_t > prec_add) {
+        ostream << ")";
+    }
+}
+
+void Multi::pretty_print(std::ostream &ostream) {
+    pretty_print_at(prec_none, ostream);
+}
+//CHECK((new Multi(new Num(1), new Add(new Num(2), new Num(3)))) -> pretty_print_to_string() == "1 * (2 + 3)");
+// CHECK((new Multi (new Num(2), new Multi(new Num(3), new Num(4)))) -> pretty_print_to_string() == "2 * 3 * 4");
+void Multi::pretty_print_at(precedence_t precedence_t, std::ostream &ostream) {
+    if (precedence_t > prec_mult) {
+        ostream << "(";
+    }
+    this -> lhs -> pretty_print_at(static_cast<::precedence_t>(prec_mult + 1), ostream);
+    ostream << " * ";
+    this -> rhs -> pretty_print_at(static_cast<::precedence_t>(prec_mult), ostream);
+
+    if (precedence_t > prec_mult) {
+        ostream << ")";
+    }
+
+}
+
+
+
 
 
 
@@ -411,9 +523,20 @@ TEST_CASE("Test for expression") {
     }
 
     SECTION("Check Print") {
-//        std::ostream& ostream = std::cout;
-//        Num* n = new Num(5);
-//        Add* a = new Add(n,n);
-//        a -> print(ostream);
+        CHECK((new Add(new Num(1), new Add(new Num(2), new Num(3))))->to_string() == "(1+(2+3))");
+        CHECK((new Add(new Add(new Num(1), new Num(2)), new Num(3)))->to_string() == "((1+2)+3)");
+        CHECK((new Num(10))->to_string() == "10");
+        CHECK((new Variable("x"))->to_string() == "x");
+        CHECK((new Add(new Num(5), new Num(5)))->to_string() == "(5+5)");
+        CHECK((new Multi(new Num(10), new Num(10)))->to_string() == "(10*10)");
+        CHECK((new Add(new Num(5), new Multi(new Num(5), new Num(5))))->to_string() == "(5+(5*5))");
+
+        CHECK((new Multi (new Multi (new Num(2), new Num(3)), new Num(4))) -> pretty_print_to_string() == "(2 * 3) * 4");
+        CHECK((new Add(new Num(1), new Multi(new Num(2), new Num(3)))) ->pretty_print_to_string() == "1 + 2 * 3");
+        CHECK((new Multi (new Num(2), new Multi(new Num(3), new Num(4)))) -> pretty_print_to_string() == "2 * 3 * 4");
+        CHECK((new Multi(new Num(1), new Add(new Num(2), new Num(3)))) -> pretty_print_to_string() == "1 * (2 + 3)");
+        CHECK((new Multi(new Num(-8), new Add(new Num(2), new Num(3)))) -> pretty_print_to_string() == "-8 * (2 + 3)");
+        CHECK((new Add(new Multi(new Num(9), new Add(new Num(4), new Num(3))), new Add(new Multi(new Num(2), new Num(4)), new Num(1))))->pretty_print_to_string() == "9 * (4 + 3) + 2 * 4 + 1");
+        CHECK((new Multi( new Multi(new Num(10), new Multi(new Multi(new Num(10), new Num(10)), new Num(10))), new Multi(new Num(10), new Num(10))))->pretty_print_to_string()  == "(10 * (10 * 10) * 10) * 10 * 10");
     }
 }
