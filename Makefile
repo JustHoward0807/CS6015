@@ -6,6 +6,8 @@ CXXSOURCE = main.cpp Expr.cpp cmdline.cpp
 msdscript: $(HEADERS) $(CXXSOURCE)
 	$(CXX) $(CXXFLAGS) -c $(CXXSOURCE)
 	$(CXX) $(CXXFLAGS) $(CXXSOURCE) -o msdscript
+	rm -f *.o *.out
+	./msdscript --test
 
 .PHONY: clean
 clean:

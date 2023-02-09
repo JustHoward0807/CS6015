@@ -91,3 +91,18 @@ public:
     void pretty_print(std::ostream &ostream);
     void pretty_print_at(precedence_t precedence_t, std::ostream &ostream);
 };
+
+//class _let : public Expr {
+//public:
+//    std::string lhs;
+//    Expr* rhs;
+//    Expr* body;
+//    _let();
+//    bool equals(Expr *expr);
+//    int interp();
+//    bool hasVariable();
+//    Expr* subst(std::string s, Expr* expr);
+//    void print(std::ostream &ostream);
+//    void pretty_print(std::ostream &ostream);
+//    void pretty_print_at(precedence_t precedence_t, std::ostream &ostream);
+//};

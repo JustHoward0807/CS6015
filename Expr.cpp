@@ -531,12 +531,21 @@ TEST_CASE("Test for expression") {
         CHECK((new Multi(new Num(10), new Num(10)))->to_string() == "(10*10)");
         CHECK((new Add(new Num(5), new Multi(new Num(5), new Num(5))))->to_string() == "(5+(5*5))");
 
-        CHECK((new Multi (new Multi (new Num(2), new Num(3)), new Num(4))) -> pretty_print_to_string() == "(2 * 3) * 4");
-        CHECK((new Add(new Num(1), new Multi(new Num(2), new Num(3)))) ->pretty_print_to_string() == "1 + 2 * 3");
-        CHECK((new Multi (new Num(2), new Multi(new Num(3), new Num(4)))) -> pretty_print_to_string() == "2 * 3 * 4");
-        CHECK((new Multi(new Num(1), new Add(new Num(2), new Num(3)))) -> pretty_print_to_string() == "1 * (2 + 3)");
-        CHECK((new Multi(new Num(-8), new Add(new Num(2), new Num(3)))) -> pretty_print_to_string() == "-8 * (2 + 3)");
-        CHECK((new Add(new Multi(new Num(9), new Add(new Num(4), new Num(3))), new Add(new Multi(new Num(2), new Num(4)), new Num(1))))->pretty_print_to_string() == "9 * (4 + 3) + 2 * 4 + 1");
-        CHECK((new Multi( new Multi(new Num(10), new Multi(new Multi(new Num(10), new Num(10)), new Num(10))), new Multi(new Num(10), new Num(10))))->pretty_print_to_string()  == "(10 * (10 * 10) * 10) * 10 * 10");
+
+        CHECK((new Multi(new Multi(new Num(2), new Num(3)), new Num(4)))->pretty_print_to_string() == "(2 * 3) * 4");
+        CHECK((new Add(new Num(1), new Multi(new Num(2), new Num(3))))->pretty_print_to_string() == "1 + 2 * 3");
+        CHECK((new Add(new Num(1), new Add(new Num(2), new Num(3))))->pretty_print_to_string() == "1 + 2 + 3");
+        CHECK((new Multi(new Num(2), new Multi(new Num(3), new Num(4))))->pretty_print_to_string() == "2 * 3 * 4");
+        CHECK((new Multi(new Num(1), new Add(new Num(2), new Num(3))))->pretty_print_to_string() == "1 * (2 + 3)");
+        CHECK((new Multi(new Num(-8), new Add(new Num(2), new Num(3))))->pretty_print_to_string() == "-8 * (2 + 3)");
+        CHECK((new Add(new Multi(new Num(9), new Add(new Num(4), new Num(3))),
+                       new Add(new Multi(new Num(2), new Num(4)), new Num(1))))->pretty_print_to_string() ==
+              "9 * (4 + 3) + 2 * 4 + 1");
+        CHECK((new Multi(new Multi(new Num(10), new Multi(new Multi(new Num(10), new Num(10)), new Num(10))),
+                         new Multi(new Num(10), new Num(10))))->pretty_print_to_string() ==
+              "(10 * (10 * 10) * 10) * 10 * 10");
+        CHECK((new Add(new Num(1), new Add(new Num(2), new Num(5))))->pretty_print_to_string() == "1 + 2 + 5");
+        //(2 + 3) * 5
+        CHECK((new Multi(new Add(new Num(2), new Num(3)), new Num(5)))->pretty_print_to_string() == "(2 + 3) * 5");
     }
 }
