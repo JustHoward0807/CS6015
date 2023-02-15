@@ -32,7 +32,7 @@ public:
     std::string to_string();
     std::string pretty_print_to_string();
     virtual void pretty_print(std::ostream &ostream) = 0;
-    virtual void pretty_print_at(precedence_t precedence_t, std::ostream &ostream) = 0;
+    virtual void pretty_print_at(precedence_t precedence_t, std::ostream &ostream, std::streampos& streamPos, bool addParent) = 0;
 };
 
 class Num: public Expr{
@@ -45,7 +45,7 @@ public:
     Expr* subst(std::string s, Expr* expr);
     void print(std::ostream &ostream);
     void pretty_print(std::ostream &ostream);
-    void pretty_print_at(precedence_t precedence_t, std::ostream &ostream);
+    void pretty_print_at(precedence_t precedence_t, std::ostream &ostream, std::streampos& streamPos, bool addParent);
 };
 
 class Add : public Expr {
@@ -60,7 +60,7 @@ public:
     Expr* subst(std::string s, Expr* expr);
     void print(std::ostream &ostream);
     void pretty_print(std::ostream &ostream);
-    void pretty_print_at(precedence_t precedence_t, std::ostream &ostream);
+    void pretty_print_at(precedence_t precedence_t, std::ostream &ostream, std::streampos& streamPos, bool addParent);
 };
 
 class Multi : public Expr {
@@ -75,7 +75,7 @@ public:
     Expr* subst(std::string s, Expr* expr);
     void print(std::ostream &ostream);
     void pretty_print(std::ostream &ostream);
-    void pretty_print_at(precedence_t precedence_t, std::ostream &ostream);
+    void pretty_print_at(precedence_t precedence_t, std::ostream &ostream, std::streampos& streamPos, bool addParent);
 };
 
 class Variable : public Expr {
@@ -89,20 +89,21 @@ public:
     Expr* subst(std::string s, Expr* expr);
     void print(std::ostream &ostream);
     void pretty_print(std::ostream &ostream);
-    void pretty_print_at(precedence_t precedence_t, std::ostream &ostream);
+    void pretty_print_at(precedence_t precedence_t, std::ostream &ostream, std::streampos& streamPos, bool addParent);
 };
 
-//class _let : public Expr {
-//public:
-//    std::string lhs;
-//    Expr* rhs;
-//    Expr* body;
-//    _let();
-//    bool equals(Expr *expr);
-//    int interp();
-//    bool hasVariable();
-//    Expr* subst(std::string s, Expr* expr);
-//    void print(std::ostream &ostream);
-//    void pretty_print(std::ostream &ostream);
-//    void pretty_print_at(precedence_t precedence_t, std::ostream &ostream);
-//};
+class _let : public Expr {
+public:
+    std::string lhs;
+    Expr* rhs;
+    Expr* body;
+    _let(std::string lhs, Expr* rhs, Expr* body);
+
+    bool equals(Expr *expr);
+    int interp();
+    bool hasVariable();
+    Expr* subst(std::string s, Expr* expr);
+    void print(std::ostream &ostream);
+    void pretty_print(std::ostream &ostream);
+    void pretty_print_at(precedence_t precedence_t, std::ostream &ostream, std::streampos& streamPos, bool addParent);
+};
