@@ -15,6 +15,8 @@
 
 #include <iostream>
 #include "catch.h"
+#include "Expr.hpp"
+#include "cmdline.h"
 
 /**
 * \brief Check input arguments if its --test or --help then doing different stuff accordingly
@@ -23,27 +25,41 @@
 * \return void - no return value
 */
 
-void use_arguments(int argc, char **argv) {
+run_mode_t use_arguments(int argc, char **argv) {
     bool hasSeen = false;
-
     for (int i = 1; i < argc; i++) {
         std::string s = argv[i];
         if (s == "--help") {
             std::cout << "--test for testing cases\n";
             exit(0);
+            return do_nothing;
         } else if (s == "--test" && !hasSeen) {
+            hasSeen = true;
             if (Catch::Session().run(1, argv) != 0) {
                 std::cout << "Found catch isn't 0" << std::endl;
                 exit(1);
+            } else {
+                //--test : run tests and exit with a 0 status if all pass, a non-zero status if there are any failures
+                exit(0);
             }
-            hasSeen = true;
+            
 
         } else if (s == "--test" && hasSeen) {
             std::cout << "U have seen test before, exit proceed\n";
             exit(1);
-        } else {
+        } 
+        else if (s == "--interp") {
+            return do_interp;
+        } else if (s == "--print") {
+            return do_print;
+        } else if (s == "--pretty-print") {
+            return do_pretty_print;
+            
+        }
+        else {
             std::cerr << "Error, Unknown argument.\nTry --help to see more info.\n";
             exit(1);
         }
     }
+    return do_nothing;
 }

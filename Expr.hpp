@@ -107,3 +107,14 @@ public:
     void pretty_print(std::ostream &ostream);
     void pretty_print_at(precedence_t precedence_t, std::ostream &ostream, std::streampos& streamPos, bool addParent);
 };
+
+
+Expr* parse_Expr(std::istream &instream);
+Expr* parse_Str(std::string string);
+Expr* parse_Num(std::istream &instream);
+Expr* parse_Addend(std::istream &instream);
+Expr* parse_Multicand(std::istream& instream);
+Expr* parse_Var(std::istream& instream);
+Expr* parse_Let(std::istream& instream);
+static void consume(std::istream &instream, int expect);
+static void skip_whitespace(std::istream& instream);
