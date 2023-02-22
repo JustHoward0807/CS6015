@@ -544,89 +544,113 @@ void _let::pretty_print_at(precedence_t precedence_t, std::ostream &ostream, std
     }
 }
 
+// 8888888b.
+// 888   Y88b
+// 888    888
+// 888   d88P  8888b.  888d888 .d8888b   .d88b.
+// 8888888P"      "88b 888P"   88K      d8P  Y8b
+// 888        .d888888 888     "Y8888b. 88888888
+// 888        888  888 888          X88 Y8b.
+// 888        "Y888888 888      88888P'  "Y8888
 
-//8888888b.
-//888   Y88b
-//888    888
-//888   d88P  8888b.  888d888 .d8888b   .d88b.
-//8888888P"      "88b 888P"   88K      d8P  Y8b
-//888        .d888888 888     "Y8888b. 88888888
-//888        888  888 888          X88 Y8b.
-//888        "Y888888 888      88888P'  "Y8888
-
-Expr* parse_Str(std::string string) {
+Expr *parse_Str(std::string string)
+{
     std::istringstream s(string);
     return parse_Expr(s);
 }
 
-Expr* parse_Expr(std::istream &instream) {
+Expr *parse_Expr(std::istream &instream)
+{
     Expr *e = parse_Addend(instream);
     skip_whitespace(instream);
 
     int peek = instream.peek();
-    if (peek == '+') {
+    if (peek == '+')
+    {
         consume(instream, '+');
         Expr *rhs = parse_Expr(instream);
         return new Add(e, rhs);
-    } else {
+    }
+    else if (peek == '-') {
+        throw std::runtime_error("Don't know how to handle substraction");
+    }
+    else
+    {
         return e;
     }
 }
 
-Expr* parse_Addend(std::istream &instream) {
+Expr *parse_Addend(std::istream &instream)
+{
     Expr *e = parse_Multicand(instream);
     skip_whitespace(instream);
 
     int peek = instream.peek();
-    if (peek == '*') {
+    if (peek == '*')
+    {
         consume(instream, '*');
         // Expr *rhs = parse_Expr(instream);
-        Expr* rhs = parse_Multicand(instream);
+        Expr *rhs = parse_Multicand(instream);
         return new Multi(e, rhs);
-    } else {
+    }
+    else
+    {
         return e;
     }
 }
 
-Expr* parse_Multicand(std::istream &instream) {
+Expr *parse_Multicand(std::istream &instream)
+{
     skip_whitespace(instream);
 
     int peek = instream.peek();
-    if ((peek == '-') || isdigit(peek)) {
+    if ((peek == '-') || isdigit(peek))
+    {
         return parse_Num(instream);
-    } 
-    else if (peek == '(') {
+    }
+    else if (peek == '(')
+    {
         consume(instream, '(');
         Expr *e = parse_Expr(instream);
         skip_whitespace(instream);
         peek = instream.get();
-        if (peek != ')') {
+        if (peek != ')')
+        {
             throw std::runtime_error("Missing close parenthesis");
         }
         return e;
-        
-    } 
-    else if (isalpha(peek)) {
+    }
+    else if (isalpha(peek))
+    {
         return parse_Var(instream);
     }
-    else if (peek == '_') {
+    else if (peek == '_')
+    {
         return parse_Let(instream);
     }
-    else {
+    else
+    {
         consume(instream, peek);
         throw std::runtime_error("Invalid input");
-        
     }
 }
 
-Expr* parse_Var(std::istream& instream){
+Expr *parse_Var(std::istream &instream)
+{
     std::string s;
-    while(true) {
+    while (true)
+    {
         int peek = instream.peek();
         if (isalpha(peek))
         {
             consume(instream, peek);
+
+            if (instream.peek() == '_')
+            {
+                throw std::runtime_error("Invalid input");
+            }
             s += peek;
+            
         }
         else
         {
@@ -636,26 +660,37 @@ Expr* parse_Var(std::istream& instream){
     return new Variable(s);
 }
 
-Expr* parse_Let(std::istream& instream) {
-    for (size_t i = 0; i < 4; i++)
-    {
-        consume(instream, instream.peek());
-    }
+Expr *parse_Let(std::istream &instream)
+{   
+    //TODO: Maybe using the parse keyword, check _let and _in
+    consume(instream, '_');
+    consume(instream, 'l');
+    consume(instream, 'e');
+    consume(instream, 't');
+    // for (size_t i = 0; i < 4; i++)
+    // {
+    //     consume(instream, instream.peek());
+    // }
     skip_whitespace(instream);
     std::string lhs;
-    while (!isspace(instream.peek())) {
-        lhs += instream.get();
+    
+    while (!isspace(instream.peek()))
+    {
+        lhs = parse_Var(instream) -> to_string();
     }
     skip_whitespace(instream);
     consume(instream, '=');
     skip_whitespace(instream);
-    Expr* rhs = parse_Expr(instream);
-    for (size_t i = 0; i < 3; i++)
-    {
-        consume(instream, instream.peek());
-    }
+    Expr *rhs = parse_Expr(instream);
+    consume(instream, '_');
+    consume(instream, 'i');
+    consume(instream, 'n');
+    // for (size_t i = 0; i < 3; i++)
+    // {
+    //     consume(instream, instream.peek());
+    // }
     skip_whitespace(instream);
-    Expr* body = parse_Expr(instream);
+    Expr *body = parse_Expr(instream);
     return new _let(lhs, rhs, body);
 }
 
@@ -665,14 +700,23 @@ Expr *parse_Num(std::istream &instream)
     bool negative = false;
     if (instream.peek() == '-')
     {
+
         negative = true;
         consume(instream, '-');
-    }
-    
-    if (isspace(instream.peek())) {
-        throw std::runtime_error("unexpected input after expression");
+        if (isspace(instream.peek()))
+        {
+            throw std::runtime_error("unexpected input after expression");
+        }
+        if (instream.peek() == EOF)
+        {
+            throw std::runtime_error("Invalid input");
+        }
     }
 
+    if (isspace(instream.peek()))
+    {
+        throw std::runtime_error("unexpected input after expression");
+    }
 
     while (true)
     {
@@ -1157,6 +1201,7 @@ TEST_CASE("Let_print_mine")
 
 TEST_CASE("Let_interp_mine")
 {
+
     SECTION("hw_examples")
     {
         CHECK((new Add(new Multi(new Num(5), new _let("x", new Num(5), new Variable("x"))), new Num(1)))->interp() ==
@@ -1189,32 +1234,34 @@ TEST_CASE("Let_interp_mine")
     }
 }
 
-TEST_CASE("Parsing string") {
-    SECTION("Parsing_Str") {
-        CHECK_THROWS_WITH( parse_Str("()"), "Invalid input" );
-        CHECK( parse_Str("(1)")->equals(new Num(1)) );
-        CHECK( parse_Str("(((1)))")->equals(new Num(1)) );
+TEST_CASE("Parsing string")
+{
+    SECTION("Parsing_Str")
+    {
+        CHECK_THROWS_WITH(parse_Str("()"), "Invalid input");
+        CHECK(parse_Str("(1)")->equals(new Num(1)));
+        CHECK(parse_Str("(((1)))")->equals(new Num(1)));
 
-        CHECK_THROWS_WITH( parse_Str("(1"), "Missing close parenthesis" );
-        CHECK( parse_Str("1")->equals(new Num(1)) );
-        CHECK( parse_Str("10")->equals(new Num(10)) );
-        CHECK( parse_Str("-3")->equals(new Num(-3)) );
-        CHECK( parse_Str("  \n 5  ")->equals(new Num(5)) );
-        // CHECK_THROWS_WITH( parse_Str("-"), "Invalid input" );
-        CHECK_THROWS_WITH( parse_Str(" -  5 "), "unexpected input after expression" );
-        CHECK( parse_Str("x")->equals(new Variable("x")) );
-        CHECK( parse_Str("xyz")->equals(new Variable("xyz")) );
-        CHECK( parse_Str("xYz")->equals(new Variable("xYz")) );
-        // CHECK_THROWS_WITH( parse_Str("x_z"), "Invalid input" );
+        CHECK_THROWS_WITH(parse_Str("(1"), "Missing close parenthesis");
+        CHECK(parse_Str("1")->equals(new Num(1)));
+        CHECK(parse_Str("10")->equals(new Num(10)));
+        CHECK(parse_Str("-3")->equals(new Num(-3)));
+        CHECK(parse_Str("  \n 5  ")->equals(new Num(5)));
+        CHECK_THROWS_WITH(parse_Str("-"), "Invalid input");
+        CHECK_THROWS_WITH(parse_Str(" -  5 "), "unexpected input after expression");
+        CHECK(parse_Str("x")->equals(new Variable("x")));
+        CHECK(parse_Str("xyz")->equals(new Variable("xyz")));
+        CHECK(parse_Str("xYz")->equals(new Variable("xYz")));
+        CHECK_THROWS_WITH(parse_Str("x_z"), "Invalid input");
 
-        CHECK( parse_Str("x + y")->equals(new Add(new Variable("x"), new Variable("y"))) );
-        CHECK( parse_Str("x * y")->equals(new Multi(new Variable("x"), new Variable("y"))) );
-        CHECK( parse_Str("z * x + y")
-                ->equals(new Add(new Multi(new Variable("z"), new Variable("x")),
-                                new Variable("y"))) );
-        
-        CHECK( parse_Str("z * (x + y)")
-                ->equals(new Multi(new Variable("z"),
-                                new Add(new Variable("x"), new Variable("y"))) ));
+        CHECK(parse_Str("x + y")->equals(new Add(new Variable("x"), new Variable("y"))));
+        CHECK(parse_Str("x * y")->equals(new Multi(new Variable("x"), new Variable("y"))));
+        CHECK(parse_Str("z * x + y")
+                  ->equals(new Add(new Multi(new Variable("z"), new Variable("x")),
+                                   new Variable("y"))));
+
+        CHECK(parse_Str("z * (x + y)")
+                  ->equals(new Multi(new Variable("z"),
+                                     new Add(new Variable("x"), new Variable("y")))));
     }
 }

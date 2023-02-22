@@ -4,3 +4,4 @@ url.txt
 *.zip
 /.idea
 .DS_Store
+/.vscode

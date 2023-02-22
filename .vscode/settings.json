@@ -71,5 +71,8 @@
         "variant": "cpp",
         "vector": "cpp",
         "algorithm": "cpp"
-    }
+    },
+    "cSpell.enableFiletypes": [
+        "!cpp"
+    ]
 }
