@@ -264,6 +264,7 @@ int Num::interp()
     return this->val;
 }
 
+//_let x = 5 _in x + 1
 //_let x = 5 + 2
 //_in x + 1
 //(_let x=5 _in ((_let y=3 _in (y+2))+x))
@@ -387,7 +388,7 @@ void _let::print(std::ostream &ostream)
 {
     ostream << "(_let ";
     ostream << this->lhs;
-    ostream << "=";
+    ostream << " = ";
     this->rhs->print(ostream);
     ostream << " _in ";
 
@@ -591,6 +592,7 @@ Expr *parse_Addend(std::istream &instream)
         consume(instream, '*');
         // Expr *rhs = parse_Expr(instream);
         Expr *rhs = parse_Multicand(instream);
+        
         return new Multi(e, rhs);
     }
     else

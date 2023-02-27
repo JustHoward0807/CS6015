@@ -34,8 +34,8 @@ run_mode_t use_arguments(int argc, char **argv)
         if (s == "--help")
         {
             std::cout << "--test for testing cases\n";
-
-            return do_nothing;
+            exit(0);
+            // return do_nothing;
         }
         else if (s == "--test" && !hasSeen)
         {
@@ -57,7 +57,6 @@ run_mode_t use_arguments(int argc, char **argv)
         }
         else if (s == "--interp")
         {
-
             return do_interp;
         }
         else if (s == "--print")
