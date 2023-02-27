@@ -388,7 +388,7 @@ void _let::print(std::ostream &ostream)
 {
     ostream << "(_let ";
     ostream << this->lhs;
-    ostream << " = ";
+    ostream << "=";
     this->rhs->print(ostream);
     ostream << " _in ";
 
