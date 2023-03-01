@@ -14,8 +14,8 @@
  */
 int main(int argc, char **argv)
 {
-	// try
-	// {
+	try
+	{
 		run_mode_t type = use_arguments(argc, argv);
 		Expr *parseExpr;
 		switch (type)
@@ -48,12 +48,12 @@ int main(int argc, char **argv)
 			break;
 		}
 		return 0;
-	// }
-	// catch (std::runtime_error exn)
-	// {
-	// 	std::cerr << exn.what() << "\n";
+	}
+	catch (std::runtime_error exn)
+	{
+		std::cerr << exn.what() << "\n";
 		
-	// 	return 1;
-	// 	exit(1);
-	// }
+		return 1;
+		exit(1);
+	}
 }
