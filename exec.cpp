@@ -249,25 +249,94 @@ static void wait_child(pid_t pid, int &exit_code)
 
 std::string random_expr_string()
 {
-  if ((rand() % 10) < 6)
-    return std::to_string(rand());
-  else
+  int random = rand() % 100;
+  if (random < 55)
+    return std::to_string(random);
+
+  else if (random < 60)
+  {
+    return "(" + random_expr_string() + ")";
+  }
+  else if (random < 64)
+  {
+    return "-" + std::to_string(random);
+  }
+  else if (random < 70)
+  {
     return random_expr_string() + "+" + random_expr_string();
-}
-
-std::string random_expr_multi_string()
-{
-  if ((rand() % 10) < 6)
-    return std::to_string(rand());
+  }
+  else if (random < 80)
+  {
+    return random_expr_string() + "*" + random_expr_string();
+  }
   else
-    return random_expr_multi_string() + "*" + random_expr_multi_string();
+    return "(_let " + random_Var() + " =" + random_expr_string() + " _in " + random_Var() + "+" + random_expr_string() + ")";
 }
 
-std::string random_expr_let_string()
+std::string random_Var()
 {
-  if ((rand() % 10) < 6)
-      return std::to_string(rand());
+  int random = rand() % 100;
+  if (random < 50)
+  {
+    return "x";
+  }
   else
-     return " _let x = " +  random_expr_multi_string()+ " _in x +" +  random_expr_multi_string();
+  {
+    return "y";
+  }
 }
+// std::string random_expr_multi_string()
+// {
+//   int random = rand() % 100;
+//   if ((random % 10) < 8)
 
+//     return std::to_string(random);
+//   else
+//     return random_expr_multi_string() + "*" + random_expr_multi_string();
+// }
+
+// std::string random_expr_let_string()
+// {
+//   int random = rand() % 100;
+//   if ((random % 10) < 8)
+//     return std::to_string(random);
+//   else if ((random % 10) < 3)
+//   {
+//     return "((" + random_expr_string() + ")" + "+" + "(" + random_expr_string() + "))";
+//   }
+//   else
+//     return "_let x =" + random_expr_multi_string() + " _in x+" + random_expr_multi_string();
+// }
+
+// std::string random_expr_with_parenth_multi_string()
+// {
+//   int random = rand() % 100;
+//   if ((random % 10) < 8)
+//     return std::to_string(random);
+//   else
+//     return random_expr_with_parenth_multi_string() + "*" + "(" + random_expr_with_parenth_multi_string() + ")" + "*" + "(" + random_expr_with_parenth_multi_string() + ")" + "*" + "(" + random_expr_with_parenth_multi_string() + ")";
+// }
+
+// std::string random_expr_with_parenth_let_string()
+// {
+//   int random = rand() % 100;
+//   if ((random % 10) < 8)
+//     return std::to_string(random);
+//   else
+//   {
+//     return random_expr_with_parenth_let_string() + "+" + "(" +
+//            "_let x=" + random_expr_with_parenth_let_string() + " _in " +
+//            random_expr_with_parenth_let_string() + ")" + "*" + random_expr_with_parenth_let_string();
+//   }
+// }
+
+// std::string random_expr_with_negative()
+// {
+//   int random = rand() % 100;
+//   if ((random % 10) < 8)
+//     return std::to_string(-random);
+//   else
+//   {
+//     return random_expr_with_negative() + "+" + random_expr_with_negative();
+//   }
+// }

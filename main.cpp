@@ -31,6 +31,7 @@ int main(int argc, char **argv)
 			parseExpr = parse_Expr(std::cin);
 			// std::cout << "Print: " << std::endl;
 			parseExpr->print(std::cout);
+			std::cout << std::endl;
 			exit(0);
 			break;
 
@@ -38,6 +39,7 @@ int main(int argc, char **argv)
 			parseExpr = parse_Expr(std::cin);
 			// std::cout << "Pretty-print: " << std::endl;
 			parseExpr->pretty_print(std::cout);
+			std::cout << std::endl;
 			exit(0);
 			break;
 

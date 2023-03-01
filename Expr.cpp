@@ -274,7 +274,7 @@ int Num::interp()
  */
 int _let::interp()
 {
-    return this->body->subst(this->lhs, this->rhs)->interp();
+    return (this->body)->subst(this->lhs, this->rhs)->interp();
 }
 
 /*
@@ -391,7 +391,6 @@ void _let::print(std::ostream &ostream)
     ostream << "=";
     this->rhs->print(ostream);
     ostream << " _in ";
-
     //    ostream << "(";
     this->body->print(ostream);
     ostream << ")";
@@ -572,7 +571,8 @@ Expr *parse_Expr(std::istream &instream)
         Expr *rhs = parse_Expr(instream);
         return new Add(e, rhs);
     }
-    else if (peek == '-') {
+    else if (peek == '-')
+    {
         throw std::runtime_error("Don't know how to handle substraction");
     }
     else
@@ -591,8 +591,8 @@ Expr *parse_Addend(std::istream &instream)
     {
         consume(instream, '*');
         // Expr *rhs = parse_Expr(instream);
-        Expr *rhs = parse_Multicand(instream);
-        
+        // Expr *rhs = parse_Multicand(instream);
+        Expr *rhs = parse_Addend(instream);
         return new Multi(e, rhs);
     }
     else
@@ -652,7 +652,6 @@ Expr *parse_Var(std::istream &instream)
                 throw std::runtime_error("Invalid input");
             }
             s += peek;
-            
         }
         else
         {
@@ -663,8 +662,8 @@ Expr *parse_Var(std::istream &instream)
 }
 
 Expr *parse_Let(std::istream &instream)
-{   
-    //TODO: Maybe using the parse keyword, check _let and _in
+{
+    // TODO: Maybe using the parse keyword, check _let and _in
     consume(instream, '_');
     consume(instream, 'l');
     consume(instream, 'e');
@@ -675,15 +674,16 @@ Expr *parse_Let(std::istream &instream)
     // }
     skip_whitespace(instream);
     std::string lhs;
-    
-    while (!isspace(instream.peek()))
+    while (!isspace(instream.peek()) && instream.peek() != '=')
     {
-        lhs = parse_Var(instream) -> to_string();
+        lhs = parse_Var(instream)->to_string();
+        // std::cout << "lhs: " << lhs << std::endl;
     }
     skip_whitespace(instream);
     consume(instream, '=');
     skip_whitespace(instream);
     Expr *rhs = parse_Expr(instream);
+    // std::cout << "rhs: " << rhs->to_string() << std::endl;
     consume(instream, '_');
     consume(instream, 'i');
     consume(instream, 'n');
@@ -693,6 +693,7 @@ Expr *parse_Let(std::istream &instream)
     // }
     skip_whitespace(instream);
     Expr *body = parse_Expr(instream);
+    // std::cout << "body: " << body->to_string() << std::endl;
     return new _let(lhs, rhs, body);
 }
 

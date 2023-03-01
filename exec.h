@@ -24,6 +24,10 @@ public:
 extern ExecResult exec_program(int argc, const char * const *argv, std::string input);
 
 std::string random_expr_string();
-std::string random_expr_multi_string();
-std::string random_expr_let_string();
+std::string random_Var();
+// std::string random_expr_multi_string();
+// std::string random_expr_let_string();
+// std::string random_expr_with_parenth_multi_string();
+// std::string random_expr_with_parenth_let_string();
+// std::string random_expr_with_negative();
 #endif /* exec_hpp */
