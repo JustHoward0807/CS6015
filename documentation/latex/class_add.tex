@@ -1,10 +1,10 @@
-\hypertarget{class_add}{}\doxysection{Add Class Reference}
-\label{class_add}\index{Add@{Add}}
+\hypertarget{class_add}{}\doxysection{AddExpr Class Reference}
+\label{class_add}\index{AddExpr@{AddExpr}}
 
 
 {\ttfamily \#include $<$Expr.\+hpp$>$}
 
-Inheritance diagram for Add\+:\begin{figure}[H]
+Inheritance diagram for AddExpr\+:\begin{figure}[H]
 \begin{center}
 \leavevmode
 \includegraphics[height=2.000000cm]{class_add}
@@ -13,13 +13,13 @@ Inheritance diagram for Add\+:\begin{figure}[H]
 \doxysubsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-\mbox{\hyperlink{class_add_a6b2c4c7be3fada06bedad4e4e4688a60}{Add}} (\mbox{\hyperlink{class_expr}{Expr}} $\ast$\mbox{\hyperlink{class_add_a15ee8d84bb8a04af294732ebe1a8a6c3}{lhs}}, \mbox{\hyperlink{class_expr}{Expr}} $\ast$\mbox{\hyperlink{class_add_a887a4ac2c5459bddba95f4c376b66405}{rhs}})
+\mbox{\hyperlink{class_add_a6b2c4c7be3fada06bedad4e4e4688a60}{AddExpr}} (\mbox{\hyperlink{class_expr}{Expr}} $\ast$\mbox{\hyperlink{class_add_a15ee8d84bb8a04af294732ebe1a8a6c3}{lhs}}, \mbox{\hyperlink{class_expr}{Expr}} $\ast$\mbox{\hyperlink{class_add_a887a4ac2c5459bddba95f4c376b66405}{rhs}})
 \item 
 bool \mbox{\hyperlink{class_add_ad15535c6c32c41ebb52be1f2b73e9bb3}{equals}} (\mbox{\hyperlink{class_expr}{Expr}} $\ast$expr)
 \begin{DoxyCompactList}\small\item\em Check if this class lhs is equals to \mbox{\hyperlink{class_expr}{Expr}} class rhs provided in parentheses. \end{DoxyCompactList}\item 
 int \mbox{\hyperlink{class_add_a63c445ae0ea8ecc0d0765378e630a06f}{interp}} ()
-\begin{DoxyCompactList}\small\item\em \mbox{\hyperlink{class_add}{Add}} both side. \end{DoxyCompactList}\item 
-bool \mbox{\hyperlink{class_add_ac5d09db570bfe637ae9fb12f8f415671}{has\+Variable}} ()
+\begin{DoxyCompactList}\small\item\em \mbox{\hyperlink{class_add}{AddExpr}} both side. \end{DoxyCompactList}\item
+bool \mbox{\hyperlink{class_add_ac5d09db570bfe637ae9fb12f8f415671}{has\+VariableExpr}} ()
 \begin{DoxyCompactList}\small\item\em Check both lhs and rhs Expression class to see if they have variable. \end{DoxyCompactList}\item 
 \mbox{\hyperlink{class_expr}{Expr}} $\ast$ \mbox{\hyperlink{class_add_a8c943d56d4e0c7391d1983a193ff2ab2}{subst}} (std\+::string s, \mbox{\hyperlink{class_expr}{Expr}} $\ast$expr)
 \begin{DoxyCompactList}\small\item\em Replace the lhs variable or rhs that has the string provided in parentheses and replace with the expression that provided. \end{DoxyCompactList}\end{DoxyCompactItemize}
@@ -29,7 +29,7 @@ virtual bool \mbox{\hyperlink{class_expr_ab5d65cde79dd78c2e06b2d5a0f19c602}{equa
 \item 
 virtual int \mbox{\hyperlink{class_expr_aeba8585d8225419d49166371306542c1}{interp}} ()=0
 \item 
-virtual bool \mbox{\hyperlink{class_expr_a65e1380b5c7453b09cd1958c4b8feea9}{has\+Variable}} ()=0
+virtual bool \mbox{\hyperlink{class_expr_a65e1380b5c7453b09cd1958c4b8feea9}{has\+VariableExpr}} ()=0
 \item 
 virtual \mbox{\hyperlink{class_expr}{Expr}} $\ast$ \mbox{\hyperlink{class_expr_a70934630e6142f285c46846b54335598}{subst}} (std\+::string s, \mbox{\hyperlink{class_expr}{Expr}} $\ast$expr)=0
 \end{DoxyCompactItemize}
@@ -44,19 +44,19 @@ virtual \mbox{\hyperlink{class_expr}{Expr}} $\ast$ \mbox{\hyperlink{class_expr_a
 
 \doxysubsection{Constructor \& Destructor Documentation}
 \mbox{\Hypertarget{class_add_a6b2c4c7be3fada06bedad4e4e4688a60}\label{class_add_a6b2c4c7be3fada06bedad4e4e4688a60}} 
-\index{Add@{Add}!Add@{Add}}
-\index{Add@{Add}!Add@{Add}}
-\doxysubsubsection{\texorpdfstring{Add()}{Add()}}
-{\footnotesize\ttfamily Add\+::\+Add (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{class_expr}{Expr}} $\ast$}]{lhs,  }\item[{\mbox{\hyperlink{class_expr}{Expr}} $\ast$}]{rhs }\end{DoxyParamCaption})}
+\index{AddExpr@{AddExpr}!AddExpr@{AddExpr}}
+\index{AddExpr@{AddExpr}!AddExpr@{AddExpr}}
+\doxysubsubsection{\texorpdfstring{AddExpr()}{AddExpr()}}
+{\footnotesize\ttfamily AddExpr\+::\+AddExpr (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{class_expr}{Expr}} $\ast$}]{lhs,  }\item[{\mbox{\hyperlink{class_expr}{Expr}} $\ast$}]{rhs }\end{DoxyParamCaption})}
 
 
 
 \doxysubsection{Member Function Documentation}
 \mbox{\Hypertarget{class_add_ad15535c6c32c41ebb52be1f2b73e9bb3}\label{class_add_ad15535c6c32c41ebb52be1f2b73e9bb3}} 
-\index{Add@{Add}!equals@{equals}}
-\index{equals@{equals}!Add@{Add}}
+\index{AddExpr@{AddExpr}!equals@{equals}}
+\index{equals@{equals}!AddExpr@{AddExpr}}
 \doxysubsubsection{\texorpdfstring{equals()}{equals()}}
-{\footnotesize\ttfamily bool Add\+::equals (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{class_expr}{Expr}} $\ast$}]{expr }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+{\footnotesize\ttfamily bool AddExpr\+::equals (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{class_expr}{Expr}} $\ast$}]{expr }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
 
 
 
@@ -75,10 +75,10 @@ true if both equals val, false otherwise.
 Implements \mbox{\hyperlink{class_expr_ab5d65cde79dd78c2e06b2d5a0f19c602}{Expr}}.
 
 \mbox{\Hypertarget{class_add_ac5d09db570bfe637ae9fb12f8f415671}\label{class_add_ac5d09db570bfe637ae9fb12f8f415671}} 
-\index{Add@{Add}!hasVariable@{hasVariable}}
-\index{hasVariable@{hasVariable}!Add@{Add}}
+\index{AddExpr@{AddExpr}!hasVariable@{hasVariable}}
+\index{hasVariable@{hasVariable}!AddExpr@{AddExpr}}
 \doxysubsubsection{\texorpdfstring{hasVariable()}{hasVariable()}}
-{\footnotesize\ttfamily bool Add\+::has\+Variable (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+{\footnotesize\ttfamily bool AddExpr\+::has\+VariableExpr (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
 
 
 
@@ -92,14 +92,14 @@ true or false based on if it has variables
 Implements \mbox{\hyperlink{class_expr_a65e1380b5c7453b09cd1958c4b8feea9}{Expr}}.
 
 \mbox{\Hypertarget{class_add_a63c445ae0ea8ecc0d0765378e630a06f}\label{class_add_a63c445ae0ea8ecc0d0765378e630a06f}} 
-\index{Add@{Add}!interp@{interp}}
-\index{interp@{interp}!Add@{Add}}
+\index{AddExpr@{AddExpr}!interp@{interp}}
+\index{interp@{interp}!AddExpr@{AddExpr}}
 \doxysubsubsection{\texorpdfstring{interp()}{interp()}}
-{\footnotesize\ttfamily int Add\+::interp (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+{\footnotesize\ttfamily int AddExpr\+::interp (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
 
 
 
-\mbox{\hyperlink{class_add}{Add}} both side. 
+\mbox{\hyperlink{class_add}{AddExpr}} both side.
 
 \begin{DoxyReturn}{Returns}
 return the integer added value 
@@ -109,10 +109,10 @@ return the integer added value
 Implements \mbox{\hyperlink{class_expr_aeba8585d8225419d49166371306542c1}{Expr}}.
 
 \mbox{\Hypertarget{class_add_a8c943d56d4e0c7391d1983a193ff2ab2}\label{class_add_a8c943d56d4e0c7391d1983a193ff2ab2}} 
-\index{Add@{Add}!subst@{subst}}
-\index{subst@{subst}!Add@{Add}}
+\index{AddExpr@{AddExpr}!subst@{subst}}
+\index{subst@{subst}!AddExpr@{AddExpr}}
 \doxysubsubsection{\texorpdfstring{subst()}{subst()}}
-{\footnotesize\ttfamily \mbox{\hyperlink{class_expr}{Expr}} $\ast$ Add\+::subst (\begin{DoxyParamCaption}\item[{std\+::string}]{s,  }\item[{\mbox{\hyperlink{class_expr}{Expr}} $\ast$}]{expr }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{class_expr}{Expr}} $\ast$ AddExpr\+::subst (\begin{DoxyParamCaption}\item[{std\+::string}]{s,  }\item[{\mbox{\hyperlink{class_expr}{Expr}} $\ast$}]{expr }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
 
 
 
@@ -129,20 +129,20 @@ Implements \mbox{\hyperlink{class_expr_a70934630e6142f285c46846b54335598}{Expr}}
 
 \doxysubsection{Member Data Documentation}
 \mbox{\Hypertarget{class_add_a15ee8d84bb8a04af294732ebe1a8a6c3}\label{class_add_a15ee8d84bb8a04af294732ebe1a8a6c3}} 
-\index{Add@{Add}!lhs@{lhs}}
-\index{lhs@{lhs}!Add@{Add}}
+\index{AddExpr@{AddExpr}!lhs@{lhs}}
+\index{lhs@{lhs}!AddExpr@{AddExpr}}
 \doxysubsubsection{\texorpdfstring{lhs}{lhs}}
-{\footnotesize\ttfamily \mbox{\hyperlink{class_expr}{Expr}}$\ast$ Add\+::lhs}
+{\footnotesize\ttfamily \mbox{\hyperlink{class_expr}{Expr}}$\ast$ AddExpr\+::lhs}
 
 
 
 lhs of Expression 
 
 \mbox{\Hypertarget{class_add_a887a4ac2c5459bddba95f4c376b66405}\label{class_add_a887a4ac2c5459bddba95f4c376b66405}} 
-\index{Add@{Add}!rhs@{rhs}}
-\index{rhs@{rhs}!Add@{Add}}
+\index{AddExpr@{AddExpr}!rhs@{rhs}}
+\index{rhs@{rhs}!AddExpr@{AddExpr}}
 \doxysubsubsection{\texorpdfstring{rhs}{rhs}}
-{\footnotesize\ttfamily \mbox{\hyperlink{class_expr}{Expr}}$\ast$ Add\+::rhs}
+{\footnotesize\ttfamily \mbox{\hyperlink{class_expr}{Expr}}$\ast$ AddExpr\+::rhs}
 
 
 

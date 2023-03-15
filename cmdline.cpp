@@ -15,8 +15,8 @@
 
 #include <iostream>
 #include "catch.h"
-#include "Expr.hpp"
 #include "cmdline.h"
+#include "test.h"
 
 /**
  * \brief Check input arguments if its --test or --help then doing different stuff accordingly

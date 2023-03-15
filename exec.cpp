@@ -270,7 +270,7 @@ std::string random_expr_string()
     return random_expr_string() + "*" + random_expr_string();
   }
   else
-    return "(_let " + random_Var() + " =" + random_expr_string() + " _in " + random_Var() + "+" + random_expr_string() + ")";
+    return "(LetExpr " + random_Var() + " =" + random_expr_string() + " _in " + random_Var() + "+" + random_expr_string() + ")";
 }
 
 std::string random_Var()
@@ -305,7 +305,7 @@ std::string random_Var()
 //     return "((" + random_expr_string() + ")" + "+" + "(" + random_expr_string() + "))";
 //   }
 //   else
-//     return "_let x =" + random_expr_multi_string() + " _in x+" + random_expr_multi_string();
+//     return "LetExpr x =" + random_expr_multi_string() + " _in x+" + random_expr_multi_string();
 // }
 
 // std::string random_expr_with_parenth_multi_string()
@@ -325,7 +325,7 @@ std::string random_Var()
 //   else
 //   {
 //     return random_expr_with_parenth_let_string() + "+" + "(" +
-//            "_let x=" + random_expr_with_parenth_let_string() + " _in " +
+//            "LetExpr x=" + random_expr_with_parenth_let_string() + " _in " +
 //            random_expr_with_parenth_let_string() + ")" + "*" + random_expr_with_parenth_let_string();
 //   }
 // }

@@ -1,5 +1,6 @@
 #include "cmdline.h"
 #include "Expr.hpp"
+#include "val.h"
 /**
  * \mainpage MSDScript-main.cpp
  * \author Howard Tung
@@ -22,7 +23,7 @@ int main(int argc, char **argv)
 		{
 		case do_interp:
 			parseExpr = parse_Expr(std::cin);
-			std::cout << parseExpr->interp() << std::endl;
+			std::cout << parseExpr->interp()->to_string() << std::endl;
 			// std::cout << "Value: " << parseExpr->interp() << std::endl;
 			exit(0);
 			break;

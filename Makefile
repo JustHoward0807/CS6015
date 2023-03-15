@@ -1,7 +1,7 @@
 CXX = c++
-HEADERS = Expr.hpp cmdline.h
+HEADERS = Expr.hpp cmdline.h val.h test.h
 CXXFLAGS = --std=c++14
-CXXSOURCE = main.cpp Expr.cpp cmdline.cpp
+CXXSOURCE = main.cpp Expr.cpp cmdline.cpp val.cpp
 CXXTESTSOURCE = testMain.cpp exec.cpp
 CXXTESTHEADERS = exec.h
 

@@ -7,9 +7,9 @@
 \contentsline {chapter}{\numberline {4}File Index}{7}{chapter.4}%
 \contentsline {section}{\numberline {4.1}File List}{7}{section.4.1}%
 \contentsline {chapter}{\numberline {5}Class Documentation}{9}{chapter.5}%
-\contentsline {section}{\numberline {5.1}Add Class Reference}{9}{section.5.1}%
+\contentsline {section}{\numberline {5.1}AddExpr Class Reference}{9}{section.5.1}%
 \contentsline {subsection}{\numberline {5.1.1}Constructor \& Destructor Documentation}{10}{subsection.5.1.1}%
-\contentsline {subsubsection}{\numberline {5.1.1.1}Add()}{10}{subsubsection.5.1.1.1}%
+\contentsline {subsubsection}{\numberline {5.1.1.1}AddExpr()}{10}{subsubsection.5.1.1.1}%
 \contentsline {subsection}{\numberline {5.1.2}Member Function Documentation}{10}{subsection.5.1.2}%
 \contentsline {subsubsection}{\numberline {5.1.2.1}equals()}{10}{subsubsection.5.1.2.1}%
 \contentsline {subsubsection}{\numberline {5.1.2.2}hasVariable()}{10}{subsubsection.5.1.2.2}%
@@ -24,9 +24,9 @@
 \contentsline {subsubsection}{\numberline {5.2.1.2}hasVariable()}{12}{subsubsection.5.2.1.2}%
 \contentsline {subsubsection}{\numberline {5.2.1.3}interp()}{12}{subsubsection.5.2.1.3}%
 \contentsline {subsubsection}{\numberline {5.2.1.4}subst()}{13}{subsubsection.5.2.1.4}%
-\contentsline {section}{\numberline {5.3}Multi Class Reference}{13}{section.5.3}%
+\contentsline {section}{\numberline {5.3}MultiExpr Class Reference}{13}{section.5.3}%
 \contentsline {subsection}{\numberline {5.3.1}Constructor \& Destructor Documentation}{14}{subsection.5.3.1}%
-\contentsline {subsubsection}{\numberline {5.3.1.1}Multi()}{14}{subsubsection.5.3.1.1}%
+\contentsline {subsubsection}{\numberline {5.3.1.1}MultiExpr()}{14}{subsubsection.5.3.1.1}%
 \contentsline {subsection}{\numberline {5.3.2}Member Function Documentation}{14}{subsection.5.3.2}%
 \contentsline {subsubsection}{\numberline {5.3.2.1}equals()}{14}{subsubsection.5.3.2.1}%
 \contentsline {subsubsection}{\numberline {5.3.2.2}hasVariable()}{14}{subsubsection.5.3.2.2}%
@@ -35,9 +35,9 @@
 \contentsline {subsection}{\numberline {5.3.3}Member Data Documentation}{15}{subsection.5.3.3}%
 \contentsline {subsubsection}{\numberline {5.3.3.1}lhs}{15}{subsubsection.5.3.3.1}%
 \contentsline {subsubsection}{\numberline {5.3.3.2}rhs}{15}{subsubsection.5.3.3.2}%
-\contentsline {section}{\numberline {5.4}Num Class Reference}{16}{section.5.4}%
+\contentsline {section}{\numberline {5.4}NumExpr Class Reference}{16}{section.5.4}%
 \contentsline {subsection}{\numberline {5.4.1}Constructor \& Destructor Documentation}{16}{subsection.5.4.1}%
-\contentsline {subsubsection}{\numberline {5.4.1.1}Num()}{16}{subsubsection.5.4.1.1}%
+\contentsline {subsubsection}{\numberline {5.4.1.1}NumExpr()}{16}{subsubsection.5.4.1.1}%
 \contentsline {subsection}{\numberline {5.4.2}Member Function Documentation}{16}{subsection.5.4.2}%
 \contentsline {subsubsection}{\numberline {5.4.2.1}equals()}{16}{subsubsection.5.4.2.1}%
 \contentsline {subsubsection}{\numberline {5.4.2.2}hasVariable()}{17}{subsubsection.5.4.2.2}%
@@ -45,9 +45,9 @@
 \contentsline {subsubsection}{\numberline {5.4.2.4}subst()}{17}{subsubsection.5.4.2.4}%
 \contentsline {subsection}{\numberline {5.4.3}Member Data Documentation}{18}{subsection.5.4.3}%
 \contentsline {subsubsection}{\numberline {5.4.3.1}val}{18}{subsubsection.5.4.3.1}%
-\contentsline {section}{\numberline {5.5}Variable Class Reference}{18}{section.5.5}%
+\contentsline {section}{\numberline {5.5}VariableExpr Class Reference}{18}{section.5.5}%
 \contentsline {subsection}{\numberline {5.5.1}Constructor \& Destructor Documentation}{19}{subsection.5.5.1}%
-\contentsline {subsubsection}{\numberline {5.5.1.1}Variable()}{19}{subsubsection.5.5.1.1}%
+\contentsline {subsubsection}{\numberline {5.5.1.1}VariableExpr()}{19}{subsubsection.5.5.1.1}%
 \contentsline {subsection}{\numberline {5.5.2}Member Function Documentation}{19}{subsection.5.5.2}%
 \contentsline {subsubsection}{\numberline {5.5.2.1}equals()}{19}{subsubsection.5.5.2.1}%
 \contentsline {subsubsection}{\numberline {5.5.2.2}hasVariable()}{19}{subsubsection.5.5.2.2}%

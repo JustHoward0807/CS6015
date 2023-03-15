@@ -11311,7 +11311,7 @@ namespace Catch {
     std::string TagInfo::all() const {
         size_t size = 0;
         for (auto const& spelling : spellings) {
-            // Add 2 for the brackes
+            // AddExpr 2 for the brackes
             size += spelling.size() + 2;
         }
 
@@ -14092,7 +14092,7 @@ namespace Catch {
             }
         }
         if( isHidden ) {
-            // Add all "hidden" tags to make them behave identically
+            // AddExpr all "hidden" tags to make them behave identically
             tags.insert( tags.end(), { ".", "!hide" } );
         }
 

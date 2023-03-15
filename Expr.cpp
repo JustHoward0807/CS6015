@@ -11,9 +11,10 @@
  * \author Howard Tung
  */
 
+#include "val.h"
 #include "Expr.hpp"
-#include "catch.h"
 #include "sstream"
+
 
 /*
  88888888                      d8b       888          d8b                      888       d8b
@@ -26,34 +27,48 @@
  88888888      888  888        888       "Y888        888       "Y888888       888       888       88888888        "Y8888
 */
 
-Num::Num(int val)
-{
-    this->val = val;
-}
 
-Variable::Variable(std::string string)
-{
+
+VariableExpr::VariableExpr(std::string string) {
     this->string = string;
 }
 
-Add::Add(Expr *lhs, Expr *rhs)
-{
+NumExpr::NumExpr(int val) {
+    this->val = val;
+}
+
+AddExpr::AddExpr(Expr *lhs, Expr *rhs) {
     this->lhs = lhs;
     this->rhs = rhs;
 }
 
-Multi::Multi(Expr *lhs, Expr *rhs)
-{
+MultiExpr::MultiExpr(Expr *lhs, Expr *rhs) {
     this->lhs = lhs;
     this->rhs = rhs;
 }
 
-_let::_let(std::string lhs, Expr *rhs, Expr *body)
-{
+LetExpr::LetExpr(std::string lhs, Expr *rhs, Expr *body) {
     this->lhs = lhs;
     this->rhs = rhs;
     this->body = body;
 }
+
+IfExpr::IfExpr(Expr *boolExpr, Expr *firstNumExpr, Expr *secondNumExpr) {
+    this->boolExpr = boolExpr;
+    this->firstNumExpr = firstNumExpr;
+    this->secondNumExpr = secondNumExpr;
+}
+
+BoolExpr::BoolExpr(bool is_True) {
+    this->is_True = is_True;
+}
+
+EqExpr::EqExpr(Expr *lhs, Expr *rhs) {
+    this->lhs = lhs;
+    this->rhs = rhs;
+}
+
+
 
 /*
 8888888888                            888
@@ -74,15 +89,11 @@ _let::_let(std::string lhs, Expr *rhs, Expr *body)
  * \param *expr - Provide expression
  * \return true if both equals string, false otherwise.
  */
-bool Variable::equals(Expr *expr)
-{
-    Variable *v = dynamic_cast<Variable *>(expr);
-    if (v == NULL)
-    {
+bool VariableExpr::equals(Expr *expr) {
+    VariableExpr *v = dynamic_cast<VariableExpr *>(expr);
+    if (v == NULL) {
         return false;
-    }
-    else
-    {
+    } else {
         return this->string == v->string;
     }
 }
@@ -93,34 +104,26 @@ bool Variable::equals(Expr *expr)
  * \return true if both equals val, false otherwise.
  */
 
-bool Num::equals(Expr *expr)
-{
-    Num *n = dynamic_cast<Num *>(expr);
-    if (n == NULL)
-    {
+bool NumExpr::equals(Expr *expr) {
+    NumExpr *n = dynamic_cast<NumExpr *>(expr);
+    if (n == NULL) {
         return false;
-    }
-    else
-    {
+    } else {
         return this->val == n->val;
     }
 }
 
 /**
- * \brief Check if this class lhs is equals to Expr class rhs provided in parentheses
- * \param *expr - Provide expression
- * \return true if both equals val, false otherwise.
- */
+* \brief Check if this class lhs is equals to Expr class rhs provided in parentheses
+* \param *expr - Provide expression
+* \return true if both equals val, false otherwise.
+*/
 
-bool Add::equals(Expr *expr)
-{
-    Add *n = dynamic_cast<Add *>(expr);
-    if (n == NULL)
-    {
+bool AddExpr::equals(Expr *expr) {
+    AddExpr *n = dynamic_cast<AddExpr *>(expr);
+    if (n == NULL) {
         return false;
-    }
-    else
-    {
+    } else {
         return lhs->equals(n->lhs) && rhs->equals(n->rhs);
     }
 }
@@ -129,34 +132,59 @@ bool Add::equals(Expr *expr)
  * \brief Check if this class lhs is equals to Expr class rhs provided in parentheses
  * \param *expr - Provide expression
  * \return true if both equals val, false otherwise.
- */
+*/
 
-bool Multi::equals(Expr *expr)
-{
-    Multi *n = dynamic_cast<Multi *>(expr);
-    if (n == NULL)
-    {
+bool MultiExpr::equals(Expr *expr) {
+    MultiExpr *n = dynamic_cast<MultiExpr *>(expr);
+    if (n == NULL) {
         return false;
-    }
-    else
-    {
+    } else {
 
         return this->lhs->equals(n->lhs) && this->rhs->equals(n->rhs);
     }
 }
 
-bool _let::equals(Expr *expr)
-{
-    _let *n = dynamic_cast<_let *>(expr);
-    if (n == NULL)
-    {
+bool LetExpr::equals(Expr *expr) {
+    LetExpr *n = dynamic_cast<LetExpr *>(expr);
+    if (n == NULL) {
         return false;
-    }
-    else
-    {
+    } else {
         return this->lhs == n->lhs && this->rhs->equals(n->rhs) && this->body->equals(n->body);
     }
 }
+
+bool IfExpr::equals(Expr *expr)
+{
+      IfExpr *otherExpr = dynamic_cast<IfExpr *>(expr);
+    if (otherExpr == NULL) {
+        return false;
+    } else {
+        return this->boolExpr->equals(otherExpr->boolExpr) && this->firstNumExpr->equals(otherExpr->firstNumExpr) &&
+               this->secondNumExpr->equals(otherExpr->secondNumExpr);
+    }
+}
+
+bool BoolExpr::equals(Expr *expr) {
+
+    BoolExpr *otherExpr = dynamic_cast<BoolExpr *>(expr);
+    if (otherExpr == NULL) {
+        return false;
+    } else {
+        return this->is_True == otherExpr->is_True;
+    }
+
+}
+
+
+bool EqExpr::equals(Expr *expr) {
+    EqExpr *otherExpr = dynamic_cast<EqExpr *>(expr);
+    if (otherExpr == NULL) {
+        return false;
+    } else {
+        return this->lhs->equals(otherExpr->lhs) && this->rhs->equals(otherExpr->rhs);
+    }
+}
+
 
 /*
 888                        888     888                  d8b          888      888
@@ -170,21 +198,19 @@ bool _let::equals(Expr *expr)
 */
 
 /**
- * \brief Bc Variable has variable so always return true
- * \return always true bc it is an Variable class.
+ * \brief Bc VariableExpr has variable so always return true
+ * \return always true bc it is an VariableExpr class.
  */
-bool Variable::hasVariable()
-{
+bool VariableExpr::hasVariable() {
     return true;
 }
 
 /**
- * \brief Num has no variable so always return false
- * \return always false bc it is an Num class.
+ * \brief NumExpr has no variable so always return false
+ * \return always false bc it is an NumExpr class.
  */
 
-bool Num::hasVariable()
-{
+bool NumExpr::hasVariable() {
     return false;
 }
 
@@ -192,8 +218,7 @@ bool Num::hasVariable()
  * \brief Check both lhs and rhs Expression class to see if they have variable.
  * \return true or false based on if it has variables
  */
-bool Multi::hasVariable()
-{
+bool MultiExpr::hasVariable() {
     return this->lhs->hasVariable() || this->rhs->hasVariable();
 }
 
@@ -202,14 +227,24 @@ bool Multi::hasVariable()
  * \return true or false based on if it has variables
  */
 
-bool Add::hasVariable()
-{
+bool AddExpr::hasVariable() {
     return this->lhs->hasVariable() || this->rhs->hasVariable();
 }
 
-bool _let::hasVariable()
-{
+bool LetExpr::hasVariable() {
     return this->rhs->hasVariable() || this->body->hasVariable();
+}
+
+bool IfExpr::hasVariable() {
+    return this->boolExpr->hasVariable() || this->secondNumExpr->hasVariable() || this->firstNumExpr->hasVariable();
+}
+
+bool BoolExpr::hasVariable() {
+    return false;
+}
+
+bool EqExpr::hasVariable() {
+    return this->lhs->hasVariable() || this->rhs->hasVariable();
 }
 
 /*
@@ -228,54 +263,80 @@ bool _let::hasVariable()
 
 /**
  * \brief Interp cannot be interp so give an error msg.
- * \return Bc interp will return an interger
+ * \return Bc interp will return an integer
  */
-int Variable::interp()
-{
-    // Variable cannot be interp, ex: cannot add or multiply
+Val *VariableExpr::interp() {
+    // VariableExpr cannot be interp, ex: cannot add or multiply
     throw std::runtime_error("message");
 }
 
 /**
- * \brief Add both side
+ * \brief AddExpr both side
  * \return return the integer added value
  */
-int Add::interp()
-{
+
+Val *AddExpr::interp() {
     //(2 + (3 * 4))
-    return this->rhs->interp() + this->lhs->interp();
+    return this->lhs->interp()->add_to(this->rhs->interp());
+//    return this->rhs->interp() * this->lhs->interp();
 }
 
 /**
  * \brief Multiply both side
  * \return return the integer multiply value
  */
-int Multi::interp()
-{
-    return this->rhs->interp() * this->lhs->interp();
+
+
+Val *MultiExpr::interp() {
+    return this->lhs->interp()->mult_with(this->rhs->interp());
+//    return this->rhs->interp() * this->lhs->interp();
 }
 
 /**
  * \brief return its value
  * \return return its value
  */
-int Num::interp()
-{
-    return this->val;
+Val *NumExpr::interp() {
+    return new NumVal(this->val);
+//    return this->val;
 }
 
-//_let x = 5 _in x + 1
-//_let x = 5 + 2
+//LetExpr x = 5 _in x + 1
+//LetExpr x = 5 + 2
 //_in x + 1
-//(_let x=5 _in ((_let y=3 _in (y+2))+x))
+//(LetExpr x=5 _in ((LetExpr y=3 _in (y+2))+x))
 /**
  * \brief //Interp the rhs first then sub the body and interp again
  * \return return integer
  */
-int _let::interp()
-{
-    return (this->body)->subst(this->lhs, this->rhs)->interp();
+
+
+Val *LetExpr::interp() {
+    Val *rhs_val = this->rhs->interp();
+    return body->subst(this->lhs, rhs_val->to_expr())->interp();
+//    return (this->body)->subst(this->lhs, this->rhs)->interp();
 }
+
+Val *IfExpr::interp() {
+    EqExpr *otherExpr = dynamic_cast<EqExpr *>(this->boolExpr);
+//    if (otherExpr == NULL) {
+//        throw std::runtime_error("It's not equal expression doable");
+//
+//    }
+    if (this->boolExpr->interp()->is_true()) return this->firstNumExpr->interp();
+    else return this->secondNumExpr->interp();
+}
+
+Val *BoolExpr::interp() {
+    return new BoolVal(this->is_True);
+}
+
+Val *EqExpr::interp() {
+    if (this->lhs->interp()->to_string() != this->rhs->interp()->to_string()) return new BoolVal(false);
+    else return new BoolVal(true);
+}
+
+
 
 /*
  .d8888b.           888               888
@@ -292,57 +353,66 @@ Y88b  d88P Y88b 888 888 d88P      X88 Y88b.  888
  * \brief Replace the variable with the expression that provided
  * \return return the expression
  */
-Expr *Variable::subst(std::string s, Expr *expr)
-{
-    if (this->string == s)
-    {
+Expr *VariableExpr::subst(std::string s, Expr *expr) {
+    if (this->string == s) {
         return expr;
     }
-    return new Variable(this->string);
+    return new VariableExpr(this->string);
 }
 
 /**
  * \brief Replace the lhs variable or rhs that has the string provided in parentheses and replace with the expression that provided
  * \return return the expression
  */
-Expr *Multi::subst(std::string s, Expr *expr)
-{
-    //(new Add((new Multi(new Num(10), new Variable("x"))), new Num (7))) -> subst("x", new Variable("y"))
-    // -> equals((new Add((new Multi(new Num(10), new Variable("y"))), new Num (7))))
-    return new Multi(this->lhs->subst(s, expr), this->rhs->subst(s, expr));
+Expr *MultiExpr::subst(std::string s, Expr *expr) {
+    //(new AddExpr((new MultiExpr(new NumExpr(10), new VariableExpr("x"))), new NumExpr (7))) -> subst("x", new VariableExpr("y"))
+    // -> equals((new AddExpr((new MultiExpr(new NumExpr(10), new VariableExpr("y"))), new NumExpr (7))))
+    return new MultiExpr(this->lhs->subst(s, expr), this->rhs->subst(s, expr));
 }
 
 /**
  * \brief Replace the lhs variable or rhs that has the string provided in parentheses and replace with the expression that provided
  * \return return the expression
  */
-Expr *Add::subst(std::string s, Expr *expr)
-{
-    return new Add(this->lhs->subst(s, expr), this->rhs->subst(s, expr));
+Expr *AddExpr::subst(std::string s, Expr *expr) {
+    return new AddExpr(this->lhs->subst(s, expr), this->rhs->subst(s, expr));
 }
 
 /**
- * \brief Directly return the Num expression bc Num class have only val Integer member, so can't be replaced.
+ * \brief Directly return the NumExpr expression bc NumExpr class have only val Integer member, so can't be replaced.
  * \return return the expression
  */
-Expr *Num::subst(std::string s, Expr *expr)
-{
-    return new Num(this->val);
+Expr *NumExpr::subst(std::string s, Expr *expr) {
+    return new NumExpr(this->val);
 }
 
-Expr *_let::subst(std::string s, Expr *expr)
-{
-    if (s == lhs)
-    {
-        return new _let(s, rhs->subst(s, expr), this->body);
-    }
-    else
-    {
-        return new _let(lhs, rhs->subst(s, expr), this->body->subst(s, expr));
+Expr *LetExpr::subst(std::string s, Expr *expr) {
+    if (s == lhs) {
+        return new LetExpr(s, rhs->subst(s, expr), this->body);
+    } else {
+        return new LetExpr(lhs, rhs->subst(s, expr), this->body->subst(s, expr));
     }
     //    else {
     //        return this->body->subst(this->lhs, this->rhs)->subst(s, expr);
     //    }
+}
+
+//_let same = 1 == 2
+//_in  _if 1 == 2
+//     _then _false + 5
+//     _else 88
+
+Expr *IfExpr::subst(std::string s, Expr *expr) {
+    return new IfExpr(this->boolExpr->subst(s, expr), this->firstNumExpr->subst(s, expr),
+                      this->secondNumExpr->subst(s, expr));
+}
+
+Expr *BoolExpr::subst(std::string s, Expr *expr) {
+    return new BoolExpr(this->is_True);
+}
+
+Expr *EqExpr::subst(std::string s, Expr *expr) {
+    return new EqExpr(this->rhs->subst(s, expr), this->lhs->subst(s, expr));
 }
 
 /*
@@ -356,13 +426,11 @@ Expr *_let::subst(std::string s, Expr *expr)
 888        888     888 888  888  "Y888
 */
 
-void Num::print(std::ostream &ostream)
-{
+void NumExpr::print(std::ostream &ostream) {
     ostream << std::to_string(val);
 }
 
-void Add::print(std::ostream &ostream)
-{
+void AddExpr::print(std::ostream &ostream) {
     ostream << "(";
     this->lhs->print(ostream);
     ostream << "+";
@@ -370,8 +438,7 @@ void Add::print(std::ostream &ostream)
     ostream << ")";
 }
 
-void Multi::print(std::ostream &ostream)
-{
+void MultiExpr::print(std::ostream &ostream) {
     ostream << "(";
     this->lhs->print(ostream);
     ostream << "*";
@@ -379,21 +446,39 @@ void Multi::print(std::ostream &ostream)
     ostream << ")";
 }
 
-void Variable::print(std::ostream &ostream)
-{
+void VariableExpr::print(std::ostream &ostream) {
     ostream << this->string;
 }
 
-void _let::print(std::ostream &ostream)
-{
+void LetExpr::print(std::ostream &ostream) {
     ostream << "(_let ";
     ostream << this->lhs;
     ostream << "=";
     this->rhs->print(ostream);
     ostream << " _in ";
-    //    ostream << "(";
     this->body->print(ostream);
     ostream << ")";
+}
+
+void IfExpr::print(std::ostream &ostream) {
+    ostream << "(_if ";
+    this->boolExpr->print(ostream);
+    ostream << " _then ";
+    this->firstNumExpr->print(ostream);
+    ostream << " _else ";
+    this->secondNumExpr->print(ostream);
+    ostream << ")";
+}
+
+void BoolExpr::print(std::ostream &ostream) {
+    if (this->is_True) ostream << "_true";
+    else ostream << "_false";
+}
+
+void EqExpr::print(std::ostream &ostream) {
+    this->lhs->print(ostream);
+    ostream << "==";
+    this->rhs->print(ostream);
 }
 
 /*
@@ -410,15 +495,13 @@ Y88b.  Y88..88P               X88 Y88b.  888     888 888  888 Y88b 888
                                                                "Y88P"
 */
 
-std::string Expr::to_string()
-{
+std::string Expr::to_string() {
     std::stringstream st("");
     this->print(st);
     return st.str();
 }
 
-std::string Expr::pretty_print_to_string()
-{
+std::string Expr::pretty_print_to_string() {
     std::stringstream st("");
     this->pretty_print(st);
     return st.str();
@@ -438,87 +521,75 @@ std::string Expr::pretty_print_to_string()
 888                                      "Y88P"           888
 */
 
-void Num::pretty_print(std::ostream &ostream)
-{
+void NumExpr::pretty_print(std::ostream &ostream) {
     std::streampos streamPos;
     pretty_print_at(prec_none, ostream, streamPos, false);
 }
 
-void Num::pretty_print_at(precedence_t precedence_t, std::ostream &ostream, std::streampos &streamPos, bool addParent)
-{
+void
+NumExpr::pretty_print_at(precedence_t precedence_t, std::ostream &ostream, std::streampos &streamPos, bool addParent) {
     ostream << std::to_string(this->val);
 }
 
-void Variable::pretty_print(std::ostream &ostream)
-{
+void VariableExpr::pretty_print(std::ostream &ostream) {
     std::streampos streamPos;
     pretty_print_at(prec_none, ostream, streamPos, false);
 }
 
-void Variable::pretty_print_at(precedence_t precedence_t, std::ostream &ostream, std::streampos &streamPos, bool addParent)
-{
+void VariableExpr::pretty_print_at(precedence_t precedence_t, std::ostream &ostream, std::streampos &streamPos,
+                                   bool addParent) {
     ostream << this->string;
 }
 
-void Add::pretty_print(std::ostream &ostream)
-{
+void AddExpr::pretty_print(std::ostream &ostream) {
     std::streampos streamPos;
     pretty_print_at(prec_none, ostream, streamPos, false);
 }
 
-void Add::pretty_print_at(precedence_t precedence_t, std::ostream &ostream, std::streampos &streamPos, bool addParent)
-{
-    if (precedence_t > prec_add)
-    {
+void
+AddExpr::pretty_print_at(precedence_t precedence_t, std::ostream &ostream, std::streampos &streamPos, bool addParent) {
+    if (precedence_t > prec_add) {
         ostream << "(";
     }
     this->lhs->pretty_print_at(static_cast<::precedence_t>(prec_add + 1), ostream, streamPos, true);
     ostream << " + ";
     this->rhs->pretty_print_at(static_cast<::precedence_t>(prec_add), ostream, streamPos, false);
 
-    if (precedence_t > prec_add)
-    {
+    if (precedence_t > prec_add) {
         ostream << ")";
     }
 }
 
-void Multi::pretty_print(std::ostream &ostream)
-{
+void MultiExpr::pretty_print(std::ostream &ostream) {
     std::streampos streamPos;
     pretty_print_at(prec_none, ostream, streamPos, false);
 }
 
-// CHECK((new Multi(new Num(1), new Add(new Num(2), new Num(3)))) -> pretty_print_to_string() == "1 * (2 + 3)");
-//  CHECK((new Multi (new Num(2), new Multi(new Num(3), new Num(4)))) -> pretty_print_to_string() == "2 * 3 * 4");
-void Multi::pretty_print_at(precedence_t precedence_t, std::ostream &ostream, std::streampos &streamPos, bool addParent)
-{
-    if (precedence_t > prec_mult)
-    {
+void MultiExpr::pretty_print_at(precedence_t precedence_t, std::ostream &ostream, std::streampos &streamPos,
+                                bool addParent) {
+    if (precedence_t > prec_mult) {
         ostream << "(";
     }
     this->lhs->pretty_print_at(static_cast<::precedence_t>(prec_mult + 1), ostream, streamPos, false);
     ostream << " * ";
-    _let *t = dynamic_cast<_let *>(this->rhs);
+    LetExpr *t = dynamic_cast<LetExpr *>(this->rhs);
 
     this->rhs->pretty_print_at(static_cast<::precedence_t>(prec_mult), ostream, streamPos,
                                t == NULL ? addParent : (precedence_t > prec_none) && addParent);
 
-    if (precedence_t > prec_mult)
-    {
+    if (precedence_t > prec_mult) {
         ostream << ")";
     }
 }
 
-void _let::pretty_print(std::ostream &ostream)
-{
+void LetExpr::pretty_print(std::ostream &ostream) {
     std::streampos streamPos;
     pretty_print_at(prec_none, ostream, streamPos, false);
 }
 
-void _let::pretty_print_at(precedence_t precedence_t, std::ostream &ostream, std::streampos &streamPos, bool addParent)
-{
-    if (precedence_t > prec_add && addParent)
-    {
+void
+LetExpr::pretty_print_at(precedence_t precedence_t, std::ostream &ostream, std::streampos &streamPos, bool addParent) {
+    if (precedence_t > prec_add && addParent) {
         ostream << "(";
     }
 
@@ -531,18 +602,89 @@ void _let::pretty_print_at(precedence_t precedence_t, std::ostream &ostream, std
     ostream << "\n";
     std::streampos newStreamPos = ostream.tellp();
     int indent = temp - streamPos;
-    for (int i = 0; i < indent; i++)
-    {
+    for (int i = 0; i < indent; i++) {
         ostream << " ";
     }
     ostream << "_in  ";
     this->body->pretty_print_at(prec_none, ostream, newStreamPos, false);
 
-    if (precedence_t > prec_add && addParent)
-    {
+    if (precedence_t > prec_add && addParent) {
         ostream << ")";
     }
 }
+
+void IfExpr::pretty_print(std::ostream &ostream) {
+    std::streampos streamPos;
+    pretty_print_at(prec_none, ostream, streamPos, false);
+}
+
+void
+IfExpr::pretty_print_at(precedence_t precedence_t, std::ostream &ostream, std::streampos &streamPos, bool addParent) {
+    if (precedence_t > prec_equal && addParent) {
+        ostream << "(";
+    }
+
+    int temp = ostream.tellp();
+    ostream << "_if ";
+    this->boolExpr->pretty_print_at(prec_none, ostream, streamPos, false);
+    ostream << "\n";
+    std::streampos newStreamPos = ostream.tellp();
+    int indent = temp - streamPos;
+    for (int i = 0; i < indent; i++) {
+        ostream << " ";
+    }
+    ostream << "_then ";
+
+    this->firstNumExpr->pretty_print_at(prec_none, ostream, streamPos, false);
+    ostream << "\n";
+    newStreamPos = ostream.tellp();
+    indent = temp - streamPos;
+    for (int i = 0; i < indent; i++) {
+        ostream << " ";
+    }
+    ostream << "_else ";
+    this->secondNumExpr->pretty_print_at(prec_none, ostream, newStreamPos, false);
+
+    if (precedence_t > prec_add && addParent) {
+        ostream << ")";
+    }
+}
+
+void BoolExpr::pretty_print(std::ostream &ostream) {
+    std::streampos streamPos;
+    pretty_print_at(prec_none, ostream, streamPos, false);
+}
+
+void BoolExpr::pretty_print_at(precedence_t precedence_t, std::ostream &ostream, std::streampos &streamPos,
+                               bool addParent) {
+
+    if (this->is_True == 0) ostream << "_false";
+    else ostream << "true";
+
+}
+
+void EqExpr::pretty_print(std::ostream &ostream) {
+    std::streampos streamPos;
+    pretty_print_at(prec_none, ostream, streamPos, false);
+}
+
+void
+EqExpr::pretty_print_at(precedence_t precedence_t, std::ostream &ostream, std::streampos &streamPos, bool addParent) {
+    if (precedence_t > prec_equal) {
+        ostream << "(";
+    }
+    this->lhs->pretty_print_at(static_cast<::precedence_t>(prec_equal + 1), ostream, streamPos, false);
+    ostream << " == ";
+    LetExpr *t = dynamic_cast<LetExpr *>(this->rhs);
+
+    this->rhs->pretty_print_at(static_cast<::precedence_t>(prec_equal), ostream, streamPos,
+                               false);
+
+    if (precedence_t > prec_equal) {
+        ostream << ")";
+    }
+}
+
 
 // 8888888b.
 // 888   Y88b
@@ -553,118 +695,121 @@ void _let::pretty_print_at(precedence_t precedence_t, std::ostream &ostream, std
 // 888        888  888 888          X88 Y8b.
 // 888        "Y888888 888      88888P'  "Y8888
 
-Expr *parse_Str(std::string string)
-{
+Expr *parse_Str(std::string string) {
     std::istringstream s(string);
     return parse_Expr(s);
 }
 
-Expr *parse_Expr(std::istream &instream)
-{
+Expr* parse_Eq(std::istream &instream) {
     Expr *e = parse_Addend(instream);
     skip_whitespace(instream);
 
     int peek = instream.peek();
-    if (peek == '+')
-    {
-        consume(instream, '+');
-        Expr *rhs = parse_Expr(instream);
-        return new Add(e, rhs);
-    }
-    else if (peek == '-')
-    {
-        throw std::runtime_error("Don't know how to handle substraction");
-    }
-    else
-    {
+    if (peek == '=') {
+        consume(instream, '=');
+        consume(instream, '=');
+        // Expr *rhs = parse_Expr(instream);
+        // Expr *rhs = parse_Multicand(instream);
+        Expr *rhs = parse_Addend(instream);
+        return new EqExpr(e, rhs);
+    } else {
         return e;
     }
 }
 
-Expr *parse_Addend(std::istream &instream)
-{
+Expr *parse_Expr(std::istream &instream) {
+    Expr *e = parse_Eq(instream);
+    skip_whitespace(instream);
+
+    int peek = instream.peek();
+    if (peek == '+') {
+        consume(instream, '+');
+        Expr *rhs = parse_Expr(instream);
+        return new AddExpr(e, rhs);
+    } else if (peek == '-') {
+        throw std::runtime_error("Don't know how to handle subtraction");
+    } else {
+        return e;
+    }
+}
+
+Expr *parse_Addend(std::istream &instream) {
     Expr *e = parse_Multicand(instream);
     skip_whitespace(instream);
 
     int peek = instream.peek();
-    if (peek == '*')
-    {
+    if (peek == '*') {
         consume(instream, '*');
         // Expr *rhs = parse_Expr(instream);
         // Expr *rhs = parse_Multicand(instream);
         Expr *rhs = parse_Addend(instream);
-        return new Multi(e, rhs);
-    }
-    else
-    {
+        return new MultiExpr(e, rhs);
+    } else {
         return e;
     }
 }
 
-Expr *parse_Multicand(std::istream &instream)
-{
+
+
+Expr *parse_Multicand(std::istream &instream) {
     skip_whitespace(instream);
 
     int peek = instream.peek();
-    if ((peek == '-') || isdigit(peek))
-    {
+    if ((peek == '-') || isdigit(peek)) {
         return parse_Num(instream);
-    }
-    else if (peek == '(')
-    {
+    } else if (peek == '(') {
         consume(instream, '(');
         Expr *e = parse_Expr(instream);
         skip_whitespace(instream);
         peek = instream.get();
-        if (peek != ')')
-        {
+        if (peek != ')') {
             throw std::runtime_error("Missing close parenthesis");
         }
         return e;
-    }
-    else if (isalpha(peek))
-    {
+    } else if (isalpha(peek)) {
         return parse_Var(instream);
-    }
-    else if (peek == '_')
-    {
-        return parse_Let(instream);
-    }
-    else
-    {
+    } else if (peek == '_') {
+        consume(instream, '_');
+        peek = instream.peek();
+
+//        std::cout << (char) peek << " dsa" << std::endl;
+//        std::cout << (char) instream.get() << " dsa2" << std::endl;
+        if (instream.peek() == 'l') return parse_Let(instream);
+        else if (peek == 'f' || peek == 't') return parse_Bool(instream);
+        else {
+            return parse_If(instream);
+        }
+
+
+    } else {
         consume(instream, peek);
         throw std::runtime_error("Invalid input");
     }
 }
 
-Expr *parse_Var(std::istream &instream)
-{
+
+
+Expr *parse_Var(std::istream &instream) {
     std::string s;
-    while (true)
-    {
+    while (true) {
         int peek = instream.peek();
-        if (isalpha(peek))
-        {
+        if (isalpha(peek)) {
             consume(instream, peek);
 
-            if (instream.peek() == '_')
-            {
+            if (instream.peek() == '_') {
                 throw std::runtime_error("Invalid input");
             }
             s += peek;
-        }
-        else
-        {
+        } else {
             break;
         }
     }
-    return new Variable(s);
+    return new VariableExpr(s);
 }
 
-Expr *parse_Let(std::istream &instream)
-{
-    // TODO: Maybe using the parse keyword, check _let and _in
-    consume(instream, '_');
+Expr *parse_Let(std::istream &instream) {
+    // TODO: Maybe using the parse keyword, check LetExpr and _in
+//    consume(instream, '_');
     consume(instream, 'l');
     consume(instream, 'e');
     consume(instream, 't');
@@ -674,8 +819,7 @@ Expr *parse_Let(std::istream &instream)
     // }
     skip_whitespace(instream);
     std::string lhs;
-    while (!isspace(instream.peek()) && instream.peek() != '=')
-    {
+    while (!isspace(instream.peek()) && instream.peek() != '=') {
         lhs = parse_Var(instream)->to_string();
         // std::cout << "lhs: " << lhs << std::endl;
     }
@@ -694,577 +838,110 @@ Expr *parse_Let(std::istream &instream)
     skip_whitespace(instream);
     Expr *body = parse_Expr(instream);
     // std::cout << "body: " << body->to_string() << std::endl;
-    return new _let(lhs, rhs, body);
+    return new LetExpr(lhs, rhs, body);
 }
 
-Expr *parse_Num(std::istream &instream)
-{
+Expr *parse_If(std::istream &instream) {
+    consume(instream, 'i');
+    consume(instream, 'f');
+    skip_whitespace(instream);
+
+    Expr *ifExpr = parse_Expr(instream);
+    skip_whitespace(instream);
+    consume(instream, '_');
+    consume(instream, 't');
+    consume(instream, 'h');
+    consume(instream, 'e');
+    consume(instream, 'n');
+    skip_whitespace(instream);
+    Expr* lhs = parse_Expr(instream);
+
+    consume(instream, '_');
+    consume(instream, 'e');
+    consume(instream, 'l');
+    consume(instream, 's');
+    consume(instream, 'e');
+    Expr* rhs = parse_Expr(instream);
+
+    return new IfExpr(ifExpr, lhs, rhs);
+}
+
+Expr* parse_Bool(std::istream &instream) {
+    if (instream.peek() == 'f') {
+        consume(instream, 'f');
+        consume(instream, 'a');
+        consume(instream, 'l');
+        consume(instream, 's');
+        consume(instream, 'e');
+
+        return new BoolExpr(false);
+    }
+
+    else if (instream.peek() == 't') {
+        consume(instream, 't');
+        consume(instream, 'r');
+        consume(instream, 'u');
+        consume(instream, 'e');
+        return new BoolExpr(true);
+    }
+    else {
+        throw std::runtime_error("Parsing Bool wrong");
+    }
+
+}
+
+
+
+Expr *parse_Num(std::istream &instream) {
     int numFromStream = 0;
     bool negative = false;
-    if (instream.peek() == '-')
-    {
+    if (instream.peek() == '-') {
 
         negative = true;
         consume(instream, '-');
-        if (isspace(instream.peek()))
-        {
+        if (isspace(instream.peek())) {
             throw std::runtime_error("unexpected input after expression");
         }
-        if (instream.peek() == EOF)
-        {
+        if (instream.peek() == EOF) {
             throw std::runtime_error("Invalid input");
         }
     }
 
-    if (isspace(instream.peek()))
-    {
+    if (isspace(instream.peek())) {
         throw std::runtime_error("unexpected input after expression");
     }
 
-    while (true)
-    {
+    while (true) {
         int peek = instream.peek();
-        if (isdigit(peek))
-        {
+        if (isdigit(peek)) {
             consume(instream, peek);
             numFromStream = numFromStream * 10 + (peek - '0');
-        }
-        else
-        {
+        } else {
             break;
         }
     }
 
-    if (negative)
-    {
+    if (negative) {
         numFromStream = -numFromStream;
     }
 
-    return new Num(numFromStream);
+    return new NumExpr(numFromStream);
 }
 
-static void consume(std::istream &instream, int expect)
-{
+static void consume(std::istream &instream, int expect) {
     int temp = instream.get();
-    if (temp != expect)
-    {
+    if (temp != expect) {
         throw std::runtime_error("Consume mismatch");
     }
 }
 
-static void skip_whitespace(std::istream &instream)
-{
-    while (true)
-    {
+static void skip_whitespace(std::istream &instream) {
+    while (true) {
         int peek = instream.peek();
-        if (!isspace(peek))
-        {
+        if (!isspace(peek)) {
             break;
-        }
-        else
-        {
+        } else {
             consume(instream, peek);
         }
-    }
-}
-
-/*
-88888888888                   888    d8b
-    888                       888    Y8P
-    888                       888
-    888      .d88b.  .d8888b  888888 888 88888b.   .d88b.
-    888     d8P  Y8b 88K      888    888 888 "88b d88P"88b
-    888     88888888 "Y8888b. 888    888 888  888 888  888
-    888     Y8b.          X88 Y88b.  888 888  888 Y88b 888
-    888      "Y8888   88888P'  "Y888 888 888  888  "Y88888
-                                                       888
-                                                  Y8b d88P
-                                                   "Y88P"
-*/
-
-TEST_CASE("Test for expression")
-{
-    Add *add = new Add(new Num(2), new Num(3));
-    Add *add2 = new Add(new Num(2), new Num(3));
-    Add *add3 = new Add(new Num(2), new Num(4));
-    Multi *mav = new Multi(new Num(6), new Add(new Num(6), new Variable("Hello")));
-    Multi *mav2 = new Multi(new Num(6), new Add(new Num(6), new Variable("Hello")));
-    Multi *mav3 = new Multi(new Num(6), new Add(new Num(6), new Variable("World")));
-    SECTION("Equals")
-    {
-        CHECK((new Num(1))->equals(new Num(1)) == true);
-        CHECK((new Variable("x"))->equals(new Variable("y")) == false);
-        CHECK((new Add(new Num(2), new Num(3)))->equals(new Add(new Num(2), new Num(3))) == true);
-        CHECK((new Add(new Num(2), new Num(3)))->equals(new Add(new Num(3), new Num(2))) == false);
-        CHECK((new Multi(new Num(2), new Num(2)))->equals(new Add(new Num(1), new Num(2))) == false);
-    }
-    SECTION("Add Test")
-    {
-        REQUIRE(add->equals(add2));
-        REQUIRE(add->equals(add3) == 0);
-    }
-
-    SECTION("Multi Add Variable Test")
-    {
-        REQUIRE(mav->equals(mav2));
-        REQUIRE(mav->equals(mav3) == 0);
-    }
-
-    SECTION("Interpret check")
-    {
-        //        CHECK_THROWS_WITH( (new Variable("x"))->interp(), "no value for variable" );
-
-        // 3 * 2
-        CHECK((new Multi(new Num(3), new Num(2)))->interp() == 6);
-        // 3 + 2
-        CHECK((new Add(new Num(3), new Num(2)))->interp() == 5);
-
-        CHECK((new Add(new Multi(new Num(2), new Num(3)), new Num(4)))->interp() == 10);
-        // 2 * (3 * 4)
-        CHECK((new Multi(new Num(2), new Multi(new Num(3), new Num(4))))->interp() == 24);
-
-        //(5*5) * 2
-        CHECK((new Multi(new Multi(new Num(5), new Num(5)), new Num(2)))->interp() == 50);
-
-        //(2 * 3) * (2 * 3)
-        CHECK((new Multi(new Multi(new Num(2), new Num(3)), new Multi(new Num(2), new Num(3))))->interp() == 36);
-
-        //(2 + (3 * 4))
-        CHECK((new Add(new Num(2), new Multi(new Num(3), new Num(4))))->interp() == 14);
-
-        //(10+15) + (20 + 20))
-        CHECK((new Add(new Add(new Num(10), new Num(15)), new Add(new Num(20), new Num(20))))->interp() == 65);
-
-        //(10*10) * (30+15)
-        CHECK((new Multi(new Multi(new Num(10), new Num(10)), new Add(new Num(30), new Num(15))))->interp() == 4500);
-
-        // (10 + 10) + (20+ 20) * (30 + 30) + (40 * 40)
-        CHECK((new Multi(
-                   new Add(
-                       new Add(new Num(10), new Num(10)),
-                       new Add(new Num(20), new Num(20))),
-                   new Add(
-                       new Add(new Num(30), new Num(30)),
-                       new Multi(new Num(40), new Num(40)))))
-                  ->interp() == 99600);
-    }
-
-    SECTION("HasVariable check")
-    {
-        CHECK((new Multi(new Variable("x"), new Num(2)))->hasVariable() == true);
-        CHECK((new Variable("q"))->hasVariable() == true);
-        CHECK((new Num(6))->hasVariable() == false);
-        CHECK((new Add(new Variable("d"), new Num(4)))->hasVariable() == true);
-    }
-
-    SECTION("Subst check")
-    {
-        CHECK((new Add(new Variable("x"), new Num(7)))
-                  ->subst("x", new Variable("y"))
-                  ->equals(new Add(new Variable("y"), new Num(7))));
-
-        CHECK((new Add(new Num(7), new Variable("x")))
-                  ->subst("x", new Variable("y"))
-                  ->equals(new Add(new Num(7), new Variable("y"))));
-
-        CHECK((new Add(new Variable("x"), new Variable("x")))
-                  ->subst("x", new Variable("y"))
-                  ->equals(new Add(new Variable("y"), new Variable("y"))));
-
-        CHECK((new Multi(new Variable("x"), new Num(7)))
-                  ->subst("x", new Variable("y"))
-                  ->equals(new Multi(new Variable("y"), new Num(7))));
-
-        CHECK((new Multi(new Num(7), new Variable("x")))
-                  ->subst("x", new Variable("y"))
-                  ->equals(new Multi(new Num(7), new Variable("y"))));
-
-        CHECK((new Multi(new Variable("x"), new Variable("x")))
-                  ->subst("x", new Variable("y"))
-                  ->equals(new Multi(new Variable("y"), new Variable("y"))));
-
-        CHECK((new Num(2))
-                  ->subst("x", new Num(3))
-                  ->equals(new Num(3)) == false);
-
-        CHECK((new Variable("x"))
-                  ->subst("x", new Add(new Variable("y"), new Num(7)))
-                  ->equals(new Add(new Variable("y"), new Num(7))));
-
-        CHECK((new Add((new Multi(new Num(10), new Variable("x"))), new Num(7)))->subst("x", new Variable("y"))->equals((new Add((new Multi(new Num(10), new Variable("y"))), new Num(7)))));
-    }
-
-    SECTION("Check Print")
-    {
-        CHECK((new Add(new Num(1), new Add(new Num(2), new Num(3))))->to_string() == "(1+(2+3))");
-        CHECK((new Add(new Add(new Num(1), new Num(2)), new Num(3)))->to_string() == "((1+2)+3)");
-        CHECK((new Num(10))->to_string() == "10");
-        CHECK((new Variable("x"))->to_string() == "x");
-        CHECK((new Add(new Num(5), new Num(5)))->to_string() == "(5+5)");
-        CHECK((new Multi(new Num(10), new Num(10)))->to_string() == "(10*10)");
-        CHECK((new Add(new Num(5), new Multi(new Num(5), new Num(5))))->to_string() == "(5+(5*5))");
-
-        CHECK((new Multi(new Multi(new Num(2), new Num(3)), new Num(4)))->pretty_print_to_string() == "(2 * 3) * 4");
-        CHECK((new Add(new Num(1), new Multi(new Num(2), new Num(3))))->pretty_print_to_string() == "1 + 2 * 3");
-        CHECK((new Add(new Num(1), new Add(new Num(2), new Num(3))))->pretty_print_to_string() == "1 + 2 + 3");
-        CHECK((new Multi(new Num(2), new Multi(new Num(3), new Num(4))))->pretty_print_to_string() == "2 * 3 * 4");
-        CHECK((new Multi(new Num(1), new Add(new Num(2), new Num(3))))->pretty_print_to_string() == "1 * (2 + 3)");
-        CHECK((new Multi(new Num(-8), new Add(new Num(2), new Num(3))))->pretty_print_to_string() == "-8 * (2 + 3)");
-        CHECK((new Add(new Multi(new Num(9), new Add(new Num(4), new Num(3))),
-                       new Add(new Multi(new Num(2), new Num(4)), new Num(1))))
-                  ->pretty_print_to_string() ==
-              "9 * (4 + 3) + 2 * 4 + 1");
-        CHECK((new Multi(new Multi(new Num(10), new Multi(new Multi(new Num(10), new Num(10)), new Num(10))),
-                         new Multi(new Num(10), new Num(10))))
-                  ->pretty_print_to_string() ==
-              "(10 * (10 * 10) * 10) * 10 * 10");
-        CHECK((new Add(new Num(1), new Add(new Num(2), new Num(5))))->pretty_print_to_string() == "1 + 2 + 5");
-        //(2 + 3) * 5
-        CHECK((new Multi(new Add(new Num(2), new Num(3)), new Num(5)))->pretty_print_to_string() == "(2 + 3) * 5");
-    }
-
-    SECTION("Check _let")
-    {
-        CHECK((new _let("x", new Num(5), new Num(5)))->equals(new _let("x", new Num(5), new Num(5))) == true);
-        CHECK((new _let("x", new Num(5), new Add(new Variable("x"), new Num(5))))->interp() == 10);
-        CHECK((new _let("x", new Num(5), new Add(new Num(10), new Num(5))))->interp() == 15);
-        CHECK((new _let("x", new Multi(new Num(7), new Num(3)), new Add(new Variable("x"), new Num(5))))->interp() ==
-              26);
-        CHECK((new _let("x", new Num(5), new _let("x", new Add(new Variable("x"), new Num(2)), new Add(new Variable("x"), new Num(1)))))->interp() == 8);
-        CHECK((new _let("x", new Num(5),
-                        new _let("x", new Num(6), new Add(new Variable("x"), new Num(1)))))
-                  ->interp() == 7);
-        CHECK((new _let("x", new Num(5),
-                        new _let("y", new Num(6), new Add(new Variable("x"), new Num(1)))))
-                  ->interp() == 6);
-        CHECK((
-                  new _let("x", new Num(5), new _let("y", new Num(3), new Add(new Add(new Variable("y"), new Num(2)), new Variable("x")))))
-                  ->interp() == 10);
-
-        //        (_let x=5 _in ((_let y=3 _in (y + (_let z = 10, _in (z + 5))))+x)) ==23
-        CHECK((
-                  new _let("x", new Num(5), new _let("y", new Num(3), new Add(new Add(new Variable("y"), new _let("z", new Num(10), new Add(new Variable("z"), new Num(5)))), new Variable("x")))))
-                  ->interp() == 23);
-
-        //(_let x=5 _in ((_let y= (_let q = 5 _in q * 10) _in (y + (_let z = 10, _in (z + 5))))+x)) == 70
-        CHECK((
-                  new _let("x", new Num(5),
-                           new _let("y", new _let("q", new Num(5), new Multi(new Num(10), new Variable("q"))),
-                                    new Add(
-                                        new Add(
-                                            new Variable("y"), new _let("z", new Num(10),
-                                                                        new Add(new Variable(
-                                                                                    "z"),
-                                                                                new Num(5)))),
-                                        new Variable("x")))))
-                  ->interp() == 70);
-
-        // x = 10, y = 10, z = 10. x + y + z = 30
-        CHECK((
-                  new _let(
-                      "x", new Num(10),
-                      new _let("y", new Num(10),
-                               new _let("z", new Num(10), new Add(new Add(new Variable("x"), new Variable("y")), new Variable("z"))))))
-                  ->interp() == 30);
-
-        CHECK((
-                  new _let("x", new Num(5), new _let("y", new Num(3), new Add(new Add(new Variable("y"), new Num(2)), new Variable("x")))))
-                  ->to_string() == "(_let x=5 _in (_let y=3 _in ((y+2)+x)))");
-
-        _let let1("x",
-                  new Num(5),
-                  new Add(
-                      new _let("y", new Num(3), new Add(new Variable("y"), new Num(2))),
-                      new Variable("x")));
-        CHECK(let1.to_string() == "(_let x=5 _in ((_let y=3 _in (y+2))+x))");
-        CHECK((new _let("x", new Num(5), new Add(new Variable("x"), new Num(5))))->to_string() ==
-              "(_let x=5 _in (x+5))");
-
-        //        let1.pretty_print(std::cout);
-        CHECK((let1).pretty_print_to_string() == "_let x = 5\n_in  (_let y = 3\n      _in  y + 2) + x");
-        _let *test2 = new _let("x", new Num(5),
-                               new Add(new _let("y", new Num(3), new Add(new Variable("y"), new Num(2))),
-                                       new Variable("x")));
-        _let *test3 = new _let("x", new Num(5), new _let("x", new Num(6), new Add(new Variable("x"), new Num(1))));
-        _let *test4 = new _let("x", new Num(5), new _let("y", new Num(6), new Add(new Variable("x"), new Num(1))));
-        //        _let *test5 = new _let("x", new Num(5), new _let("x", new Add(new Variable("x"), new Num(2)), new Add(new Variable("x"), new Num(1))));
-        _let *test5 = new _let("x", new Num(5), new _let("x", new Add(new Variable("x"), new Num(2)), new Add(new Variable("x"), new Num(1))));
-        _let *test6 = new _let("x", new Num(5), new _let("y", new Num(6), new _let("y", new Num(7), new Add(new Variable("x"), new Num(1)))));
-        _let *test10 = new _let("x", new Num(5), new Add(new _let("y", new Num(6), new _let("y", new Num(7), new Add(new Variable("x"), new Num(1)))), new Num(1)));
-        _let *test11 = new _let("x", new Add(new Variable("x"), new Num(2)),
-                                new Add(new _let("y", new Num(6), new _let("y", new Num(7), new Add(new Variable("x"), new Num(1)))),
-                                        new Num(1)));
-        // std::cout << test2->pretty_print_to_string() << std::endl;
-        // std::cout << test3->pretty_print_to_string() << std::endl;
-        // std::cout << test4->pretty_print_to_string() << std::endl;
-        // std::cout << test5->pretty_print_to_string() << std::endl;
-        // std::cout << test6->pretty_print_to_string() << std::endl;
-        // std::cout << test10->pretty_print_to_string() << std::endl;
-        // std::cout << test11->pretty_print_to_string() << std::endl;
-
-        _let letBase1("x", new Num(5), new Add(new Variable("x"), new Num(1)));
-        _let letBase2("x", new Num(6), new Add(new Variable("x"), new Num(1)));
-
-        CHECK(letBase1.pretty_print_to_string() == "_let x = 5\n_in  x + 1");
-        CHECK(letBase2.pretty_print_to_string() == "_let x = 6\n_in  x + 1");
-        _let let2("x", new Num(5), &letBase2);
-        CHECK(let2.pretty_print_to_string() == "_let x = 5\n"
-                                               "_in  _let x = 6\n"
-                                               "     _in  x + 1");
-
-        Multi let11(new Num(1), new Multi(new Num(2), &letBase1));
-        // std::cout << let11.pretty_print_to_string() << std::endl;
-
-        CHECK((new _let("x", new Num(2), new _let("z", new Num(4), new Add(new Variable("x"), new Num(10)))))
-                  ->interp() == 12);
-
-        CHECK((new _let("x", new Num(1), new Multi(new Multi(new Variable("x"), new Multi(new Multi(new Num(10), new Num(10)), new Variable("x"))), new Multi(new Num(10), new Num(10)))))
-                  ->interp() == 10000);
-        CHECK(let11.pretty_print_to_string() == "1 * 2 * _let x = 5\n"
-                                                "        _in  x + 1");
-        Add let13(&let11, new Num(5));
-        CHECK(let13.pretty_print_to_string() == "1 * 2 * (_let x = 5\n"
-                                                "         _in  x + 1) + 5");
-    }
-}
-
-TEST_CASE("Pretty Print examples_Kevin")
-{ // Created from assignment examples
-    std::stringstream out("");
-    (new _let("x", new Num(5), new Add(new Variable("x"), new Num(1))))->pretty_print(out);
-    CHECK(out.str() == "_let x = 5\n"
-                       "_in  x + 1");
-    out.str(std::string());
-    (new Add(new _let("x", new Num(5), new Variable("x")), new Num(1)))->pretty_print(out);
-    CHECK(out.str() == "(_let x = 5\n"
-                       " _in  x) + 1");
-    out.str(std::string());
-    (new Multi(new Num(5), new _let("x", new Num(5), new Add(new Variable("x"), new Num(1)))))->pretty_print(out);
-    CHECK(out.str() == "5 * _let x = 5\n"
-                       "    _in  x + 1");
-    out.str(std::string());
-    (new Add(new Multi(new Num(5), new _let("x", new Num(5), new Variable("x"))), new Num(1)))->pretty_print(out);
-    CHECK(out.str() == "5 * (_let x = 5\n"
-                       "     _in  x) + 1");
-    out.str(std::string());
-    (new _let("x", new Num(5),
-              new Add(new _let("y", new Num(3), new Add(new Variable("y"), new Num(2))), new Variable("x"))))
-        ->pretty_print(out);
-
-    CHECK(out.str() == "_let x = 5\n"
-                       "_in  (_let y = 3\n"
-                       "      _in  y + 2) + x");
-    out.str(std::string());
-    (new _let("x", new _let("y", new Num(6), new Multi(new Variable("y"), new Num(2))),
-              new Add(new Variable("x"), new Num(1))))
-        ->pretty_print(out);
-    CHECK(out.str() == "_let x = _let y = 6\n"
-                       "         _in  y * 2\n"
-                       "_in  x + 1");
-}
-
-TEST_CASE("pretty_print_let_mine_some_reuse_of_kevin_triple_nested_let")
-{
-    _let *tripleNestedLet = new _let("x", new Num(1),
-                                     new _let("y", new Num(1),
-                                              new Multi(new Add(new Variable("x"), new Variable("y")),
-                                                        new Variable("z"))));
-    _let *tripleNestedLet2 = new _let("x", new Num(1),
-                                      new _let("y", new Num(1),
-                                               new _let("z", new Add(new Variable("x"), new Num(1)),
-                                                        new Add(new Add(new Variable("x"), new Variable("y")),
-                                                                new Variable("z")))));
-    _let *tripleNestedLet3 = new _let("x", new Num(1),
-                                      new _let("y", new Num(1),
-                                               new _let("z", new Add(new Variable("x"), new Num(1)),
-                                                        new Multi(new Add(new Variable("x"), new Variable("y")),
-                                                                  new Variable("z")))));
-
-    CHECK(tripleNestedLet->pretty_print_to_string() ==
-          "_let x = 1\n"
-          "_in  _let y = 1\n"
-          "     _in  (x + y) * z");
-    CHECK(tripleNestedLet2->pretty_print_to_string() ==
-          "_let x = 1\n"
-          "_in  _let y = 1\n"
-          "     _in  _let z = x + 1\n"
-          "          _in  (x + y) + z");
-    CHECK(tripleNestedLet3->pretty_print_to_string() ==
-          "_let x = 1\n"
-          "_in  _let y = 1\n"
-          "     _in  _let z = x + 1\n"
-          "          _in  (x + y) * z");
-    _let *tripleNestedLet4 = new _let("x", new Num(5),
-                                      new _let("y", new Num(3),
-                                               new Add(new Variable("y"), new Num(2))));
-    _let *tripleNestedLet5 = new _let("x", new Num(5),
-                                      new Add(new _let("y", new Num(3),
-                                                       new Add(new Variable("y"), new Num(2))),
-                                              new Variable("x")));
-    std::stringstream out("");
-    out.str("");
-    tripleNestedLet4->pretty_print(out);
-    CHECK(out.str() ==
-          "_let x = 5\n"
-          "_in  _let y = 3\n"
-          "     _in  y + 2");
-
-    CHECK(tripleNestedLet5->pretty_print_to_string() == "_let x = 5\n"
-                                                        "_in  (_let y = 3\n"
-                                                        "      _in  y + 2) + x");
-    SECTION("assignment_examples")
-    {
-        CHECK((new Add(new Multi(new Num(5), new _let("x", new Num(5), new Variable("x"))),
-                       new Num(1)))
-                  ->pretty_print_to_string() == "5 * (_let x = 5\n"
-                                                "     _in  x) + 1");
-        CHECK((new Multi(new Multi(new Num(2), new _let("x", new Num(5), new Add(new Variable("x"), new Num(1)))),
-                         new Num(3)))
-                  ->pretty_print_to_string() == "(2 * _let x = 5\n"
-                                                "     _in  x + 1) * 3");
-    }
-    // A _let needs parentheses when it is nested immediately as the right argument of an unparenthesized *
-    // where _let would have needed parentheses in the surrounding context
-    // (that is, if the _let used in place of the whole * would need parentheses,
-    // then it still needs parentheses within the right-hand size of *).
-    SECTION("new_edge")
-    {
-        CHECK((new Multi(new Num(2),
-                         new _let("x", new Num(5), new Add(new Variable("x"), new Num(1)))))
-                  ->pretty_print_to_string() == "2 * _let x = 5\n"
-                                                "    _in  x + 1");
-        CHECK((new Add(new Multi(new Num(5), new _let("x", new Num(5), new Multi(new Variable("x"), new Num(2)))),
-                       new Num(1)))
-                  ->pretty_print_to_string() == "5 * (_let x = 5\n"
-                                                "     _in  x * 2) + 1");
-        CHECK((new Multi(
-                   (new Add(new Multi(new Num(5), new _let("x", new Num(5), new Multi(new Variable("x"), new Num(2)))),
-                            new Num(1))),
-                   new Num(7)))
-                  ->pretty_print_to_string() == "(5 * (_let x = 5\n"
-                                                "      _in  x * 2) + 1) * 7");
-        CHECK((new _let("x", new Num(10), new Multi(new Multi(new Variable("x"), new Multi(new Multi(new Num(10), new Num(10)), new Num(10))), new Multi(new Num(10), new Num(10)))))
-                  ->pretty_print_to_string() == "_let x = 10\n"
-                                                "_in  (x * (10 * 10) * 10) * 10 * 10");
-        CHECK((new _let("x", new Num(1), new Multi(new Multi(new Variable("x"), new Multi(new Multi(new Num(10), new Num(10)), new Variable("x"))), new Multi(new Num(10), new Num(10)))))
-                  ->pretty_print_to_string() == "_let x = 1\n"
-                                                "_in  (x * (10 * 10) * x) * 10 * 10");
-        CHECK((new _let("x", new Num(1), new Multi(new Multi(new Variable("x"), new Multi(new Multi(new Num(10), new Num(10)), new Variable("x"))), new Multi(new Variable("y"), new Num(10)))))
-                  ->pretty_print_to_string() == "_let x = 1\n"
-                                                "_in  (x * (10 * 10) * x) * y * 10");
-    }
-}
-
-TEST_CASE("Let_equals_mine")
-{
-    SECTION("Values_same")
-    {
-        REQUIRE((new _let("x", new Num(4), new Add(new Num(2), new Variable("x"))))->equals(new _let("x", new Num(4), new Add(new Num(2), new Variable("x")))));
-    }
-    SECTION("Values_same_different_rhs")
-    {
-        REQUIRE(!(new _let("x", new Num(4), new Add(new Num(2), new Variable("x"))))->equals(new _let("x", new Num(5), new Add(new Num(2), new Variable("x")))));
-    }
-    SECTION("Values_same_different_lhs")
-    {
-        REQUIRE(!(new _let("x", new Num(4), new Add(new Num(2), new Variable("x"))))->equals(new _let("y", new Num(4), new Add(new Num(2), new Variable("x")))));
-    }
-    SECTION("Values_same_different_body")
-    {
-        REQUIRE(!(new _let("x", new Num(4), new Add(new Num(2), new Variable("x"))))->equals(new _let("x", new Num(4), new Multi(new Num(3), new Variable("y")))));
-    }
-    SECTION("different_types")
-    {
-        REQUIRE(!(new _let("x", new Num(4), new Add(new Num(2), new Variable("x"))))->equals(new Multi(new Num(3), new Variable("y"))));
-    }
-}
-
-TEST_CASE("Let_has_variable_mine")
-{
-    SECTION("has")
-    {
-        REQUIRE((new _let("x", new Num(4), new Add(new Num(2), new Variable("x"))))->hasVariable());
-    }
-    SECTION("does_not_has")
-    {
-        REQUIRE(!(new _let("x", new Num(4), new Add(new Num(2), new Num(4))))->hasVariable());
-    }
-}
-
-TEST_CASE("Let_print_mine")
-{
-    CHECK((new _let("x", new Num(5), new Add(new _let("y", new Num(3), new Add(new Variable("y"), new Num(2))), new Variable("x"))))->to_string() == "(_let x=5 _in ((_let y=3 _in (y+2))+x))");
-    CHECK((new _let("x", new Num(1),
-                    new _let("y", new Num(1),
-                             new _let("z", new Add(new Variable("x"), new Num(1)),
-                                      new Multi(new Add(new Variable("x"), new Variable("y")),
-                                                new Variable("z"))))))
-              ->to_string() == "(_let x=1 _in (_let y=1 _in (_let z=(x+1) _in ((x+y)*z))))");
-}
-
-TEST_CASE("Let_interp_mine")
-{
-
-    SECTION("hw_examples")
-    {
-        CHECK((new Add(new Multi(new Num(5), new _let("x", new Num(5), new Variable("x"))), new Num(1)))->interp() ==
-              26);
-        CHECK((new Multi(new Num(5), new _let("x", new Num(5), new Add(new Variable("x"), new Num(1)))))->interp() ==
-              30);
-    }
-    SECTION("from_pretty_print_edge")
-    {
-        CHECK((new _let("x", new Num(1),
-                        new _let("y", new Num(1),
-                                 new _let("z", new Add(new Variable("x"), new Num(1)),
-                                          new Multi(new Add(new Variable("x"), new Variable("y")),
-                                                    new Variable("z"))))))
-                  ->interp() == 4);
-        CHECK((new Multi(
-                   (new Add(new Multi(new Num(5), new _let("x", new Num(5), new Multi(new Variable("x"), new Num(2)))),
-                            new Num(1))),
-                   new Num(7)))
-                  ->interp() == 357); // 51 * 7
-        CHECK((new _let("x", new Num(10), new Multi(new Multi(new Variable("x"), new Multi(new Multi(new Num(10), new Num(10)), new Num(10))), new Multi(new Num(10), new Num(10)))))
-                  ->interp() == 1000000);
-        CHECK((new _let("x", new Num(1), new Multi(new Multi(new Variable("x"), new Multi(new Multi(new Num(10), new Num(10)), new Variable("x"))), new Multi(new Num(10), new Num(10)))))
-                  ->interp() == 10000);
-    }
-    SECTION("bypass_middle_let")
-    {
-        CHECK((new _let("x", new Num(2), new _let("z", new Num(4), new Add(new Variable("x"), new Num(10)))))
-                  ->interp() == 12);
-    }
-}
-
-TEST_CASE("Parsing string")
-{
-    SECTION("Parsing_Str")
-    {
-        CHECK_THROWS_WITH(parse_Str("()"), "Invalid input");
-        CHECK(parse_Str("(1)")->equals(new Num(1)));
-        CHECK(parse_Str("(((1)))")->equals(new Num(1)));
-
-        CHECK_THROWS_WITH(parse_Str("(1"), "Missing close parenthesis");
-        CHECK(parse_Str("1")->equals(new Num(1)));
-        CHECK(parse_Str("10")->equals(new Num(10)));
-        CHECK(parse_Str("-3")->equals(new Num(-3)));
-        CHECK(parse_Str("  \n 5  ")->equals(new Num(5)));
-        CHECK_THROWS_WITH(parse_Str("-"), "Invalid input");
-        CHECK_THROWS_WITH(parse_Str(" -  5 "), "unexpected input after expression");
-        CHECK(parse_Str("x")->equals(new Variable("x")));
-        CHECK(parse_Str("xyz")->equals(new Variable("xyz")));
-        CHECK(parse_Str("xYz")->equals(new Variable("xYz")));
-        CHECK_THROWS_WITH(parse_Str("x_z"), "Invalid input");
-
-        CHECK(parse_Str("x + y")->equals(new Add(new Variable("x"), new Variable("y"))));
-        CHECK(parse_Str("x * y")->equals(new Multi(new Variable("x"), new Variable("y"))));
-        CHECK(parse_Str("z * x + y")
-                  ->equals(new Add(new Multi(new Variable("z"), new Variable("x")),
-                                   new Variable("y"))));
-
-        CHECK(parse_Str("z * (x + y)")
-                  ->equals(new Multi(new Variable("z"),
-                                     new Add(new Variable("x"), new Variable("y")))));
     }
 }

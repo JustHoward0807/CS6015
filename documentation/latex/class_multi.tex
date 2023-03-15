@@ -1,10 +1,10 @@
-\hypertarget{class_multi}{}\doxysection{Multi Class Reference}
-\label{class_multi}\index{Multi@{Multi}}
+\hypertarget{class_multi}{}\doxysection{MultiExpr Class Reference}
+\label{class_multi}\index{MultiExpr@{MultiExpr}}
 
 
 {\ttfamily \#include $<$Expr.\+hpp$>$}
 
-Inheritance diagram for Multi\+:\begin{figure}[H]
+Inheritance diagram for MultiExpr\+:\begin{figure}[H]
 \begin{center}
 \leavevmode
 \includegraphics[height=2.000000cm]{class_multi}
@@ -13,13 +13,13 @@ Inheritance diagram for Multi\+:\begin{figure}[H]
 \doxysubsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-\mbox{\hyperlink{class_multi_ac3397a85f44fff687d6daa7270f8eba5}{Multi}} (\mbox{\hyperlink{class_expr}{Expr}} $\ast$\mbox{\hyperlink{class_multi_a4b1c758ef9059ce1dcea5d08b7682e88}{lhs}}, \mbox{\hyperlink{class_expr}{Expr}} $\ast$\mbox{\hyperlink{class_multi_afaf6f8b66e8129ffc26d4045138140c5}{rhs}})
+\mbox{\hyperlink{class_multi_ac3397a85f44fff687d6daa7270f8eba5}{MultiExpr}} (\mbox{\hyperlink{class_expr}{Expr}} $\ast$\mbox{\hyperlink{class_multi_a4b1c758ef9059ce1dcea5d08b7682e88}{lhs}}, \mbox{\hyperlink{class_expr}{Expr}} $\ast$\mbox{\hyperlink{class_multi_afaf6f8b66e8129ffc26d4045138140c5}{rhs}})
 \item 
 bool \mbox{\hyperlink{class_multi_a90e5dddb055f380e9d581af187bd401d}{equals}} (\mbox{\hyperlink{class_expr}{Expr}} $\ast$expr)
 \begin{DoxyCompactList}\small\item\em Check if this class lhs is equals to \mbox{\hyperlink{class_expr}{Expr}} class rhs provided in parentheses. \end{DoxyCompactList}\item 
 int \mbox{\hyperlink{class_multi_a2e61fc865e724051783afb3ca279fb19}{interp}} ()
 \begin{DoxyCompactList}\small\item\em Multiply both side. \end{DoxyCompactList}\item 
-bool \mbox{\hyperlink{class_multi_a709f60ed1a82ed68dbdf828959010fac}{has\+Variable}} ()
+bool \mbox{\hyperlink{class_multi_a709f60ed1a82ed68dbdf828959010fac}{has\+VariableExpr}} ()
 \begin{DoxyCompactList}\small\item\em Check both lhs and rhs Expression class to see if they have variable. \end{DoxyCompactList}\item 
 \mbox{\hyperlink{class_expr}{Expr}} $\ast$ \mbox{\hyperlink{class_multi_a0dd5ce85c8fcd188022e56230bf0654b}{subst}} (std\+::string s, \mbox{\hyperlink{class_expr}{Expr}} $\ast$expr)
 \begin{DoxyCompactList}\small\item\em Replace the lhs variable or rhs that has the string provided in parentheses and replace with the expression that provided. \end{DoxyCompactList}\end{DoxyCompactItemize}
@@ -29,7 +29,7 @@ virtual bool \mbox{\hyperlink{class_expr_ab5d65cde79dd78c2e06b2d5a0f19c602}{equa
 \item 
 virtual int \mbox{\hyperlink{class_expr_aeba8585d8225419d49166371306542c1}{interp}} ()=0
 \item 
-virtual bool \mbox{\hyperlink{class_expr_a65e1380b5c7453b09cd1958c4b8feea9}{has\+Variable}} ()=0
+virtual bool \mbox{\hyperlink{class_expr_a65e1380b5c7453b09cd1958c4b8feea9}{has\+VariableExpr}} ()=0
 \item 
 virtual \mbox{\hyperlink{class_expr}{Expr}} $\ast$ \mbox{\hyperlink{class_expr_a70934630e6142f285c46846b54335598}{subst}} (std\+::string s, \mbox{\hyperlink{class_expr}{Expr}} $\ast$expr)=0
 \end{DoxyCompactItemize}
@@ -44,19 +44,19 @@ virtual \mbox{\hyperlink{class_expr}{Expr}} $\ast$ \mbox{\hyperlink{class_expr_a
 
 \doxysubsection{Constructor \& Destructor Documentation}
 \mbox{\Hypertarget{class_multi_ac3397a85f44fff687d6daa7270f8eba5}\label{class_multi_ac3397a85f44fff687d6daa7270f8eba5}} 
-\index{Multi@{Multi}!Multi@{Multi}}
-\index{Multi@{Multi}!Multi@{Multi}}
-\doxysubsubsection{\texorpdfstring{Multi()}{Multi()}}
-{\footnotesize\ttfamily Multi\+::\+Multi (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{class_expr}{Expr}} $\ast$}]{lhs,  }\item[{\mbox{\hyperlink{class_expr}{Expr}} $\ast$}]{rhs }\end{DoxyParamCaption})}
+\index{MultiExpr@{MultiExpr}!MultiExpr@{MultiExpr}}
+\index{MultiExpr@{MultiExpr}!MultiExpr@{MultiExpr}}
+\doxysubsubsection{\texorpdfstring{MultiExpr()}{MultiExpr()}}
+{\footnotesize\ttfamily MultiExpr\+::\+MultiExpr (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{class_expr}{Expr}} $\ast$}]{lhs,  }\item[{\mbox{\hyperlink{class_expr}{Expr}} $\ast$}]{rhs }\end{DoxyParamCaption})}
 
 
 
 \doxysubsection{Member Function Documentation}
 \mbox{\Hypertarget{class_multi_a90e5dddb055f380e9d581af187bd401d}\label{class_multi_a90e5dddb055f380e9d581af187bd401d}} 
-\index{Multi@{Multi}!equals@{equals}}
-\index{equals@{equals}!Multi@{Multi}}
+\index{MultiExpr@{MultiExpr}!equals@{equals}}
+\index{equals@{equals}!MultiExpr@{MultiExpr}}
 \doxysubsubsection{\texorpdfstring{equals()}{equals()}}
-{\footnotesize\ttfamily bool Multi\+::equals (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{class_expr}{Expr}} $\ast$}]{expr }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+{\footnotesize\ttfamily bool MultiExpr\+::equals (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{class_expr}{Expr}} $\ast$}]{expr }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
 
 
 
@@ -75,10 +75,10 @@ true if both equals val, false otherwise.
 Implements \mbox{\hyperlink{class_expr_ab5d65cde79dd78c2e06b2d5a0f19c602}{Expr}}.
 
 \mbox{\Hypertarget{class_multi_a709f60ed1a82ed68dbdf828959010fac}\label{class_multi_a709f60ed1a82ed68dbdf828959010fac}} 
-\index{Multi@{Multi}!hasVariable@{hasVariable}}
-\index{hasVariable@{hasVariable}!Multi@{Multi}}
+\index{MultiExpr@{MultiExpr}!hasVariable@{hasVariable}}
+\index{hasVariable@{hasVariable}!MultiExpr@{MultiExpr}}
 \doxysubsubsection{\texorpdfstring{hasVariable()}{hasVariable()}}
-{\footnotesize\ttfamily bool Multi\+::has\+Variable (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+{\footnotesize\ttfamily bool MultiExpr\+::has\+VariableExpr (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
 
 
 
@@ -92,10 +92,10 @@ true or false based on if it has variables
 Implements \mbox{\hyperlink{class_expr_a65e1380b5c7453b09cd1958c4b8feea9}{Expr}}.
 
 \mbox{\Hypertarget{class_multi_a2e61fc865e724051783afb3ca279fb19}\label{class_multi_a2e61fc865e724051783afb3ca279fb19}} 
-\index{Multi@{Multi}!interp@{interp}}
-\index{interp@{interp}!Multi@{Multi}}
+\index{MultiExpr@{MultiExpr}!interp@{interp}}
+\index{interp@{interp}!MultiExpr@{MultiExpr}}
 \doxysubsubsection{\texorpdfstring{interp()}{interp()}}
-{\footnotesize\ttfamily int Multi\+::interp (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+{\footnotesize\ttfamily int MultiExpr\+::interp (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
 
 
 
@@ -109,10 +109,10 @@ return the integer multiply value
 Implements \mbox{\hyperlink{class_expr_aeba8585d8225419d49166371306542c1}{Expr}}.
 
 \mbox{\Hypertarget{class_multi_a0dd5ce85c8fcd188022e56230bf0654b}\label{class_multi_a0dd5ce85c8fcd188022e56230bf0654b}} 
-\index{Multi@{Multi}!subst@{subst}}
-\index{subst@{subst}!Multi@{Multi}}
+\index{MultiExpr@{MultiExpr}!subst@{subst}}
+\index{subst@{subst}!MultiExpr@{MultiExpr}}
 \doxysubsubsection{\texorpdfstring{subst()}{subst()}}
-{\footnotesize\ttfamily \mbox{\hyperlink{class_expr}{Expr}} $\ast$ Multi\+::subst (\begin{DoxyParamCaption}\item[{std\+::string}]{s,  }\item[{\mbox{\hyperlink{class_expr}{Expr}} $\ast$}]{expr }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{class_expr}{Expr}} $\ast$ MultiExpr\+::subst (\begin{DoxyParamCaption}\item[{std\+::string}]{s,  }\item[{\mbox{\hyperlink{class_expr}{Expr}} $\ast$}]{expr }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
 
 
 
@@ -129,20 +129,20 @@ Implements \mbox{\hyperlink{class_expr_a70934630e6142f285c46846b54335598}{Expr}}
 
 \doxysubsection{Member Data Documentation}
 \mbox{\Hypertarget{class_multi_a4b1c758ef9059ce1dcea5d08b7682e88}\label{class_multi_a4b1c758ef9059ce1dcea5d08b7682e88}} 
-\index{Multi@{Multi}!lhs@{lhs}}
-\index{lhs@{lhs}!Multi@{Multi}}
+\index{MultiExpr@{MultiExpr}!lhs@{lhs}}
+\index{lhs@{lhs}!MultiExpr@{MultiExpr}}
 \doxysubsubsection{\texorpdfstring{lhs}{lhs}}
-{\footnotesize\ttfamily \mbox{\hyperlink{class_expr}{Expr}}$\ast$ Multi\+::lhs}
+{\footnotesize\ttfamily \mbox{\hyperlink{class_expr}{Expr}}$\ast$ MultiExpr\+::lhs}
 
 
 
 lhs of Expression 
 
 \mbox{\Hypertarget{class_multi_afaf6f8b66e8129ffc26d4045138140c5}\label{class_multi_afaf6f8b66e8129ffc26d4045138140c5}} 
-\index{Multi@{Multi}!rhs@{rhs}}
-\index{rhs@{rhs}!Multi@{Multi}}
+\index{MultiExpr@{MultiExpr}!rhs@{rhs}}
+\index{rhs@{rhs}!MultiExpr@{MultiExpr}}
 \doxysubsubsection{\texorpdfstring{rhs}{rhs}}
-{\footnotesize\ttfamily \mbox{\hyperlink{class_expr}{Expr}}$\ast$ Multi\+::rhs}
+{\footnotesize\ttfamily \mbox{\hyperlink{class_expr}{Expr}}$\ast$ MultiExpr\+::rhs}
 
 
 

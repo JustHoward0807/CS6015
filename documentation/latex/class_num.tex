@@ -1,10 +1,10 @@
-\hypertarget{class_num}{}\doxysection{Num Class Reference}
-\label{class_num}\index{Num@{Num}}
+\hypertarget{class_num}{}\doxysection{NumExpr Class Reference}
+\label{class_num}\index{NumExpr@{NumExpr}}
 
 
 {\ttfamily \#include $<$Expr.\+hpp$>$}
 
-Inheritance diagram for Num\+:\begin{figure}[H]
+Inheritance diagram for NumExpr\+:\begin{figure}[H]
 \begin{center}
 \leavevmode
 \includegraphics[height=2.000000cm]{class_num}
@@ -13,23 +13,23 @@ Inheritance diagram for Num\+:\begin{figure}[H]
 \doxysubsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-\mbox{\hyperlink{class_num_a9fce58e650a99ae50f4140ed9c87ec9f}{Num}} (int \mbox{\hyperlink{class_num_ab0654582066deb3adbbd64cf7190a7b7}{val}})
+\mbox{\hyperlink{class_num_a9fce58e650a99ae50f4140ed9c87ec9f}{NumExpr}} (int \mbox{\hyperlink{class_num_ab0654582066deb3adbbd64cf7190a7b7}{val}})
 \item 
 bool \mbox{\hyperlink{class_num_a1e7182f0957d6258185b0dc0e884107f}{equals}} (\mbox{\hyperlink{class_expr}{Expr}} $\ast$expr)
 \begin{DoxyCompactList}\small\item\em Check if this class val is equals to \mbox{\hyperlink{class_expr}{Expr}} class provided in parentheses. \end{DoxyCompactList}\item 
 int \mbox{\hyperlink{class_num_a24f8a1c7ccad82bf7ed1080b59cda6dd}{interp}} ()
 \begin{DoxyCompactList}\small\item\em return its value \end{DoxyCompactList}\item 
-bool \mbox{\hyperlink{class_num_ab4fa1e3885ad915406717698c015cc4c}{has\+Variable}} ()
-\begin{DoxyCompactList}\small\item\em \mbox{\hyperlink{class_num}{Num}} has no variable so always return false. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{class_num_ab4fa1e3885ad915406717698c015cc4c}{has\+VariableExpr}} ()
+\begin{DoxyCompactList}\small\item\em \mbox{\hyperlink{class_num}{NumExpr}} has no variable so always return false. \end{DoxyCompactList}\item
 \mbox{\hyperlink{class_expr}{Expr}} $\ast$ \mbox{\hyperlink{class_num_abaab506f6fb0998edab4187316d1575b}{subst}} (std\+::string s, \mbox{\hyperlink{class_expr}{Expr}} $\ast$expr)
-\begin{DoxyCompactList}\small\item\em Directly return the \mbox{\hyperlink{class_num}{Num}} expression bc \mbox{\hyperlink{class_num}{Num}} class have only val Integer member, so can\textquotesingle{}t be replaced. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Directly return the \mbox{\hyperlink{class_num}{NumExpr}} expression bc \mbox{\hyperlink{class_num}{NumExpr}} class have only val Integer member, so can\textquotesingle{}t be replaced. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \begin{DoxyCompactItemize}
 \item 
 virtual bool \mbox{\hyperlink{class_expr_ab5d65cde79dd78c2e06b2d5a0f19c602}{equals}} (\mbox{\hyperlink{class_expr}{Expr}} $\ast$expr)=0
 \item 
 virtual int \mbox{\hyperlink{class_expr_aeba8585d8225419d49166371306542c1}{interp}} ()=0
 \item 
-virtual bool \mbox{\hyperlink{class_expr_a65e1380b5c7453b09cd1958c4b8feea9}{has\+Variable}} ()=0
+virtual bool \mbox{\hyperlink{class_expr_a65e1380b5c7453b09cd1958c4b8feea9}{has\+VariableExpr}} ()=0
 \item 
 virtual \mbox{\hyperlink{class_expr}{Expr}} $\ast$ \mbox{\hyperlink{class_expr_a70934630e6142f285c46846b54335598}{subst}} (std\+::string s, \mbox{\hyperlink{class_expr}{Expr}} $\ast$expr)=0
 \end{DoxyCompactItemize}
@@ -42,19 +42,19 @@ int \mbox{\hyperlink{class_num_ab0654582066deb3adbbd64cf7190a7b7}{val}}
 
 \doxysubsection{Constructor \& Destructor Documentation}
 \mbox{\Hypertarget{class_num_a9fce58e650a99ae50f4140ed9c87ec9f}\label{class_num_a9fce58e650a99ae50f4140ed9c87ec9f}} 
-\index{Num@{Num}!Num@{Num}}
-\index{Num@{Num}!Num@{Num}}
-\doxysubsubsection{\texorpdfstring{Num()}{Num()}}
-{\footnotesize\ttfamily Num\+::\+Num (\begin{DoxyParamCaption}\item[{int}]{val }\end{DoxyParamCaption})}
+\index{NumExpr@{NumExpr}!NumExpr@{NumExpr}}
+\index{NumExpr@{NumExpr}!NumExpr@{NumExpr}}
+\doxysubsubsection{\texorpdfstring{NumExpr()}{NumExpr()}}
+{\footnotesize\ttfamily NumExpr\+::\+NumExpr (\begin{DoxyParamCaption}\item[{int}]{val }\end{DoxyParamCaption})}
 
 
 
 \doxysubsection{Member Function Documentation}
 \mbox{\Hypertarget{class_num_a1e7182f0957d6258185b0dc0e884107f}\label{class_num_a1e7182f0957d6258185b0dc0e884107f}} 
-\index{Num@{Num}!equals@{equals}}
-\index{equals@{equals}!Num@{Num}}
+\index{NumExpr@{NumExpr}!equals@{equals}}
+\index{equals@{equals}!NumExpr@{NumExpr}}
 \doxysubsubsection{\texorpdfstring{equals()}{equals()}}
-{\footnotesize\ttfamily bool Num\+::equals (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{class_expr}{Expr}} $\ast$}]{expr }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+{\footnotesize\ttfamily bool NumExpr\+::equals (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{class_expr}{Expr}} $\ast$}]{expr }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
 
 
 
@@ -73,27 +73,27 @@ true if both equals val, false otherwise.
 Implements \mbox{\hyperlink{class_expr_ab5d65cde79dd78c2e06b2d5a0f19c602}{Expr}}.
 
 \mbox{\Hypertarget{class_num_ab4fa1e3885ad915406717698c015cc4c}\label{class_num_ab4fa1e3885ad915406717698c015cc4c}} 
-\index{Num@{Num}!hasVariable@{hasVariable}}
-\index{hasVariable@{hasVariable}!Num@{Num}}
+\index{NumExpr@{NumExpr}!hasVariable@{hasVariable}}
+\index{hasVariable@{hasVariable}!NumExpr@{NumExpr}}
 \doxysubsubsection{\texorpdfstring{hasVariable()}{hasVariable()}}
-{\footnotesize\ttfamily bool Num\+::has\+Variable (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+{\footnotesize\ttfamily bool NumExpr\+::has\+VariableExpr (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
 
 
 
-\mbox{\hyperlink{class_num}{Num}} has no variable so always return false. 
+\mbox{\hyperlink{class_num}{NumExpr}} has no variable so always return false.
 
 \begin{DoxyReturn}{Returns}
-always false bc it is an \mbox{\hyperlink{class_num}{Num}} class. 
+always false bc it is an \mbox{\hyperlink{class_num}{NumExpr}} class.
 \end{DoxyReturn}
 
 
 Implements \mbox{\hyperlink{class_expr_a65e1380b5c7453b09cd1958c4b8feea9}{Expr}}.
 
 \mbox{\Hypertarget{class_num_a24f8a1c7ccad82bf7ed1080b59cda6dd}\label{class_num_a24f8a1c7ccad82bf7ed1080b59cda6dd}} 
-\index{Num@{Num}!interp@{interp}}
-\index{interp@{interp}!Num@{Num}}
+\index{NumExpr@{NumExpr}!interp@{interp}}
+\index{interp@{interp}!NumExpr@{NumExpr}}
 \doxysubsubsection{\texorpdfstring{interp()}{interp()}}
-{\footnotesize\ttfamily int Num\+::interp (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+{\footnotesize\ttfamily int NumExpr\+::interp (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
 
 
 
@@ -107,14 +107,14 @@ return its value
 Implements \mbox{\hyperlink{class_expr_aeba8585d8225419d49166371306542c1}{Expr}}.
 
 \mbox{\Hypertarget{class_num_abaab506f6fb0998edab4187316d1575b}\label{class_num_abaab506f6fb0998edab4187316d1575b}} 
-\index{Num@{Num}!subst@{subst}}
-\index{subst@{subst}!Num@{Num}}
+\index{NumExpr@{NumExpr}!subst@{subst}}
+\index{subst@{subst}!NumExpr@{NumExpr}}
 \doxysubsubsection{\texorpdfstring{subst()}{subst()}}
-{\footnotesize\ttfamily \mbox{\hyperlink{class_expr}{Expr}} $\ast$ Num\+::subst (\begin{DoxyParamCaption}\item[{std\+::string}]{s,  }\item[{\mbox{\hyperlink{class_expr}{Expr}} $\ast$}]{expr }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{class_expr}{Expr}} $\ast$ NumExpr\+::subst (\begin{DoxyParamCaption}\item[{std\+::string}]{s,  }\item[{\mbox{\hyperlink{class_expr}{Expr}} $\ast$}]{expr }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
 
 
 
-Directly return the \mbox{\hyperlink{class_num}{Num}} expression bc \mbox{\hyperlink{class_num}{Num}} class have only val Integer member, so can\textquotesingle{}t be replaced. 
+Directly return the \mbox{\hyperlink{class_num}{NumExpr}} expression bc \mbox{\hyperlink{class_num}{NumExpr}} class have only val Integer member, so can\textquotesingle{}t be replaced.
 
 \begin{DoxyReturn}{Returns}
 return the expression 
@@ -127,10 +127,10 @@ Implements \mbox{\hyperlink{class_expr_a70934630e6142f285c46846b54335598}{Expr}}
 
 \doxysubsection{Member Data Documentation}
 \mbox{\Hypertarget{class_num_ab0654582066deb3adbbd64cf7190a7b7}\label{class_num_ab0654582066deb3adbbd64cf7190a7b7}} 
-\index{Num@{Num}!val@{val}}
-\index{val@{val}!Num@{Num}}
+\index{NumExpr@{NumExpr}!val@{val}}
+\index{val@{val}!NumExpr@{NumExpr}}
 \doxysubsubsection{\texorpdfstring{val}{val}}
-{\footnotesize\ttfamily int Num\+::val}
+{\footnotesize\ttfamily int NumExpr\+::val}
 
 
 

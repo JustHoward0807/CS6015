@@ -109,7 +109,7 @@ Package xcolor Info: Model `Gray' substituted by `gray' on input line 1374.
 Package xcolor Info: Model `wave' substituted by `hsb' on input line 1375.
 )
 (./longtable_doxygen.sty
-Package: longtable_doxygen 2014/10/28 v4.11 Multi-page Table package (DPC) - fr
+Package: longtable_doxygen 2014/10/28 v4.11 MultiExpr-page Table package (DPC) - fr
 ozen version for doxygen
 \LTleft=\skip55
 \LTright=\skip56
@@ -131,7 +131,7 @@ Package: tabu_doxygen 2011/02/26 v2.8 - flexible LaTeX tabulars (FC), frozen ve
 rsion for doxygen
 
 (/usr/local/texlive/2022/texmf-dist/tex/latex/varwidth/varwidth.sty
-Package: varwidth 2009/03/30 ver 0.92;  Variable-width minipages
+Package: varwidth 2009/03/30 ver 0.92;  VariableExpr-width minipages
 \@vwid@box=\box56
 \sift@deathcycles=\count270
 \@vwid@loff=\dimen144

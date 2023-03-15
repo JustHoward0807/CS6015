@@ -17,7 +17,7 @@ virtual bool \mbox{\hyperlink{class_expr_ab5d65cde79dd78c2e06b2d5a0f19c602}{equa
 \item 
 virtual int \mbox{\hyperlink{class_expr_aeba8585d8225419d49166371306542c1}{interp}} ()=0
 \item 
-virtual bool \mbox{\hyperlink{class_expr_a65e1380b5c7453b09cd1958c4b8feea9}{has\+Variable}} ()=0
+virtual bool \mbox{\hyperlink{class_expr_a65e1380b5c7453b09cd1958c4b8feea9}{has\+VariableExpr}} ()=0
 \item 
 virtual \mbox{\hyperlink{class_expr}{Expr}} $\ast$ \mbox{\hyperlink{class_expr_a70934630e6142f285c46846b54335598}{subst}} (std\+::string s, \mbox{\hyperlink{class_expr}{Expr}} $\ast$expr)=0
 \end{DoxyCompactItemize}
@@ -32,17 +32,17 @@ virtual \mbox{\hyperlink{class_expr}{Expr}} $\ast$ \mbox{\hyperlink{class_expr_a
 
 
 
-Implemented in \mbox{\hyperlink{class_num_a1e7182f0957d6258185b0dc0e884107f}{Num}}, \mbox{\hyperlink{class_add_ad15535c6c32c41ebb52be1f2b73e9bb3}{Add}}, \mbox{\hyperlink{class_multi_a90e5dddb055f380e9d581af187bd401d}{Multi}}, and \mbox{\hyperlink{class_variable_ad6cd02d0005c031e0e8a500287515aa8}{Variable}}.
+Implemented in \mbox{\hyperlink{class_num_a1e7182f0957d6258185b0dc0e884107f}{NumExpr}}, \mbox{\hyperlink{class_add_ad15535c6c32c41ebb52be1f2b73e9bb3}{AddExpr}}, \mbox{\hyperlink{class_multi_a90e5dddb055f380e9d581af187bd401d}{MultiExpr}}, and \mbox{\hyperlink{class_variable_ad6cd02d0005c031e0e8a500287515aa8}{VariableExpr}}.
 
 \mbox{\Hypertarget{class_expr_a65e1380b5c7453b09cd1958c4b8feea9}\label{class_expr_a65e1380b5c7453b09cd1958c4b8feea9}} 
 \index{Expr@{Expr}!hasVariable@{hasVariable}}
 \index{hasVariable@{hasVariable}!Expr@{Expr}}
 \doxysubsubsection{\texorpdfstring{hasVariable()}{hasVariable()}}
-{\footnotesize\ttfamily virtual bool Expr\+::has\+Variable (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+{\footnotesize\ttfamily virtual bool Expr\+::has\+VariableExpr (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
 
 
 
-Implemented in \mbox{\hyperlink{class_num_ab4fa1e3885ad915406717698c015cc4c}{Num}}, \mbox{\hyperlink{class_add_ac5d09db570bfe637ae9fb12f8f415671}{Add}}, \mbox{\hyperlink{class_multi_a709f60ed1a82ed68dbdf828959010fac}{Multi}}, and \mbox{\hyperlink{class_variable_a55b2c1bbdf7d2da21f52019cdaaf68c0}{Variable}}.
+Implemented in \mbox{\hyperlink{class_num_ab4fa1e3885ad915406717698c015cc4c}{NumExpr}}, \mbox{\hyperlink{class_add_ac5d09db570bfe637ae9fb12f8f415671}{AddExpr}}, \mbox{\hyperlink{class_multi_a709f60ed1a82ed68dbdf828959010fac}{MultiExpr}}, and \mbox{\hyperlink{class_variable_a55b2c1bbdf7d2da21f52019cdaaf68c0}{VariableExpr}}.
 
 \mbox{\Hypertarget{class_expr_aeba8585d8225419d49166371306542c1}\label{class_expr_aeba8585d8225419d49166371306542c1}} 
 \index{Expr@{Expr}!interp@{interp}}
@@ -52,7 +52,7 @@ Implemented in \mbox{\hyperlink{class_num_ab4fa1e3885ad915406717698c015cc4c}{Num
 
 
 
-Implemented in \mbox{\hyperlink{class_num_a24f8a1c7ccad82bf7ed1080b59cda6dd}{Num}}, \mbox{\hyperlink{class_add_a63c445ae0ea8ecc0d0765378e630a06f}{Add}}, \mbox{\hyperlink{class_multi_a2e61fc865e724051783afb3ca279fb19}{Multi}}, and \mbox{\hyperlink{class_variable_a9e1e857cc95cdb123d447d6a2092bc0a}{Variable}}.
+Implemented in \mbox{\hyperlink{class_num_a24f8a1c7ccad82bf7ed1080b59cda6dd}{NumExpr}}, \mbox{\hyperlink{class_add_a63c445ae0ea8ecc0d0765378e630a06f}{AddExpr}}, \mbox{\hyperlink{class_multi_a2e61fc865e724051783afb3ca279fb19}{MultiExpr}}, and \mbox{\hyperlink{class_variable_a9e1e857cc95cdb123d447d6a2092bc0a}{VariableExpr}}.
 
 \mbox{\Hypertarget{class_expr_a70934630e6142f285c46846b54335598}\label{class_expr_a70934630e6142f285c46846b54335598}} 
 \index{Expr@{Expr}!subst@{subst}}
@@ -62,7 +62,7 @@ Implemented in \mbox{\hyperlink{class_num_a24f8a1c7ccad82bf7ed1080b59cda6dd}{Num
 
 
 
-Implemented in \mbox{\hyperlink{class_num_abaab506f6fb0998edab4187316d1575b}{Num}}, \mbox{\hyperlink{class_add_a8c943d56d4e0c7391d1983a193ff2ab2}{Add}}, \mbox{\hyperlink{class_multi_a0dd5ce85c8fcd188022e56230bf0654b}{Multi}}, and \mbox{\hyperlink{class_variable_a3eb2bce465044d9a9c1d15200fbdbb2e}{Variable}}.
+Implemented in \mbox{\hyperlink{class_num_abaab506f6fb0998edab4187316d1575b}{NumExpr}}, \mbox{\hyperlink{class_add_a8c943d56d4e0c7391d1983a193ff2ab2}{AddExpr}}, \mbox{\hyperlink{class_multi_a0dd5ce85c8fcd188022e56230bf0654b}{MultiExpr}}, and \mbox{\hyperlink{class_variable_a3eb2bce465044d9a9c1d15200fbdbb2e}{VariableExpr}}.
 
 
 
