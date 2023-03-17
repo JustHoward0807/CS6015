@@ -162,6 +162,7 @@ public:
 class BoolExpr : public Expr {
 public:
     bool is_True;
+
     BoolExpr(bool is_True);
 
     bool equals(Expr *expr);
@@ -206,7 +207,8 @@ class EqExpr : public Expr {
 public:
     Expr *lhs;
     Expr *rhs;
-    EqExpr(Expr*lhs, Expr*rhs);
+
+    EqExpr(Expr *lhs, Expr *rhs);
 
     bool equals(Expr *expr);
 
@@ -222,15 +224,6 @@ public:
 
     void pretty_print_at(precedence_t precedence_t, std::ostream &ostream, std::streampos &streamPos, bool addParent);
 };
-
-
-
-
-
-
-
-
-
 
 
 Expr *parse_Expr(std::istream &instream);
@@ -251,7 +244,7 @@ Expr *parse_If(std::istream &instream);
 
 Expr *parse_Bool(std::istream &instream);
 
-Expr *parse_Eq(std::istream &instream);
+Expr *parse_comparg(std::istream &instream);
 
 static void consume(std::istream &instream, int expect);
 

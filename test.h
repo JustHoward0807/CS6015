@@ -568,18 +568,72 @@ TEST_CASE("NumVal::equals")
     SECTION("EQUALS") {
         IfExpr *b = new IfExpr(new BoolExpr(false), new NumExpr(9), new NumExpr(88));
         IfExpr *c = new IfExpr(new EqExpr(new NumExpr(1), new NumExpr(5)), new NumExpr(1), new NumExpr(77));
-        IfExpr *d = new IfExpr(new AddExpr(new EqExpr(new NumExpr(1), new NumExpr(2)), new NumExpr(5)), new NumExpr(1), new NumExpr(77));
+        IfExpr *d = new IfExpr(new AddExpr(new EqExpr(new NumExpr(1), new NumExpr(2)), new NumExpr(5)), new NumExpr(1),
+                               new NumExpr(77));
         IfExpr *f = new IfExpr(new AddExpr(new NumExpr(1), new NumExpr(2)), new NumExpr(1), new NumExpr(77));
         Expr *g = new EqExpr(new NumExpr(6), new AddExpr(new NumExpr(5), new NumExpr(6)));
         EqExpr *h = new EqExpr(new NumExpr(6), new NumExpr(7));
-        CHECK_THROWS_WITH(f->interp(),"It's not equal expression doable");
+        CHECK_THROWS_WITH(f->interp(), "It's not equal expression doable");
         h->pretty_print(std::cout);
-//        std::cout << b << std::endl;
-        //        LetExpr *t = new LetExpr("x", new AddExpr(new NumExpr(6), new NumExpr(6)), new VariableExpr("x"));
-//        Val *t = (new MultiExpr(new NumExpr(3), new NumExpr(2)))->interp();
-//        std::cout << f->interp()->to_string() << std::endl;
-//        CHECK((new MultiExpr(new NumExpr(3), new NumExpr(2)))->interp()->to_string() == "6");
+
         CHECK((new NumVal(1))->equals(nullptr) == false);
+    }
+
+    SECTION("from quiz") {
+
+        CHECK((parse_Str("_if 1 == 2 _then 5 _else 6"))->
+                equals(new IfExpr(new EqExpr(new NumExpr(1), new NumExpr(2)), new NumExpr(5), new NumExpr(6))));
+
+        CHECK((((parse_Str("_if 1 == 2 _then 5 _else 6"))->interp())->to_string()) == "6");
+        CHECK((((parse_Str("1 == 2"))->interp())->to_string()) == "_false");
+        CHECK((((parse_Str("(1 + 2) == (3 + 0)"))->interp())->to_string()) == "_true");
+        CHECK((((parse_Str("1 + 2 == 3 + 0"))->interp())->to_string()) == "_true");
+        CHECK_THROWS_WITH(((((parse_Str("(1 == 2) + 3 "))->interp())->to_string()) == "_true"), "add of non-number");
+        CHECK((((parse_Str("1==2+3"))->interp())->to_string()) == "_false");
+        CHECK((((parse_Str("_if _false\n"
+                           "_then 5\n"
+                           "_else 6"))->interp())->to_string()) == "6");
+        CHECK((((parse_Str("_if _false\n"
+                           "_then _false\n"
+                           "_else _true"))->interp())->to_string()) == "_true");
+        CHECK((((parse_Str("_if _false\n"
+                           "_then 5\n"
+                           "_else _false"))->interp())->to_string()) == "_false");
+        CHECK_THROWS_WITH(((((parse_Str("_true + _false"))->interp())->to_string()) == "_false"), "add of non-number");
+        CHECK_THROWS_WITH(((((parse_Str("_true + 1"))->interp())->to_string()) == "_false"), "add of non-number");
+        CHECK((((parse_Str("_true == _true"))->interp())->to_string()) == "_true");
+        CHECK((((parse_Str("1 == _true"))->interp())->to_string()) == "_false");
+        CHECK_THROWS_WITH(((((parse_Str("_if 1 + 2\n"
+                                        "_then _false\n"
+                                        "_else _true"))->interp())->to_string()) == "_false"),
+                          "It's not equal expression doable");
+        CHECK((((parse_Str("_if _true\n"
+                           "_then 5\n"
+                           "_else _true + 1"))->interp())->to_string()) == "5");
+        CHECK_THROWS_WITH(((((parse_Str("_if _false\n"
+                                        "_then 5\n"
+                                        "_else _true + 1"))->interp())->to_string()) == "_false"), "add of non-number");
+        CHECK_THROWS_WITH(((((parse_Str("_let x = _true + 1\n"
+                                        "_in  _if _true\n"
+                                        "     _then 5\n"
+                                        "     _else x"))->interp())->to_string()) == "_false"), "add of non-number");
+        CHECK_THROWS_WITH(((((parse_Str("_let x = _true + 1\n"
+                                        "_in  _if _true\n"
+                                        "     _then 5\n"
+                                        "     _else x"))->interp())->to_string()) == "_false"), "add of non-number");
+        CHECK((((parse_Str("(_if _true\n"
+                           " _then 5\n"
+                           " _else _true) + 1"))->interp())->to_string()) == "6");
+        CHECK((((parse_Str("_if (_if 1 == 2\n"
+                           "     _then _false\n"
+                           "     _else _true)\n"
+                           "_then 5\n"
+                           "_else 6"))->interp())->to_string()) == "5");
+        CHECK((((parse_Str("_if (_if 1 == 2\n"
+                           "     _then _true\n"
+                           "      _else _false)\n"
+                           "_then 5\n"
+                           "_else 6"))->interp())->to_string()) == "6");
     }
 }
 

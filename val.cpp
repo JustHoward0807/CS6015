@@ -81,7 +81,7 @@ bool BoolVal::is_true() {
 }
 
 Val *BoolVal::add_to(Val *otherVal) {
-    throw std::runtime_error("ERROR!! What do you want to do with BoolVal add to?");
+    throw std::runtime_error("add of non-number");
 }
 
 Val *BoolVal::mult_with(Val *otherVal) {
@@ -105,7 +105,7 @@ bool BoolVal::equals(Val *otherVal) {
 
 void BoolVal::print(std::ostream &ostream) {
     if (this->is_True) ostream << "_true";
-    else ostream << "false";
+    else ostream << "_false";
 }
 
 

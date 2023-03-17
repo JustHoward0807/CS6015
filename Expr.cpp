@@ -153,9 +153,8 @@ bool LetExpr::equals(Expr *expr) {
     }
 }
 
-bool IfExpr::equals(Expr *expr)
-{
-      IfExpr *otherExpr = dynamic_cast<IfExpr *>(expr);
+bool IfExpr::equals(Expr *expr) {
+    IfExpr *otherExpr = dynamic_cast<IfExpr *>(expr);
     if (otherExpr == NULL) {
         return false;
     } else {
@@ -318,11 +317,6 @@ Val *LetExpr::interp() {
 }
 
 Val *IfExpr::interp() {
-    EqExpr *otherExpr = dynamic_cast<EqExpr *>(this->boolExpr);
-//    if (otherExpr == NULL) {
-//        throw std::runtime_error("It's not equal expression doable");
-//
-//    }
     if (this->boolExpr->interp()->is_true()) return this->firstNumExpr->interp();
     else return this->secondNumExpr->interp();
 }
@@ -476,9 +470,11 @@ void BoolExpr::print(std::ostream &ostream) {
 }
 
 void EqExpr::print(std::ostream &ostream) {
+    ostream << "(";
     this->lhs->print(ostream);
     ostream << "==";
     this->rhs->print(ostream);
+    ostream << ")";
 }
 
 /*
@@ -620,7 +616,7 @@ void IfExpr::pretty_print(std::ostream &ostream) {
 
 void
 IfExpr::pretty_print_at(precedence_t precedence_t, std::ostream &ostream, std::streampos &streamPos, bool addParent) {
-    if (precedence_t > prec_equal && addParent) {
+    if (precedence_t > prec_add && addParent) {
         ostream << "(";
     }
 
@@ -670,19 +666,19 @@ void EqExpr::pretty_print(std::ostream &ostream) {
 
 void
 EqExpr::pretty_print_at(precedence_t precedence_t, std::ostream &ostream, std::streampos &streamPos, bool addParent) {
-    if (precedence_t > prec_equal) {
-        ostream << "(";
-    }
-    this->lhs->pretty_print_at(static_cast<::precedence_t>(prec_equal + 1), ostream, streamPos, false);
+//    if (precedence_t > prec_equal) {
+//        ostream << "(";
+//    }
+    this->lhs->pretty_print_at(static_cast<::precedence_t>(prec_equal), ostream, streamPos, true);
     ostream << " == ";
     LetExpr *t = dynamic_cast<LetExpr *>(this->rhs);
 
     this->rhs->pretty_print_at(static_cast<::precedence_t>(prec_equal), ostream, streamPos,
-                               false);
+                               true);
 
-    if (precedence_t > prec_equal) {
-        ostream << ")";
-    }
+//    if (precedence_t > prec_equal) {
+//        ostream << ")";
+//    }
 }
 
 
@@ -700,8 +696,9 @@ Expr *parse_Str(std::string string) {
     return parse_Expr(s);
 }
 
-Expr* parse_Eq(std::istream &instream) {
-    Expr *e = parse_Addend(instream);
+
+Expr *parse_Expr(std::istream &instream) {
+    Expr *e = parse_comparg(instream);
     skip_whitespace(instream);
 
     int peek = instream.peek();
@@ -710,21 +707,22 @@ Expr* parse_Eq(std::istream &instream) {
         consume(instream, '=');
         // Expr *rhs = parse_Expr(instream);
         // Expr *rhs = parse_Multicand(instream);
-        Expr *rhs = parse_Addend(instream);
+        Expr *rhs = parse_Expr(instream);
         return new EqExpr(e, rhs);
     } else {
         return e;
     }
 }
 
-Expr *parse_Expr(std::istream &instream) {
-    Expr *e = parse_Eq(instream);
+Expr *parse_comparg(std::istream &instream) {
+    Expr *e = parse_Addend(instream);
     skip_whitespace(instream);
 
     int peek = instream.peek();
     if (peek == '+') {
         consume(instream, '+');
-        Expr *rhs = parse_Expr(instream);
+        Expr *rhs = parse_comparg(instream);
+
         return new AddExpr(e, rhs);
     } else if (peek == '-') {
         throw std::runtime_error("Don't know how to handle subtraction");
@@ -750,8 +748,8 @@ Expr *parse_Addend(std::istream &instream) {
 }
 
 
-
 Expr *parse_Multicand(std::istream &instream) {
+
     skip_whitespace(instream);
 
     int peek = instream.peek();
@@ -786,7 +784,6 @@ Expr *parse_Multicand(std::istream &instream) {
         throw std::runtime_error("Invalid input");
     }
 }
-
 
 
 Expr *parse_Var(std::istream &instream) {
@@ -842,6 +839,7 @@ Expr *parse_Let(std::istream &instream) {
 }
 
 Expr *parse_If(std::istream &instream) {
+
     consume(instream, 'i');
     consume(instream, 'f');
     skip_whitespace(instream);
@@ -854,19 +852,19 @@ Expr *parse_If(std::istream &instream) {
     consume(instream, 'e');
     consume(instream, 'n');
     skip_whitespace(instream);
-    Expr* lhs = parse_Expr(instream);
+    Expr *lhs = parse_Expr(instream);
 
     consume(instream, '_');
     consume(instream, 'e');
     consume(instream, 'l');
     consume(instream, 's');
     consume(instream, 'e');
-    Expr* rhs = parse_Expr(instream);
+    Expr *rhs = parse_Expr(instream);
 
     return new IfExpr(ifExpr, lhs, rhs);
 }
 
-Expr* parse_Bool(std::istream &instream) {
+Expr *parse_Bool(std::istream &instream) {
     if (instream.peek() == 'f') {
         consume(instream, 'f');
         consume(instream, 'a');
@@ -875,21 +873,17 @@ Expr* parse_Bool(std::istream &instream) {
         consume(instream, 'e');
 
         return new BoolExpr(false);
-    }
-
-    else if (instream.peek() == 't') {
+    } else if (instream.peek() == 't') {
         consume(instream, 't');
         consume(instream, 'r');
         consume(instream, 'u');
         consume(instream, 'e');
         return new BoolExpr(true);
-    }
-    else {
+    } else {
         throw std::runtime_error("Parsing Bool wrong");
     }
 
 }
-
 
 
 Expr *parse_Num(std::istream &instream) {
