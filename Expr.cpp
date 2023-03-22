@@ -868,9 +868,10 @@ Expr *parse_inner(std::istream &instream) {
         return parse_Bool(instream);
       }
 
-      if (peek == 'u') {
+      else if (peek == 'u') {
         return parse_Fun(instream);
       }
+
     } else {
       return parse_If(instream);
     }
@@ -879,6 +880,8 @@ Expr *parse_inner(std::istream &instream) {
     consume(instream, peek);
     throw std::runtime_error("Invalid input");
   }
+
+  throw std::runtime_error("Invalid input");
 }
 
 Expr *parse_Var(std::istream &instream) {

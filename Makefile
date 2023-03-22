@@ -1,6 +1,7 @@
 CXX = c++
 HEADERS = Expr.hpp cmdline.h val.h test.h
-CXXFLAGS = --std=c++14 -fsanitize=undefined -fno-sanitize-recover=undefined
+CXXFLAGS = --std=c++14
+#-fsanitize=undefined -fno-sanitize-recover=undefined
 CXXSOURCE = main.cpp Expr.cpp cmdline.cpp val.cpp
 CXXTESTSOURCE = testMain.cpp exec.cpp
 CXXTESTHEADERS = exec.h
