@@ -1,13 +1,13 @@
 CXX = c++
 HEADERS = Expr.hpp cmdline.h val.h test.h
-CXXFLAGS = --std=c++14
+CXXFLAGS = --std=c++14 -fsanitize=undefined -fno-sanitize-recover=undefined
 CXXSOURCE = main.cpp Expr.cpp cmdline.cpp val.cpp
 CXXTESTSOURCE = testMain.cpp exec.cpp
 CXXTESTHEADERS = exec.h
 
 msdscript: $(HEADERS) $(CXXSOURCE)
 	$(CXX) $(CXXFLAGS) -c $(CXXSOURCE)
-	$(CXX) $(CXXFLAGS) $(CXXSOURCE) -o msdscript
+	$(CXX) $(CXXFLAGS)  $(CXXSOURCE) -o msdscript
 	rm -f *.o *.out
 
 test_msdscript: $(CXXTESTHEADERS) $(CXXTESTSOURCE)

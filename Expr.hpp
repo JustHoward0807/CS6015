@@ -20,7 +20,6 @@
 typedef enum {
     prec_equal,
     prec_none,      // = 0
-
     prec_add,       // = 1
     prec_mult       // = 2
 } precedence_t;
@@ -34,7 +33,7 @@ public:
 
     virtual Val *interp() = 0;
 
-    virtual bool hasVariable() = 0;
+//    virtual bool hasVariable() = 0;
 
     virtual Expr *subst(std::string s, Expr *expr) = 0;
 
@@ -60,7 +59,7 @@ public:
 
     Val *interp();
 
-    bool hasVariable();
+//    bool hasVariable();
 
     Expr *subst(std::string s, Expr *expr);
 
@@ -82,7 +81,7 @@ public:
 
     Val *interp();
 
-    bool hasVariable();
+//    bool hasVariable();
 
     Expr *subst(std::string s, Expr *expr);
 
@@ -104,7 +103,7 @@ public:
 
     Val *interp();
 
-    bool hasVariable();
+//    bool hasVariable();
 
     Expr *subst(std::string s, Expr *expr);
 
@@ -125,7 +124,7 @@ public:
 
     Val *interp();
 
-    bool hasVariable();
+//    bool hasVariable();
 
     Expr *subst(std::string s, Expr *expr);
 
@@ -148,7 +147,7 @@ public:
 
     Val *interp();
 
-    bool hasVariable();
+//    bool hasVariable();
 
     Expr *subst(std::string s, Expr *expr);
 
@@ -169,7 +168,7 @@ public:
 
     Val *interp();
 
-    bool hasVariable();
+//    bool hasVariable();
 
     Expr *subst(std::string s, Expr *expr);
 
@@ -192,7 +191,7 @@ public:
 
     Val *interp();
 
-    bool hasVariable();
+//    bool hasVariable();
 
     Expr *subst(std::string s, Expr *expr);
 
@@ -214,7 +213,7 @@ public:
 
     Val *interp();
 
-    bool hasVariable();
+//    bool hasVariable();
 
     Expr *subst(std::string s, Expr *expr);
 
@@ -224,6 +223,46 @@ public:
 
     void pretty_print_at(precedence_t precedence_t, std::ostream &ostream, std::streampos &streamPos, bool addParent);
 };
+
+class FunExpr : public Expr {
+public:
+    std::string formal_arg;
+    Expr *body;
+    FunExpr(std::string formal_arg, Expr* body);
+
+    bool equals(Expr *expr);
+
+    Val *interp();
+
+    Expr *subst(std::string s, Expr *expr);
+
+    void print(std::ostream &ostream);
+
+    void pretty_print(std::ostream &ostream);
+
+    void pretty_print_at(precedence_t precedence_t, std::ostream &ostream, std::streampos &streamPos, bool addParent);
+};
+
+class CallExpr : public Expr {
+public:
+    Expr* to_be_called;
+    Expr* actual_arg;
+    CallExpr(Expr* to_be_called, Expr* actual_arg);
+
+    bool equals(Expr *expr);
+
+    Val *interp();
+
+    Expr *subst(std::string s, Expr *expr);
+
+    void print(std::ostream &ostream);
+
+    void pretty_print(std::ostream &ostream);
+
+    void pretty_print_at(precedence_t precedence_t, std::ostream &ostream, std::streampos &streamPos, bool addParent);
+};
+
+
 
 
 Expr *parse_Expr(std::istream &instream);
@@ -245,6 +284,10 @@ Expr *parse_If(std::istream &instream);
 Expr *parse_Bool(std::istream &instream);
 
 Expr *parse_comparg(std::istream &instream);
+
+Expr *parse_inner(std::istream &instream);
+
+Expr *parse_Fun(std::istream &instream);
 
 static void consume(std::istream &instream, int expect);
 

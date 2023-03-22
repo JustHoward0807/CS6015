@@ -249,7 +249,8 @@ static void wait_child(pid_t pid, int &exit_code)
 
 std::string random_expr_string()
 {
-  int random = rand() % 100;
+//  int random = rand() % 100;
+  int random = rand();
   if (random < 55)
     return std::to_string(random);
 
@@ -275,7 +276,8 @@ std::string random_expr_string()
 
 std::string random_Var()
 {
-  int random = rand() % 100;
+//  int random = rand() % 100;
+  int random = rand();
   if (random < 50)
   {
     return "x";
