@@ -270,7 +270,7 @@ bool CallExpr::equals(Expr *expr) { return false; }
  */
 Val *VariableExpr::interp() {
   // VariableExpr cannot be interp, ex: cannot add or multiply
-  throw std::runtime_error("message");
+  throw std::runtime_error("Variable interp");
 }
 
 /**
@@ -303,21 +303,14 @@ Val *NumExpr::interp() {
   //    return this->val;
 }
 
-// LetExpr x = 5 _in x + 1
-// LetExpr x = 5 + 2
-//_in x + 1
-//(LetExpr x=5 _in ((LetExpr y=3 _in (y+2))+x))
 /**
  * \brief //Interp the rhs first then sub the body and interp again
  * \return return integer
  */
 
 Val *LetExpr::interp() {
-
   Val *rhs_val = this->rhs->interp();
-//  std::cout << rhs_val ->to_string() << std::endl;
   return body->subst(this->lhs, rhs_val->to_expr())->interp();
-  //    return (this->body)->subst(this->lhs, this->rhs)->interp();
 }
 
 Val *IfExpr::interp() {
@@ -339,13 +332,9 @@ Val *EqExpr::interp() {
 //_fun (x) x + 1
 //_let f = _fun (x) x + 1
 //_in  f(10)
-Val *FunExpr::interp() {
-  return new FunVal(formal_arg, body);
-}
+Val *FunExpr::interp() { return new FunVal(formal_arg, body); }
 
 Val *CallExpr::interp() {
-  std::cout << this->to_be_called->interp()->to_string() << std::endl;
-
   return this->to_be_called->interp()->call(actual_arg->interp());
 }
 
@@ -405,11 +394,8 @@ Expr *LetExpr::subst(std::string s, Expr *expr) {
   if (s == lhs) {
     return new LetExpr(s, rhs->subst(s, expr), this->body);
   } else {
-    return new LetExpr(lhs, rhs->subst(s, expr), this->body->subst(s, expr));
+    return this->body->subst(this->lhs, this->rhs)->subst(s, expr);
   }
-  //    else {
-  //        return this->body->subst(this->lhs, this->rhs)->subst(s, expr);
-  //    }
 }
 
 //_let same = 1 == 2
@@ -433,7 +419,8 @@ Expr *EqExpr::subst(std::string s, Expr *expr) {
 
 Expr *FunExpr::subst(std::string s, Expr *expr) {
   if (s == this->formal_arg) {
-    return new FunExpr(s, this->body->subst(s, expr));
+    return new FunExpr(this->formal_arg, this->body);
+
   } else {
     return new FunExpr(this->formal_arg, this->body->subst(s, expr));
   }
@@ -522,7 +509,9 @@ void FunExpr::print(std::ostream &ostream) {
 void CallExpr::print(std::ostream &ostream) {
   ostream << "(";
   this->to_be_called->print(ostream);
+  ostream << "(";
   this->actual_arg->print(ostream);
+  ostream << ")";
   ostream << ")";
 }
 
@@ -825,6 +814,9 @@ Expr *parse_Addend(std::istream &instream) {
 Expr *parse_Multicand(std::istream &instream) {
   Expr *e = parse_inner(instream);
   skip_whitespace(instream);
+  if (instream.peek() != '(' && isdigit(instream.peek())) {
+    throw std::runtime_error("[ERROR] : Invalid input");
+  }
 
   while (instream.peek() == '(') {
     consume(instream, '(');
@@ -832,7 +824,6 @@ Expr *parse_Multicand(std::istream &instream) {
     consume(instream, ')');
     e = new CallExpr(e, actual_arg);
   }
-
   return e;
 }
 
@@ -912,21 +903,20 @@ Expr *parse_Let(std::istream &instream) {
   std::string lhs;
   while (!isspace(instream.peek()) && instream.peek() != '=') {
     lhs = parse_Var(instream)->to_string();
-    std::cout << "lhs: " << lhs << std::endl;
+//    std::cout << "lhs: " << lhs << std::endl;
   }
   skip_whitespace(instream);
   consume(instream, '=');
   skip_whitespace(instream);
   Expr *rhs = parse_Expr(instream);
-  std::cout << "rhs: " << rhs->to_string() << std::endl;
+//  std::cout << "rhs: " << rhs->to_string() << std::endl;
   consume(instream, '_');
   consume(instream, 'i');
   consume(instream, 'n');
 
   skip_whitespace(instream);
-  std::cout << (char)instream.peek() << std::endl;
   Expr *body = parse_Expr(instream);
-  std::cout << "body: " << body->to_string() << std::endl;
+//  std::cout << "body: " << body->to_string() << std::endl;
   return new LetExpr(lhs, rhs, body);
 }
 
@@ -982,8 +972,13 @@ Expr *parse_Fun(std::istream &instream) {
   skip_whitespace(instream);
   consume(instream, '(');
   std::string lhs;
+
+  //  while (instream.peek() != ')') {
   lhs = parse_Var(instream)->to_string();
-//      std::cout << varExpr->to_string() << std::endl;
+  //    std::cout << "lhs: " << lhs << std::endl;
+  //  }
+
+  //      std::cout << varExpr->to_string() << std::endl;
   consume(instream, ')');
   skip_whitespace(instream);
   Expr *body = parse_Expr(instream);

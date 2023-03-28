@@ -1,6 +1,15 @@
 #include "cmdline.h"
 #include "Expr.hpp"
 #include "val.h"
+//_let f = _fun (x) x + 1 _in _let g = _fun (x) f(2)+x _in g(5)
+/*
+_let x = 8
+_in  _let f = _fun (x) x*x
+     _in f(2)
+
+ * */
+
+
 /**
  * \mainpage MSDScript-main.cpp
  * \author Howard Tung
@@ -20,8 +29,8 @@ int main(int argc, char **argv) {
         switch (type) {
             case do_interp:
                 parseExpr = parse_Expr(std::cin);
+//                parseExpr->interp()->print(std::cout);
                 std::cout << parseExpr->interp()->to_string() << std::endl;
-                // std::cout << "Value: " << parseExpr->interp() << std::endl;
                 exit(0);
                 break;
 

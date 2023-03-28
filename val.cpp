@@ -111,8 +111,7 @@ Val *BoolVal::call(Val *actual_arg) { return nullptr; }
 */
 
 Val *FunVal::add_to(Val *otherVal) {
-  // TODO: Check this
-  throw std::runtime_error("add of non-number");
+  throw std::runtime_error("[ERROR] Cannot not add_to");
 }
 
 FunVal::FunVal(std::string formal_arg, Expr *body) {
@@ -121,23 +120,18 @@ FunVal::FunVal(std::string formal_arg, Expr *body) {
 }
 
 bool FunVal::is_true() {
-  throw std::runtime_error("It's not equal expression doable");
+  throw std::runtime_error("[ERROR] Cannot is_true");
 }
 
 Val *FunVal::mult_with(Val *otherVal) {
-  // TODO: Check this
-  throw std::runtime_error(
-      "ERROR!! What do you want to do with BoolVal mult with?");
+  throw std::runtime_error("[ERROR] Cannot not mult_with");
 }
 
 Expr *FunVal::to_expr() {
-  // TODO: Change this
-  //  return new NumExpr(10);
-  return nullptr;
+    return new FunExpr(this->formal_arg, this->body);
 }
 
 bool FunVal::equals(Val *otherVal) {
-  // TODO: Change this
   FunVal *otherNum = dynamic_cast<FunVal *>(otherVal);
   if (otherNum == nullptr) {
     return false;

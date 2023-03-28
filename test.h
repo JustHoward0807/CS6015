@@ -281,7 +281,7 @@ TEST_CASE("Test for expression") {
             ->equals(new NumVal(23)));
 
     //(LetExpr x=5 _in ((LetExpr y= (LetExpr q = 5 _in q * 10) _in (y + (LetExpr
-    //z = 10, _in (z + 5))))+x)) == 70
+    // z = 10, _in (z + 5))))+x)) == 70
     CHECK(
         (new LetExpr(
              "x", new NumExpr(5),
@@ -754,7 +754,7 @@ TEST_CASE("NumVal::equals") {
         new EqExpr(new NumExpr(6), new AddExpr(new NumExpr(5), new NumExpr(6)));
     EqExpr *h = new EqExpr(new NumExpr(6), new NumExpr(7));
     CHECK_THROWS_WITH(f->interp(), "It's not equal expression doable");
-//    h->pretty_print(std::cout);
+    //    h->pretty_print(std::cout);
 
     CHECK((new NumVal(1))->equals(nullptr) == false);
   }
@@ -858,15 +858,215 @@ TEST_CASE("Functions") {
         new FunExpr("x", new AddExpr(new VariableExpr("x"), new NumExpr(1))),
         new NumExpr(10));
 
-    FunExpr *t2 = new FunExpr("x", new AddExpr(new VariableExpr("x"), new
-                                               NumExpr(5)));
+    CHECK((t->interp())->equals(new NumVal(11)));
+    FunExpr *t2 =
+        new FunExpr("x", new AddExpr(new VariableExpr("x"), new NumExpr(5)));
 
     FunVal *e = new FunVal("x", new NumExpr(6));
 
-//    t ->print(std::cout);
+    //    "_let f = _fun (x) x + 1 \n"
+    //    "_in _let g = _fun (x)\n"
+    //    "              f(2) + x\n"
+    //    "_in g(5) "
+    LetExpr *l = new LetExpr(
+        "f",
+        new FunExpr("x", new AddExpr(new VariableExpr("x"), new NumExpr(1))),
+        new LetExpr(
+            "g",
+            new FunExpr("x", new AddExpr(new CallExpr(new VariableExpr("f"),
+                                                      new NumExpr(2)),
+                                         new VariableExpr("x"))),
+            new CallExpr(new VariableExpr("g"), new NumExpr(5))));
+
+    LetExpr *l2 = new LetExpr(
+        "f",
+        new FunExpr("x", new AddExpr(new VariableExpr("x"), new NumExpr(1))),
+        new CallExpr(new VariableExpr("f"), new NumExpr(2)));
+    //    l->print(std::cout);
+    //    l->interp()->print(std::cout);
+
+    //    l->print(std::cout);
+    //    l->interp()->print(std::cout);
   }
 
-  SECTION("From quiz") {}
+  SECTION("From quiz") {
+    REQUIRE(parse_Str("_let f = _fun (x) x+ 1 \n"
+                      "_in f(5) ")
+                ->interp()
+                ->equals(new NumVal(6)));
+
+    REQUIRE(parse_Str("_let f = _fun (x)\n"
+                      "           7\n"
+                      "_in f(5)")
+                ->interp()
+                ->equals(new NumVal(7)));
+
+    REQUIRE(parse_Str("_let f = _fun (x)\n"
+                      "           _true\n"
+                      "_in f(5) ")
+                ->interp()
+                ->equals(new BoolVal(true)));
+
+    REQUIRE_THROWS_WITH(parse_Str("_let f = _fun (x)\n"
+                                  "           x + _true\n"
+                                  "_in f(5) ")
+                            ->interp(),
+                        "AddExpr of non-number");
+
+    REQUIRE(parse_Str("_let f = _fun (x)\n"
+                      "           x + _true\n"
+                      "_in 5 + 1 ")
+                ->interp()
+                ->equals(new NumVal(6)));
+
+    REQUIRE_THROWS_WITH(parse_Str("_let f = _fun (x)\n"
+                                  "           7\n"
+                                  "_in  f(5 + _true)")
+                            ->interp(),
+                        "AddExpr of non-number");
+    REQUIRE_THROWS_WITH(parse_Str("_let f = _fun (x) x+ 1\n"
+                                  "_in f + 5")
+                            ->interp(),
+                        "[ERROR] Cannot not add_to");
+
+    REQUIRE(parse_Str("_let f = _fun (x) x+ 1 \n"
+                      "_in _if _false\n"
+                      "    _then f(5)\n"
+                      "    _else f(6)")
+                ->interp()
+                ->equals(new NumVal(7)));
+
+    REQUIRE(parse_Str("_let f = _fun (x) x+ 1 \n"
+                      "_in _let g = _fun (y) y+ 2 \n"
+                      "_in _if _true\n"
+                      "    _then f(5)\n"
+                      "    _else g(5)")
+                ->interp()
+                ->equals(new NumVal(6)));
+
+    REQUIRE(parse_Str("_let f = _fun (x) x+ 1 \n"
+                      "_in _let g = _fun (y) y+ 2 \n"
+                      "_in f(g(5)) ")
+                ->interp()
+                ->equals(new NumVal(8)));
+
+    REQUIRE(parse_Str("_let f = _fun (x) x+ 1 \n"
+                      "_in _let g = _fun (y)\n"
+                      "              f(y + 2)\n"
+                      "_in g(5) ")
+                ->interp()
+                ->equals(new NumVal(8)));
+
+    REQUIRE(parse_Str("_let f = _fun (x) x + 1 \n"
+                      "_in _let g = _fun (x)\n"
+                      "              f(2) + x\n"
+                      "_in g(5) ")
+                ->interp()
+                ->equals(new NumVal(8)));
+
+    REQUIRE_THROWS_WITH(parse_Str("_let f = _fun (x) x+ 1 \n"
+                                  "_in f 5 ")
+                            ->interp(),
+                        "[ERROR] : Invalid input");
+
+    REQUIRE(parse_Str("_let f = _fun (x) x+ 1 \n"
+                      "_in (f)(5) ")
+                ->interp()
+                ->equals(new NumVal(6)));
+
+    auto *add_x_1 = new AddExpr(new VariableExpr("x"), new NumExpr(1));
+    auto *fun_val_x_add_x_1 = new FunVal("x", add_x_1);
+    REQUIRE(parse_Str("_fun (x) x+ 1")->interp()->equals(fun_val_x_add_x_1));
+
+    REQUIRE(parse_Str("_let f = _fun (x) x+ 1 \n"
+                      "_in f ")
+                ->interp()
+                ->equals(fun_val_x_add_x_1));
+
+    REQUIRE(parse_Str("(_fun (x)\n"
+                      "   x + 1)(5)")
+                ->interp()
+                ->equals(new NumVal(6)));
+
+    REQUIRE(parse_Str("_let f = _if _false\n"
+                      "            _then _fun (x)  \n"
+                      "                        x+ 1 \n"
+                      "           _else _fun (x)\n"
+                      "                       x+ 2\n"
+                      "_in f(5)")
+                ->interp()
+                ->equals(new NumVal(7)));
+
+    REQUIRE(parse_Str("(_if _false \n"
+                      "  _then _fun (x)\n"
+                      "            x+ 1\n"
+                      "   _else _fun (x)\n"
+                      "                x + 2)(5)")
+                ->interp()
+                ->equals(new NumVal(7)));
+
+    REQUIRE(parse_Str("_let f = _fun (g)\n"
+                      "           g(5)\n"
+                      "_in _let g = _fun (y)  \n"
+                      "             y + 2\n"
+                      "_in f(g) ")
+                ->interp()
+                ->equals(new NumVal(7)));
+
+    REQUIRE(parse_Str("_let f = _fun (g)\n"
+                      "           g(5)\n"
+                      "_in f(_fun (y)\n"
+                      "        y + 2)")
+                ->interp()
+                ->equals(new NumVal(7)));
+
+    REQUIRE(parse_Str("_let f = _fun (x)\n"
+                      "           _fun (y)\n"
+                      "x+ y _in (f(5))(1) ")
+                ->interp()
+                ->equals(new NumVal(6)));
+
+    REQUIRE(parse_Str("_let f = _fun (x)\n"
+                      "           _fun (y)\n"
+                      "x+ y _in f(5)(1) ")
+                ->interp()
+                ->equals(new NumVal(6)));
+
+    REQUIRE(parse_Str("_let f = _fun (x)\n"
+                      "           _fun (g)\n"
+                      "             g(x + 1)\n"
+                      "_in _let g = _fun (y)\n"
+                      "              y+ 2 \n"
+                      "_in (f(5))(g) ")
+                ->interp()
+                ->equals(new NumVal(8)));
+
+    REQUIRE(parse_Str("_let f = _fun (x)\n"
+                      "           _fun (g)\n"
+                      "             g(x + 1)\n"
+                      "_in _let g = _fun (y)\n"
+                      "y+ 2 _in f(5)(g)")
+                ->interp()
+                ->equals(new NumVal(8)));
+
+    CHECK((parse_Str("_let factrl = _fun (factrl)\n"
+                     "                _fun (x)\n"
+                     "                  _if x == 1\n"
+                     "                  _then 1\n"
+                     "                  _else x * factrl(factrl)(x + -1)\n"
+                     "_in  factrl(factrl)(10)"))
+              ->interp()
+              ->equals(new NumVal(3628800)));
+
+    REQUIRE(parse_Str("_let f = _fun (f)\n"
+                      "           _fun (x)\n"
+                      "             _if x == 0\n"
+                      "             _then 0\n"
+                      "             _else x + f(f)(x + -1)\n"
+                      "_in f(f)(3)")
+                ->interp()
+                ->equals(new NumVal(6)));
+  }
 }
 
 #endif // CS6015_TEST_H
