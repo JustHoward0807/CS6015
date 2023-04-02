@@ -15,24 +15,24 @@
 // 888   Y8888 Y88b 888 888  888  888    Y888P    888  888 888
 // 888    Y888  "Y88888 888  888  888     Y8P     "Y888888 888
 
-Val *NumVal::mult_with(Val *otherVal) {
-  NumVal *other_num = dynamic_cast<NumVal *>(otherVal);
+PTR(Val) NumVal::mult_with(PTR(Val) otherVal) {
+  PTR(NumVal) other_num = CAST(NumVal)(otherVal);
   if (other_num == NULL)
     throw std::runtime_error("MultExpr of non-number");
-  return new NumVal((unsigned)this->val * (unsigned)other_num->val);
+  return NEW (NumVal)((unsigned)this->val * (unsigned)other_num->val);
 }
 
-Val *NumVal::add_to(Val *otherVal) {
-  NumVal *other_num = dynamic_cast<NumVal *>(otherVal);
+PTR(Val) NumVal::add_to(PTR(Val) otherVal) {
+  PTR(NumVal) other_num = CAST(NumVal)(otherVal);
   if (other_num == NULL)
     throw std::runtime_error("AddExpr of non-number");
-  return new NumVal((unsigned)this->val + (unsigned)other_num->val);
+  return NEW (NumVal)((unsigned)this->val + (unsigned)other_num->val);
 }
 
-Expr *NumVal::to_expr() { return new NumExpr(this->val); }
+PTR(Expr) NumVal::to_expr() { return NEW (NumExpr)(this->val); }
 
-bool NumVal::equals(Val *otherVal) {
-  NumVal *otherNum = dynamic_cast<NumVal *>(otherVal);
+bool NumVal::equals(PTR(Val) otherVal) {
+  PTR(NumVal) otherNum = CAST(NumVal)(otherVal);
   if (otherNum == NULL) {
     return false;
   } else {
@@ -53,7 +53,7 @@ bool NumVal::is_true() {
   //    return false;
 }
 
-Val *NumVal::call(Val *actual_arg) { return nullptr; }
+PTR(Val) NumVal::call(PTR(Val) actual_arg) { return nullptr; }
 
 NumVal::NumVal(int val) { this->val = val; }
 
@@ -70,19 +70,19 @@ BoolVal::BoolVal(bool is_True) { this->is_True = is_True; }
 
 bool BoolVal::is_true() { return this->is_True; }
 
-Val *BoolVal::add_to(Val *otherVal) {
+PTR(Val) BoolVal::add_to(PTR(Val) otherVal) {
   throw std::runtime_error("add of non-number");
 }
 
-Val *BoolVal::mult_with(Val *otherVal) {
+PTR(Val) BoolVal::mult_with(PTR(Val) otherVal) {
   throw std::runtime_error(
       "ERROR!! What do you want to do with BoolVal mult with?");
 }
 
-Expr *BoolVal::to_expr() { return new BoolExpr(this->is_True); }
+PTR(Expr) BoolVal::to_expr() { return NEW (BoolExpr)(this->is_True); }
 
-bool BoolVal::equals(Val *otherVal) {
-  BoolVal *otherNum = dynamic_cast<BoolVal *>(otherVal);
+bool BoolVal::equals(PTR(Val) otherVal) {
+  PTR(BoolVal) otherNum = CAST(BoolVal)(otherVal);
   if (otherNum == NULL) {
     return false;
   } else {
@@ -97,7 +97,7 @@ void BoolVal::print(std::ostream &ostream) {
     ostream << "_false";
 }
 
-Val *BoolVal::call(Val *actual_arg) { return nullptr; }
+PTR(Val) BoolVal::call(PTR(Val) actual_arg) { return nullptr; }
 
 /*
  8888888888                   888     888          888
@@ -110,11 +110,11 @@ Val *BoolVal::call(Val *actual_arg) { return nullptr; }
  888         "Y88888 888  888     Y8P     "Y888888 888
 */
 
-Val *FunVal::add_to(Val *otherVal) {
+PTR(Val) FunVal::add_to(PTR(Val) otherVal) {
   throw std::runtime_error("[ERROR] Cannot not add_to");
 }
 
-FunVal::FunVal(std::string formal_arg, Expr *body) {
+FunVal::FunVal(std::string formal_arg, PTR(Expr) body) {
   this->formal_arg = formal_arg;
   this->body = body;
 }
@@ -123,16 +123,16 @@ bool FunVal::is_true() {
   throw std::runtime_error("[ERROR] Cannot is_true");
 }
 
-Val *FunVal::mult_with(Val *otherVal) {
+PTR(Val) FunVal::mult_with(PTR(Val) otherVal) {
   throw std::runtime_error("[ERROR] Cannot not mult_with");
 }
 
-Expr *FunVal::to_expr() {
-    return new FunExpr(this->formal_arg, this->body);
+PTR(Expr) FunVal::to_expr() {
+    return NEW (FunExpr)(this->formal_arg, this->body);
 }
 
-bool FunVal::equals(Val *otherVal) {
-  FunVal *otherNum = dynamic_cast<FunVal *>(otherVal);
+bool FunVal::equals(PTR(Val) otherVal) {
+  PTR(FunVal) otherNum = CAST(FunVal)(otherVal);
   if (otherNum == nullptr) {
     return false;
   } else {
@@ -148,6 +148,6 @@ void FunVal::print(std::ostream &ostream) {
   ostream << this->body->to_string();
 }
 
-Val *FunVal::call(Val *actual_arg) {
+PTR(Val) FunVal::call(PTR(Val) actual_arg) {
   return this->body->subst(this->formal_arg, actual_arg->to_expr())->interp();
 }

@@ -25,7 +25,7 @@ _in  _let f = _fun (x) x*x
 int main(int argc, char **argv) {
     try {
         run_mode_t type = use_arguments(argc, argv);
-        Expr *parseExpr;
+        PTR(Expr) parseExpr;
         switch (type) {
             case do_interp:
                 parseExpr = parse_Expr(std::cin);

@@ -8,6 +8,7 @@
 #include <fcntl.h>
 #include <poll.h>
 #include <errno.h>
+#include "pointer.h"
 
 class ExecResult {
 public:
@@ -25,9 +26,4 @@ extern ExecResult exec_program(int argc, const char * const *argv, std::string i
 
 std::string random_expr_string();
 std::string random_Var();
-// std::string random_expr_multi_string();
-// std::string random_expr_let_string();
-// std::string random_expr_with_parenth_multi_string();
-// std::string random_expr_with_parenth_let_string();
-// std::string random_expr_with_negative();
 #endif /* exec_hpp */
