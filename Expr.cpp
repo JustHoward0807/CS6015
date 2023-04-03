@@ -14,6 +14,7 @@
 #include "Expr.hpp"
 #include "sstream"
 #include "val.h"
+#include "Env.h"
 
 /*
  8888888          d8b 888    d8b          888 d8b
@@ -46,8 +47,8 @@ LetExpr::LetExpr(std::string lhs, PTR(Expr) rhs, PTR(Expr) body) {
   this->body = body;
 }
 
-IfExpr::IfExpr(PTR(Expr) boolExpr, PTR(Expr) firstNumExpr, PTR(Expr)
-                                                             secondNumExpr) {
+IfExpr::IfExpr(PTR(Expr) boolExpr, PTR(Expr) firstNumExpr,
+               PTR(Expr) secondNumExpr) {
   this->boolExpr = boolExpr;
   this->firstNumExpr = firstNumExpr;
   this->secondNumExpr = secondNumExpr;
@@ -127,7 +128,6 @@ bool AddExpr::equals(PTR(Expr) expr) {
     return lhs->equals(n->lhs) && rhs->equals(n->rhs);
   }
 }
-
 
 /**
  * \brief Check if this class lhs is equals to PTR(Expr) class rhs provided in
@@ -270,9 +270,10 @@ bool CallExpr::equals(PTR(Expr) expr) { return false; }
  * \brief Interp cannot be interp so give an error msg.
  * \return Bc interp will return an integer
  */
-PTR(Val) VariableExpr::interp() {
+PTR(Val) VariableExpr::interp(PTR(Env) env) {
   // VariableExpr cannot be interp, ex: cannot add or multiply
-  throw std::runtime_error("Variable interp");
+  return env->lookup(this->string);
+//  throw std::runtime_error("Variable interp");
 }
 
 /**
@@ -280,9 +281,9 @@ PTR(Val) VariableExpr::interp() {
  * \return return the integer added value
  */
 
-PTR(Val) AddExpr::interp() {
+PTR(Val) AddExpr::interp(PTR(Env) env) {
   //(2 + (3 * 4))
-  return this->lhs->interp()->add_to(this->rhs->interp());
+  return this->lhs->interp(env)->add_to(this->rhs->interp(env));
   //    return this->rhs->interp() * this->lhs->interp();
 }
 
@@ -291,8 +292,8 @@ PTR(Val) AddExpr::interp() {
  * \return return the integer multiply value
  */
 
-PTR(Val) MultiExpr::interp() {
-  return this->lhs->interp()->mult_with(this->rhs->interp());
+PTR(Val) MultiExpr::interp(PTR(Env) env) {
+  return this->lhs->interp(env)->mult_with(this->rhs->interp(env));
   //    return this->rhs->interp() * this->lhs->interp();
 }
 
@@ -300,7 +301,7 @@ PTR(Val) MultiExpr::interp() {
  * \brief return its value
  * \return return its value
  */
-PTR(Val) NumExpr::interp() {
+PTR(Val) NumExpr::interp(PTR(Env) env) {
   return NEW(NumVal)(this->val);
   //    return this->val;
 }
@@ -310,34 +311,39 @@ PTR(Val) NumExpr::interp() {
  * \return return integer
  */
 
-PTR(Val) LetExpr::interp() {
-  PTR(Val) rhs_val = this->rhs->interp();
-  return body->subst(this->lhs, rhs_val->to_expr())->interp();
+PTR(Val) LetExpr::interp(PTR(Env) env) {
+  PTR(Val) rhs_val = this->rhs->interp(env);
+  PTR(Env) new_env = NEW(ExtendedEnv)(lhs, rhs_val, env);
+//  return body->subst(this->lhs, rhs_val->to_expr())->interp();
+  return body->interp(new_env);
 }
 
-PTR(Val) IfExpr::interp() {
-  if (this->boolExpr->interp()->is_true())
-    return this->firstNumExpr->interp();
+PTR(Val) IfExpr::interp(PTR(Env) env) {
+  if (this->boolExpr->interp(env)->is_true())
+    return this->firstNumExpr->interp(env);
   else
-    return this->secondNumExpr->interp();
+    return this->secondNumExpr->interp(env);
 }
 
-PTR(Val) BoolExpr::interp() { return NEW (BoolVal)(this->is_True); }
+PTR(Val) BoolExpr::interp(PTR(Env) env) { return NEW(BoolVal)(this->is_True); }
 
-PTR(Val) EqExpr::interp() {
-  if (this->lhs->interp()->to_string() != this->rhs->interp()->to_string())
-    return NEW (BoolVal)(false);
+PTR(Val) EqExpr::interp(PTR(Env) env) {
+  if (this->lhs->interp(env)->to_string() != this->rhs->interp(env)
+                                                 ->to_string())
+    return NEW(BoolVal)(false);
   else
-    return NEW (BoolVal)(true);
+    return NEW(BoolVal)(true);
 }
 
 //_fun (x) x + 1
 //_let f = _fun (x) x + 1
 //_in  f(10)
-PTR(Val) FunExpr::interp() { return NEW (FunVal)(formal_arg, body); }
+PTR(Val) FunExpr::interp(PTR(Env) env) {
+  return NEW(FunVal)(formal_arg, body, env);
+}
 
-PTR(Val) CallExpr::interp() {
-  return this->to_be_called->interp()->call(actual_arg->interp());
+PTR(Val) CallExpr::interp(PTR(Env) env) {
+  return this->to_be_called->interp(env)->call(actual_arg->interp(env));
 }
 
 /*
@@ -355,83 +361,83 @@ Y88b  d88P Y88b 888 888 d88P      X88 Y88b.  888
  * \brief Replace the variable with the expression that provided
  * \return return the expression
  */
-PTR(Expr) VariableExpr::subst(std::string s, PTR(Expr) expr) {
-  if (this->string == s) {
-    return expr;
-  }
-  return NEW (VariableExpr)(this->string);
-}
+//PTR(Expr) VariableExpr::subst(std::string s, PTR(Expr) expr) {
+//  if (this->string == s) {
+//    return expr;
+//  }
+//  return NEW(VariableExpr)(this->string);
+//}
 
 /**
  * \brief Replace the lhs variable or rhs that has the string provided in
  * parentheses and replace with the expression that provided \return return the
  * expression
  */
-PTR(Expr) MultiExpr::subst(std::string s, PTR(Expr) expr) {
-  //(new AddExpr((new MultiExpr(new NumExpr(10), new VariableExpr("x"))), new
-  // NumExpr (7))) -> subst("x", new VariableExpr("y"))
-  // -> equals((new AddExpr((new MultiExpr(new NumExpr(10), new
-  // VariableExpr("y"))), new NumExpr (7))))
-  return NEW (MultiExpr)(this->lhs->subst(s, expr), this->rhs->subst(s, expr));
-}
+//PTR(Expr) MultiExpr::subst(std::string s, PTR(Expr) expr) {
+//  //(new AddExpr((new MultiExpr(new NumExpr(10), new VariableExpr("x"))), new
+//  // NumExpr (7))) -> subst("x", new VariableExpr("y"))
+//  // -> equals((new AddExpr((new MultiExpr(new NumExpr(10), new
+//  // VariableExpr("y"))), new NumExpr (7))))
+//  return NEW(MultiExpr)(this->lhs->subst(s, expr), this->rhs->subst(s, expr));
+//}
 
 /**
  * \brief Replace the lhs variable or rhs that has the string provided in
  * parentheses and replace with the expression that provided \return return the
  * expression
  */
-PTR(Expr) AddExpr::subst(std::string s, PTR(Expr) expr) {
-  return NEW (AddExpr)(this->lhs->subst(s, expr), this->rhs->subst(s, expr));
-}
+//PTR(Expr) AddExpr::subst(std::string s, PTR(Expr) expr) {
+//  return NEW(AddExpr)(this->lhs->subst(s, expr), this->rhs->subst(s, expr));
+//}
 
 /**
  * \brief Directly return the NumExpr expression bc NumExpr class have only val
  * Integer member, so can't be replaced. \return return the expression
  */
-PTR(Expr) NumExpr::subst(std::string s, PTR(Expr) expr) {
-  return NEW (NumExpr)(this->val);
-}
-
-PTR(Expr) LetExpr::subst(std::string s, PTR(Expr) expr) {
-  if (s == lhs) {
-    return NEW (LetExpr)(s, rhs->subst(s, expr), this->body);
-  } else {
-    return this->body->subst(this->lhs, this->rhs)->subst(s, expr);
-  }
-}
+//PTR(Expr) NumExpr::subst(std::string s, PTR(Expr) expr) {
+//  return NEW(NumExpr)(this->val);
+//}
+//
+//PTR(Expr) LetExpr::subst(std::string s, PTR(Expr) expr) {
+//  if (s == lhs) {
+//    return NEW(LetExpr)(s, rhs->subst(s, expr), this->body);
+//  } else {
+//    return this->body->subst(this->lhs, this->rhs)->subst(s, expr);
+//  }
+//}
 
 //_let same = 1 == 2
 //_in  _if 1 == 2
 //     _then _false + 5
 //     _else 88
 
-PTR(Expr) IfExpr::subst(std::string s, PTR(Expr) expr) {
-  return NEW (IfExpr)(this->boolExpr->subst(s, expr),
-                    this->firstNumExpr->subst(s, expr),
-                    this->secondNumExpr->subst(s, expr));
-}
-
-PTR(Expr) BoolExpr::subst(std::string s, PTR(Expr) expr) {
-  return NEW (BoolExpr)(this->is_True);
-}
-
-PTR(Expr) EqExpr::subst(std::string s, PTR(Expr) expr) {
-  return NEW (EqExpr)(this->rhs->subst(s, expr), this->lhs->subst(s, expr));
-}
-
-PTR(Expr) FunExpr::subst(std::string s, PTR(Expr) expr) {
-  if (s == this->formal_arg) {
-    return NEW (FunExpr)(this->formal_arg, this->body);
-
-  } else {
-    return NEW (FunExpr)(this->formal_arg, this->body->subst(s, expr));
-  }
-}
-
-PTR(Expr) CallExpr::subst(std::string s, PTR(Expr) expr) {
-  return NEW (CallExpr)(this->to_be_called->subst(s, expr),
-                      this->actual_arg->subst(s, expr));
-}
+//PTR(Expr) IfExpr::subst(std::string s, PTR(Expr) expr) {
+//  return NEW(IfExpr)(this->boolExpr->subst(s, expr),
+//                     this->firstNumExpr->subst(s, expr),
+//                     this->secondNumExpr->subst(s, expr));
+//}
+//
+//PTR(Expr) BoolExpr::subst(std::string s, PTR(Expr) expr) {
+//  return NEW(BoolExpr)(this->is_True);
+//}
+//
+//PTR(Expr) EqExpr::subst(std::string s, PTR(Expr) expr) {
+//  return NEW(EqExpr)(this->rhs->subst(s, expr), this->lhs->subst(s, expr));
+//}
+//
+//PTR(Expr) FunExpr::subst(std::string s, PTR(Expr) expr) {
+//  if (s == this->formal_arg) {
+//    return NEW(FunExpr)(this->formal_arg, this->body);
+//
+//  } else {
+//    return NEW(FunExpr)(this->formal_arg, this->body->subst(s, expr));
+//  }
+//}
+//
+//PTR(Expr) CallExpr::subst(std::string s, PTR(Expr) expr) {
+//  return NEW(CallExpr)(this->to_be_called->subst(s, expr),
+//                       this->actual_arg->subst(s, expr));
+//}
 
 /*
 8888888b.          d8b          888
@@ -774,7 +780,7 @@ PTR(Expr) parse_Expr(std::istream &instream) {
     // PTR(Expr) *rhs = parse_Expr(instream);
     // PTR(Expr) *rhs = parse_Multicand(instream);
     PTR(Expr) rhs = parse_Expr(instream);
-    return NEW (EqExpr)(e, rhs);
+    return NEW(EqExpr)(e, rhs);
   } else {
     return e;
   }
@@ -789,7 +795,7 @@ PTR(Expr) parse_comparg(std::istream &instream) {
     consume(instream, '+');
     PTR(Expr) rhs = parse_comparg(instream);
 
-    return NEW (AddExpr)(e, rhs);
+    return NEW(AddExpr)(e, rhs);
   } else if (peek == '-') {
     throw std::runtime_error("Don't know how to handle subtraction");
   } else {
@@ -807,7 +813,7 @@ PTR(Expr) parse_Addend(std::istream &instream) {
     // PTR(Expr) *rhs = parse_Expr(instream);
     // PTR(Expr) *rhs = parse_Multicand(instream);
     PTR(Expr) rhs = parse_Addend(instream);
-    return NEW (MultiExpr)(e, rhs);
+    return NEW(MultiExpr)(e, rhs);
   } else {
     return e;
   }
@@ -824,7 +830,7 @@ PTR(Expr) parse_Multicand(std::istream &instream) {
     consume(instream, '(');
     PTR(Expr) actual_arg = parse_Expr(instream);
     consume(instream, ')');
-    e = NEW (CallExpr)(e, actual_arg);
+    e = NEW(CallExpr)(e, actual_arg);
   }
   return e;
 }
@@ -892,7 +898,7 @@ PTR(Expr) parse_Var(std::istream &instream) {
       break;
     }
   }
-  return NEW (VariableExpr)(s);
+  return NEW(VariableExpr)(s);
 }
 
 PTR(Expr) parse_Let(std::istream &instream) {
@@ -905,21 +911,21 @@ PTR(Expr) parse_Let(std::istream &instream) {
   std::string lhs;
   while (!isspace(instream.peek()) && instream.peek() != '=') {
     lhs = parse_Var(instream)->to_string();
-//    std::cout << "lhs: " << lhs << std::endl;
+    //    std::cout << "lhs: " << lhs << std::endl;
   }
   skip_whitespace(instream);
   consume(instream, '=');
   skip_whitespace(instream);
   PTR(Expr) rhs = parse_Expr(instream);
-//  std::cout << "rhs: " << rhs->to_string() << std::endl;
+  //  std::cout << "rhs: " << rhs->to_string() << std::endl;
   consume(instream, '_');
   consume(instream, 'i');
   consume(instream, 'n');
 
   skip_whitespace(instream);
   PTR(Expr) body = parse_Expr(instream);
-//  std::cout << "body: " << body->to_string() << std::endl;
-  return NEW (LetExpr)(lhs, rhs, body);
+  //  std::cout << "body: " << body->to_string() << std::endl;
+  return NEW(LetExpr)(lhs, rhs, body);
 }
 
 PTR(Expr) parse_If(std::istream &instream) {
@@ -945,7 +951,7 @@ PTR(Expr) parse_If(std::istream &instream) {
   consume(instream, 'e');
   PTR(Expr) rhs = parse_Expr(instream);
 
-  return NEW (IfExpr)(ifExpr, lhs, rhs);
+  return NEW(IfExpr)(ifExpr, lhs, rhs);
 }
 
 PTR(Expr) parse_Bool(std::istream &instream) {
@@ -955,12 +961,12 @@ PTR(Expr) parse_Bool(std::istream &instream) {
     consume(instream, 's');
     consume(instream, 'e');
 
-    return NEW (BoolExpr)(false);
+    return NEW(BoolExpr)(false);
   } else if (instream.peek() == 'r') {
     consume(instream, 'r');
     consume(instream, 'u');
     consume(instream, 'e');
-    return NEW (BoolExpr)(true);
+    return NEW(BoolExpr)(true);
   } else {
     throw std::runtime_error("Parsing Bool wrong");
   }
@@ -986,7 +992,7 @@ PTR(Expr) parse_Fun(std::istream &instream) {
   PTR(Expr) body = parse_Expr(instream);
   //    body->print(std::cout);
 
-  return NEW (FunExpr)(lhs, body);
+  return NEW(FunExpr)(lhs, body);
   //  return nullptr;
 }
 
@@ -1025,7 +1031,7 @@ PTR(Expr) parse_Num(std::istream &instream) {
     numFromStream = -numFromStream;
   }
 
-  return NEW (NumExpr)(numFromStream);
+  return NEW(NumExpr)(numFromStream);
 }
 
 static void consume(std::istream &instream, int expect) {

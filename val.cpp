@@ -3,6 +3,7 @@
 //
 
 #include "val.h"
+#include "Env.h"
 #include "Expr.hpp"
 #include "sstream"
 
@@ -19,17 +20,17 @@ PTR(Val) NumVal::mult_with(PTR(Val) otherVal) {
   PTR(NumVal) other_num = CAST(NumVal)(otherVal);
   if (other_num == NULL)
     throw std::runtime_error("MultExpr of non-number");
-  return NEW (NumVal)((unsigned)this->val * (unsigned)other_num->val);
+  return NEW(NumVal)((unsigned)this->val * (unsigned)other_num->val);
 }
 
 PTR(Val) NumVal::add_to(PTR(Val) otherVal) {
   PTR(NumVal) other_num = CAST(NumVal)(otherVal);
   if (other_num == NULL)
     throw std::runtime_error("AddExpr of non-number");
-  return NEW (NumVal)((unsigned)this->val + (unsigned)other_num->val);
+  return NEW(NumVal)((unsigned)this->val + (unsigned)other_num->val);
 }
 
-PTR(Expr) NumVal::to_expr() { return NEW (NumExpr)(this->val); }
+// PTR(Expr) NumVal::to_expr() { return NEW(NumExpr)(this->val); }
 
 bool NumVal::equals(PTR(Val) otherVal) {
   PTR(NumVal) otherNum = CAST(NumVal)(otherVal);
@@ -79,7 +80,7 @@ PTR(Val) BoolVal::mult_with(PTR(Val) otherVal) {
       "ERROR!! What do you want to do with BoolVal mult with?");
 }
 
-PTR(Expr) BoolVal::to_expr() { return NEW (BoolExpr)(this->is_True); }
+// PTR(Expr) BoolVal::to_expr() { return NEW(BoolExpr)(this->is_True); }
 
 bool BoolVal::equals(PTR(Val) otherVal) {
   PTR(BoolVal) otherNum = CAST(BoolVal)(otherVal);
@@ -114,22 +115,21 @@ PTR(Val) FunVal::add_to(PTR(Val) otherVal) {
   throw std::runtime_error("[ERROR] Cannot not add_to");
 }
 
-FunVal::FunVal(std::string formal_arg, PTR(Expr) body) {
+FunVal::FunVal(std::string formal_arg, PTR(Expr) body, PTR(Env) env) {
   this->formal_arg = formal_arg;
   this->body = body;
+  this->env = env;
 }
 
-bool FunVal::is_true() {
-  throw std::runtime_error("[ERROR] Cannot is_true");
-}
+bool FunVal::is_true() { throw std::runtime_error("[ERROR] Cannot is_true"); }
 
 PTR(Val) FunVal::mult_with(PTR(Val) otherVal) {
   throw std::runtime_error("[ERROR] Cannot not mult_with");
 }
 
-PTR(Expr) FunVal::to_expr() {
-    return NEW (FunExpr)(this->formal_arg, this->body);
-}
+// PTR(Expr) FunVal::to_expr() {
+//   return NEW(FunExpr)(this->formal_arg, this->body);
+// }
 
 bool FunVal::equals(PTR(Val) otherVal) {
   PTR(FunVal) otherNum = CAST(FunVal)(otherVal);
@@ -149,5 +149,7 @@ void FunVal::print(std::ostream &ostream) {
 }
 
 PTR(Val) FunVal::call(PTR(Val) actual_arg) {
-  return this->body->subst(this->formal_arg, actual_arg->to_expr())->interp();
+  //  return this->body->subst(this->formal_arg,
+  //  actual_arg->to_expr())->interp();
+  return body->interp(NEW(ExtendedEnv)(formal_arg, actual_arg, env));
 }

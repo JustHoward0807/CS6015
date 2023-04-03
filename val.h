@@ -2,17 +2,16 @@
 // Created by Howard Tung on 3/11/23.
 //
 
-#pragma once
-
 #include "pointer.h"
 #include <string>
 
+class Env;
 class Expr;
 CLASS(Val) {
 public:
   virtual PTR(Val) add_to(PTR(Val) otherVal) = 0;
   virtual PTR(Val) mult_with(PTR(Val) otherVal) = 0;
-  virtual PTR(Expr) to_expr() = 0;
+//  virtual PTR(Expr) to_expr() = 0;
   virtual bool equals(PTR(Val) otherVal) = 0;
   std::string to_string();
   virtual void print(std::ostream & ostream) = 0;
@@ -26,7 +25,7 @@ public:
   explicit NumVal(int val);
   PTR(Val) mult_with(PTR(Val) otherVal) override;
   PTR(Val) add_to(PTR(Val) otherVal) override;
-  PTR(Expr) to_expr() override;
+//  PTR(Expr) to_expr() override;
   bool equals(PTR(Val) otherVal) override;
   void print(std::ostream &ostream) override;
   bool is_true() override;
@@ -40,7 +39,7 @@ public:
 
   PTR(Val) add_to(PTR(Val) otherVal) override;
   PTR(Val) mult_with(PTR(Val) otherVal) override;
-  PTR(Expr) to_expr() override;
+//  PTR(Expr) to_expr() override;
   bool equals(PTR(Val) otherVal) override;
   void print(std::ostream &ostream) override;
   bool is_true() override;
@@ -51,11 +50,12 @@ class FunVal : public Val {
 public:
   std::string formal_arg;
   PTR(Expr) body;
-  explicit FunVal(std::string formal_arg, PTR(Expr) body);
+  PTR(Env) env;
+  explicit FunVal(std::string formal_arg, PTR(Expr) body, PTR(Env) env);
 
   PTR(Val) mult_with(PTR(Val) otherVal) override;
   PTR(Val) add_to(PTR(Val) otherVal) override;
-  PTR(Expr) to_expr() override;
+//  PTR(Expr) to_expr() override;
   bool equals(PTR(Val) otherVal) override;
   void print(std::ostream &ostream) override;
   bool is_true() override;
