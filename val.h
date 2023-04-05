@@ -55,6 +55,7 @@ public:
 
   PTR(Val) mult_with(PTR(Val) otherVal) override;
   PTR(Val) add_to(PTR(Val) otherVal) override;
+  std::string to_string();
 //  PTR(Expr) to_expr() override;
   bool equals(PTR(Val) otherVal) override;
   void print(std::ostream &ostream) override;

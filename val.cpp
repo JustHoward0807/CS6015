@@ -115,6 +115,9 @@ PTR(Val) FunVal::add_to(PTR(Val) otherVal) {
   throw std::runtime_error("[ERROR] Cannot not add_to");
 }
 
+std::string FunVal::to_string() {
+  return "FunVal";
+}
 FunVal::FunVal(std::string formal_arg, PTR(Expr) body, PTR(Env) env) {
   this->formal_arg = formal_arg;
   this->body = body;
